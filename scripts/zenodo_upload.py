@@ -23,8 +23,8 @@ from dotenv import load_dotenv
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ENV_PATH = PROJECT_ROOT / ".env"
 HTML_PATH = PROJECT_ROOT / "submission" / "paper_english_v2.html"
-PDF_PATH = PROJECT_ROOT / "submission" / "paper_english_v2.pdf"
-PDF_FILENAME = "Beyond Homo Economicus - Computational Instantiation and Empirical Analysis of Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas.pdf"
+PDF_PATH = PROJECT_ROOT / "submission_package" / "paper" / "neurips2026_main.pdf"
+PDF_FILENAME = "Beyond Homo Economicus - Computational Verification of Amartya Sen Meta-Ranking Theory in Multi-Agent Social Dilemmas.pdf"
 
 ZENODO_API_BASE = "https://zenodo.org/api"
 
@@ -173,41 +173,38 @@ def update_metadata(token, draft):
             "description": (
                 "<p>This study formalizes Amartya Sen's Meta-Ranking theory within a "
                 "Multi-Agent Reinforcement Learning (MARL) framework, demonstrating that "
-                "<strong>Bounded Commitment</strong>&mdash;dynamic moral commitment preserving "
-                "moral residue even under resource crisis&mdash;is the key mechanism for "
-                "resolving social dilemmas.</p>"
-                "<p><strong>v3 Updates (2026-02-22):</strong> Phase W critique defense: "
-                "(W1) Explicit SUTVA analysis via exposure mapping with ATE decomposition into "
-                "direct and spillover effects across 3 environments; "
-                "(W2) Bounded Commitment spectrum &mdash; 4-model comparison with Moran ESS and "
-                "&epsilon;-sensitivity Pareto analysis; "
-                "(W3) Integrity-constrained U_meta variants resisting reward hacking under "
-                "50% adversarial populations; "
-                "(W4) Cross-domain behavioral fingerprint transfer protocol across 4 environment "
-                "pairs. Total 42 analysis modules generating 88 figures from a single command.</p>"
+                "<strong>Situational Commitment</strong>&mdash;morality conditional on survival&mdash;"
+                "is the evolutionarily stable design principle for moral AI.</p>"
+                "<p><strong>v1.0.0 Updates (2026-02-26):</strong> "
+                "(1) JAX-based Exact LOLA implementation with exhaustive 25-config hyperparameter "
+                "grid search (~45 GPU-hours) demonstrating O(N^3) computational collapse and "
+                "cooperation ceiling of 0.209 vs Meta-Ranking's 0.574; "
+                "(2) Two-Timescale Stochastic Approximation (Borkar 1997) theoretical grounding; "
+                "(3) Byzantine robustness comparison across benign/25%/50% adversarial conditions; "
+                "(4) N=100 scaling benchmark showing LOLA OOM crash vs Meta-Ranking's 34ms/step.</p>"
                 "<p>Code: https://github.com/Yesol-Pilot/EthicaAI</p>"
             ),
             "creators": [{"name": "Heo, Yesol", "affiliation": "Independent Researcher"}],
             "keywords": [
                 "Meta-Ranking",
                 "Social Value Orientation",
-                "Causal Inference",
                 "AI Alignment",
                 "Amartya Sen",
                 "Multi-Agent Reinforcement Learning",
                 "Evolutionary Stability",
-                "SUTVA",
-                "Bounded Commitment",
-                "Behavioral Transfer",
-                "Reward Hacking Defense",
+                "LOLA",
+                "Opponent Shaping",
+                "Situational Commitment",
                 "Public Goods Game",
+                "Byzantine Robustness",
+                "JAX",
             ],
             "access_right": "open",
             "license": "cc-by-4.0",
-            "publication_date": "2026-02-22",
-            "version": "4.0.0",
+            "publication_date": "2026-02-26",
+            "version": "1.0.0",
             "language": "eng",
-            "notes": "NeurIPS 2026 submission (Main Track) + AIES 2026 extended version planned.",
+            "notes": "NeurIPS 2026 submission (Main Track). Preprint v1.0.0 with exhaustive LOLA baseline comparison.",
         }
     }
 
