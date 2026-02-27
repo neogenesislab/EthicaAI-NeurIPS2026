@@ -19,31 +19,38 @@ Can artificial agents develop genuine moral commitment beyond self-interest? We 
 2. **Role Specialization (C2)**: Discovery of emergent division of labor resolving the "cooperation paradox"
 3. **Local Optimality (C3)**: Situational Commitment matches Utilitarian welfare using only local information
 4. **Scale & Robustness (C4)**: Verified across 1,000 agents, 5 topologies, and 50% adversarial populations
-5. **SOTA Baseline (C5)**: Comprehensive JAX-based Exact LOLA comparison revealing structural N-player failure
+5. **SOTA Baseline — LOLA (C5)**: JAX-based Exact LOLA comparison revealing O(N³) collapse and 0.209 cooperation ceiling
+6. **SOTA Baseline — IPPO (C6)**: Independent PPO shows learning paralysis (≈0.5), proving deep RL alone cannot discover cooperation
 
 ---
 
-## 🔬 LOLA Benchmark Results
+## 🔬 Benchmark Results
 
-This repository contains **~45 GPU-hours** of exhaustive JAX-based Exact LOLA benchmark data, demonstrating the fundamental structural limitation of cross-derivative opponent shaping in N-player settings.
+This repository contains comprehensive SOTA baseline comparisons demonstrating the fundamental limitations of existing approaches in N-player settings.
 
 ### Meta-Ranking vs. Exact LOLA (N=20 PGG)
 
 | Dimension | Meta-Ranking | Exact LOLA | Ratio |
 |:---|:---:|:---:|:---:|
-| **Cooperation** | **0.574** ± 0.059 | 0.209 (best of 25) | 2.75× |
+| **Cooperation** | **0.576** ± 0.039 | 0.209 (best of 25) | 2.75× |
 | **Compute (per step)** | 34ms | 12,600ms | **370×** faster |
 | **Byzantine (50%)** | **0.209** | 0.124 | 1.69× |
 | **N=100 Scaling** | ✅ (34ms) | ❌ OOM crash | — |
 
-### 2D Hyperparameter Grid Search (25 configurations)
+### Meta-Ranking vs. Independent PPO (N=20 PGG, 5 seeds)
 
-No LOLA configuration exceeded 0.21 cooperation across 5×5 learning rate combinations. See `submission_package/paper/neurips2026_main.pdf` (Appendix A, Table 4) for the full heatmap.
+| Method | Coop Rate | Time | Ratio |
+|:---|:---:|:---:|:---:|
+| **Meta-Ranking** | **0.576** ± 0.039 | 10s | — |
+| Prosocial IPPO | 0.520 ± 0.019 | 7,049s | **680×** slower |
+| Selfish IPPO | 0.518 ± 0.019 | 7,073s | **680×** slower |
+
+Both IPPO variants exhibit **learning paralysis** (≈sigmoid(0)=0.5), failing to escape initialization despite gradient-based learning.
 
 ### Benchmark Data
 
-- [`grid_search_results.json`](submission_package/paper/grid_search_results.json) — 25-config grid search raw data
-- [`neurips2026_main.pdf`](submission_package/paper/neurips2026_main.pdf) — Compiled 6-page manuscript
+- [`grid_search_results.json`](submission_package/paper/grid_search_results.json) — 25-config LOLA grid search
+- [`neurips2026_main.pdf`](submission_package/paper/neurips2026_main.pdf) — Compiled 7-page manuscript
 
 ---
 
@@ -88,7 +95,7 @@ EthicaAI/
   year    = {2026},
   doi     = {10.5281/zenodo.18728438},
   url     = {https://github.com/Yesol-Pilot/EthicaAI},
-  version = {v1.0.0-preprint}
+  version = {v1.1.0-preprint}
 }
 ```
 

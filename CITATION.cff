@@ -6,9 +6,9 @@ authors:
   email: "dpfh1537@gmail.com"
   orcid: ""
 title: "EthicaAI: Computational Verification of Amartya Sen's Meta-Ranking Theory"
-version: 5.1.1
+version: 1.1.0
 doi: 10.5281/zenodo.18728438
-date-released: 2026-02-22
+date-released: 2026-02-27
 url: "https://github.com/Yesol-Pilot/EthicaAI"
 repository-code: "https://github.com/Yesol-Pilot/EthicaAI"
 license: MIT
