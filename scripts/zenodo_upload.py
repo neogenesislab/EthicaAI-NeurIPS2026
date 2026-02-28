@@ -209,7 +209,7 @@ def update_metadata(token, draft):
             "publication_date": "2026-02-28",
             "version": "1.2.0",
             "language": "eng",
-            "notes": "NeurIPS 2026 submission (Main Track). Preprint v1.2.0 with Theorem 3 (Group-Level ESS), 8-algorithm SOTA benchmark (200 runs), and 15-item reviewer defense reinforcement.",
+            "notes": "Preprint v1.2.0. Theorem 3 (Group-Level ESS via Price Equation), 8-algorithm SOTA benchmark (200 runs), and comprehensive reviewer response reinforcement.",
         }
     }
 
