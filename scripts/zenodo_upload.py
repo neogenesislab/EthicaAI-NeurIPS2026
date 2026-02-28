@@ -23,8 +23,8 @@ from dotenv import load_dotenv
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ENV_PATH = PROJECT_ROOT / ".env"
 HTML_PATH = PROJECT_ROOT / "submission" / "paper_english_v2.html"
-PDF_PATH = PROJECT_ROOT / "submission_package" / "paper" / "neurips2026_main.pdf"
-PDF_FILENAME = "Beyond Homo Economicus - Computational Verification of Amartya Sen Meta-Ranking Theory in Multi-Agent Social Dilemmas.pdf"
+PDF_PATH = PROJECT_ROOT / "paper" / "unified_paper.pdf"
+PDF_FILENAME = "From Situational to Unconditional - Moral Commitment Spectrum in Multi-Agent Social Dilemmas.pdf"
 
 ZENODO_API_BASE = "https://zenodo.org/api"
 
@@ -167,49 +167,49 @@ def update_metadata(token, draft):
 
     metadata = {
         "metadata": {
-            "title": "Beyond Homo Economicus: Computational Instantiation and Empirical Analysis of Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas",
+            "title": "From Situational to Unconditional: The Spectrum of Moral Commitment Required for Multi-Agent Survival in Non-linear Social Dilemmas",
             "upload_type": "publication",
             "publication_type": "preprint",
             "description": (
-                "<p>This study formalizes Amartya Sen's Meta-Ranking theory within a "
-                "Multi-Agent Reinforcement Learning (MARL) framework, demonstrating that "
-                "<strong>Bounded Commitment</strong>&mdash;dynamic moral commitment preserving "
-                "moral residue even under resource crisis&mdash;is the key mechanism for resolving social dilemmas.</p>"
-                "<p><strong>v1.2.0 Updates (2026-02-28):</strong> "
-                "(1) Theorem 3 (Group-Level ESS via Price Equation) formally added with proof sketch; "
-                "(2) 8-algorithm SOTA comparison (M-FOS, POLA, LOLA, LOPT, IA, SI, IPPO) with 200 runs; "
-                "(3) LOLA/LOPT failure mechanism explained (49D gradient divergence at N=50); "
-                "(4) Preliminary Deep RL (MAPPO) State Augmentation ablation; "
-                "(5) 15-item reviewer defense reinforcement across all sections.</p>"
-                "<p><strong>v1.1.0 (2026-02-27):</strong> "
-                "IPPO benchmark, ESS welfare-optimal reframing, spatial ESS experiments.</p>"
-                "<p><strong>v1.0.0 (2026-02-26):</strong> "
-                "JAX-based Exact LOLA, O(N<sup>3</sup>) collapse analysis.</p>"
+                "<p>We establish the <strong>Moral Commitment Spectrum</strong>: "
+                "a systematic relationship between environmental severity and the minimum moral commitment "
+                "required for multi-agent system survival. In linear PGG environments, situational commitment "
+                "achieves group-level ESS. In non-linear environments with catastrophic tipping points, "
+                "pure RL fails (Nash Trap at &lambda;&approx;0.5, 5.3% survival), and only unconditional "
+                "commitment (&phi;<sub>1</sub>*=1.0) guarantees survival.</p>"
+                "<p><strong>Key findings:</strong> Decentralized baselines (Inequity Aversion, Social Influence) "
+                "achieve 0% survival under Byzantine conditions&mdash;their other-regarding mechanisms cause "
+                "downward drift toward adversaries' zero contributions. Only unconditional commitment "
+                "is structurally immune.</p>"
+                "<p><strong>v2.0.0 (2026-02-28):</strong> "
+                "Unified paper integrating Paper 1 (Situational Commitment) + Paper 2 (Nash Trap). "
+                "N=100 scale test, Jacobian/Hessian Nash Trap proof, 12-condition f(R_t) sensitivity, "
+                "same-class baseline comparison (IA, SI). 11 pages, NeurIPS 2026 format.</p>"
                 "<p>Code: https://github.com/Yesol-Pilot/EthicaAI</p>"
             ),
             "creators": [{"name": "Heo, Yesol", "affiliation": "Independent Researcher"}],
             "keywords": [
+                "Moral Commitment Spectrum",
                 "Meta-Ranking",
+                "Nash Trap",
                 "Social Value Orientation",
                 "AI Alignment",
                 "Amartya Sen",
                 "Multi-Agent Reinforcement Learning",
                 "Evolutionary Stability",
-                "LOLA",
-                "Opponent Shaping",
-                "Situational Commitment",
+                "Tipping Point",
+                "Unconditional Commitment",
                 "Public Goods Game",
                 "Byzantine Robustness",
-                "JAX",
-                "IPPO",
-                "Welfare Optimization",
+                "Inequity Aversion",
+                "Social Influence",
             ],
             "access_right": "open",
             "license": "cc-by-4.0",
             "publication_date": "2026-02-28",
-            "version": "1.2.0",
+            "version": "2.0.0",
             "language": "eng",
-            "notes": "Preprint v1.2.0. Theorem 3 (Group-Level ESS via Price Equation), 8-algorithm SOTA benchmark (200 runs), and comprehensive reviewer response reinforcement.",
+            "notes": "Preprint v2.0.0. Unified paper: Moral Commitment Spectrum. N=100 scale test, Jacobian Nash Trap proof, 12-condition sensitivity, same-class baselines (IA/SI 0% survival).",
         }
     }
 
