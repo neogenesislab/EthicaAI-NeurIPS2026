@@ -5,28 +5,33 @@ authors:
   given-names: "Yesol"
   email: "dpfh1537@gmail.com"
   orcid: ""
-title: "EthicaAI: Computational Verification of Amartya Sen's Meta-Ranking Theory"
-version: 1.1.0
-doi: 10.5281/zenodo.18728438
-date-released: 2026-02-27
+title: "EthicaAI: The Moral Commitment Spectrum in Multi-Agent Social Dilemmas"
+version: 2.0.0
+doi: 10.5281/zenodo.18812419
+date-released: 2026-02-28
 url: "https://github.com/Yesol-Pilot/EthicaAI"
 repository-code: "https://github.com/Yesol-Pilot/EthicaAI"
 license: MIT
 keywords:
+  - moral commitment spectrum
   - multi-agent reinforcement learning
   - meta-ranking
   - amartya sen
+  - nash trap
+  - tipping point
+  - unconditional commitment
   - social dilemma
   - cooperation
   - evolutionary game theory
   - moral AI
+  - byzantine robustness
 preferred-citation:
   type: article
   authors:
   - family-names: "Heo"
     given-names: "Yesol"
-  doi: "10.5281/zenodo.18728438"
+  doi: "10.5281/zenodo.18812419"
   journal: "Zenodo"
-  title: "Beyond Homo Economicus: Computational Verification of Amartya Sen's Meta-Ranking Theory in Multi-Agent Social Dilemmas"
+  title: "From Situational to Unconditional: The Spectrum of Moral Commitment Required for Multi-Agent Survival in Non-linear Social Dilemmas"
   year: 2026
-  url: "https://zenodo.org/records/18728438"
+  url: "https://zenodo.org/records/18812419"
