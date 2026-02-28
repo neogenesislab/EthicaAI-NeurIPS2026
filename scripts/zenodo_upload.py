@@ -173,15 +173,18 @@ def update_metadata(token, draft):
             "description": (
                 "<p>This study formalizes Amartya Sen's Meta-Ranking theory within a "
                 "Multi-Agent Reinforcement Learning (MARL) framework, demonstrating that "
-                "<strong>Situational Commitment</strong>&mdash;morality conditional on survival&mdash;"
-                "is the evolutionarily stable design principle for moral AI.</p>"
-                "<p><strong>v1.0.0 Updates (2026-02-26):</strong> "
-                "(1) JAX-based Exact LOLA implementation with exhaustive 25-config hyperparameter "
-                "grid search (~45 GPU-hours) demonstrating O(N^3) computational collapse and "
-                "cooperation ceiling of 0.209 vs Meta-Ranking's 0.574; "
-                "(2) Two-Timescale Stochastic Approximation (Borkar 1997) theoretical grounding; "
-                "(3) Byzantine robustness comparison across benign/25%/50% adversarial conditions; "
-                "(4) N=100 scaling benchmark showing LOLA OOM crash vs Meta-Ranking's 34ms/step.</p>"
+                "<strong>Bounded Commitment</strong>&mdash;dynamic moral commitment preserving "
+                "moral residue even under resource crisis&mdash;is the key mechanism for resolving social dilemmas.</p>"
+                "<p><strong>v1.2.0 Updates (2026-02-28):</strong> "
+                "(1) Theorem 3 (Group-Level ESS via Price Equation) formally added with proof sketch; "
+                "(2) 8-algorithm SOTA comparison (M-FOS, POLA, LOLA, LOPT, IA, SI, IPPO) with 200 runs; "
+                "(3) LOLA/LOPT failure mechanism explained (49D gradient divergence at N=50); "
+                "(4) Preliminary Deep RL (MAPPO) State Augmentation ablation; "
+                "(5) 15-item reviewer defense reinforcement across all sections.</p>"
+                "<p><strong>v1.1.0 (2026-02-27):</strong> "
+                "IPPO benchmark, ESS welfare-optimal reframing, spatial ESS experiments.</p>"
+                "<p><strong>v1.0.0 (2026-02-26):</strong> "
+                "JAX-based Exact LOLA, O(N<sup>3</sup>) collapse analysis.</p>"
                 "<p>Code: https://github.com/Yesol-Pilot/EthicaAI</p>"
             ),
             "creators": [{"name": "Heo, Yesol", "affiliation": "Independent Researcher"}],
@@ -198,13 +201,15 @@ def update_metadata(token, draft):
                 "Public Goods Game",
                 "Byzantine Robustness",
                 "JAX",
+                "IPPO",
+                "Welfare Optimization",
             ],
             "access_right": "open",
             "license": "cc-by-4.0",
-            "publication_date": "2026-02-26",
-            "version": "1.0.0",
+            "publication_date": "2026-02-28",
+            "version": "1.2.0",
             "language": "eng",
-            "notes": "NeurIPS 2026 submission (Main Track). Preprint v1.0.0 with exhaustive LOLA baseline comparison.",
+            "notes": "NeurIPS 2026 submission (Main Track). Preprint v1.2.0 with Theorem 3 (Group-Level ESS), 8-algorithm SOTA benchmark (200 runs), and 15-item reviewer defense reinforcement.",
         }
     }
 

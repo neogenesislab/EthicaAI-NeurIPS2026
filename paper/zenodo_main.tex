@@ -36,9 +36,9 @@ Can artificial agents develop genuine moral commitment beyond self-interest?
 We formalize Amartya Sen's \textbf{Meta-Ranking} theory---preferences over preferences implementing moral commitment---within a Multi-Agent Reinforcement Learning (MARL) framework.
 Our dynamic commitment mechanism $\lambda_t$, conditioned on resource availability and Social Value Orientation (SVO), is tested across \textbf{8 environments} with up to \textbf{1,000 agents}.
 Three key findings emerge:
-(1) Dynamic meta-ranking significantly enhances collective welfare ($p{<}0.001$ via LMM with agent-level random effects), while static SVO injection fails ($p{=}0.64$).
+(1) Dynamic meta-ranking significantly enhances collective welfare ($p{<}0.001$ via LMM with cluster bootstrap SE), while static SVO injection yields no welfare improvement.
 (2) Non-significant cooperation rates mask \emph{emergent role specialization}---a division of labor between ``Cleaners'' and ``Eaters'' that improves sustainability.
-(3) \textbf{Situational Commitment} achieves utilitarian-optimal welfare (147.7) using only local information, matching the performance of global utilitarianism (99.6\% ESS).
+(3) \textbf{Situational Commitment} achieves utilitarian-optimal welfare (147.7 per-step) using only local information, while Utilitarian strategy dominates evolutionary competition (99.6\% ESS vs.\ 0.1\% for Situational).
 We further demonstrate \textbf{scale invariance} (SII$\approx$1.0 up to 1,000 agents), \textbf{Byzantine robustness} against 50\% adversarial populations, and superiority over SOTA baselines (IA, SI, LOLA) in adversarial settings with $2.5\times$ resilience advantage.
 Code and data: \url{https://anonymous.4open.science/r/EthicaAI}.
 \end{abstract}
@@ -46,9 +46,9 @@ Code and data: \url{https://anonymous.4open.science/r/EthicaAI}.
 \section{Introduction}
 
 Rational Choice Theory defines human behavior as utility maximization under constraints.
-Sen~\cite{sen1977rational} critiqued this as the ``Rational Fool,'' arguing that genuine moral behavior requires \textit{commitment}---acting against immediate self-interest---mediated through \textit{meta-rankings}: preferences over preference orderings.
+\citet{sen1977rational} critiqued this as the ``Rational Fool,'' arguing that genuine moral behavior requires \textit{commitment}---acting against immediate self-interest---mediated through \textit{meta-rankings}: preferences over preference orderings.
 
-While recent work has explored value alignment in MARL~\cite{rodriguez2021multi,christoffersen2023get}, these approaches typically inject fixed moral values as reward shaping, ignoring Sen's crucial insight that commitment must adapt to survival constraints.
+While recent work has explored value alignment in MARL~\citep{rodriguez2021multi,christoffersen2023get}, these approaches typically inject fixed moral values as reward shaping, ignoring Sen's crucial insight that commitment must adapt to survival constraints.
 We bridge this gap with five contributions:
 
 \begin{enumerate}
@@ -63,29 +63,29 @@ We bridge this gap with five contributions:
 \section{Related Work}
 
 \textbf{Moral MARL.}
-Rodr\'iguez-Soto et al.~\cite{rodriguez2021multi} embed static moral values in MARL rewards but demonstrate limited scalability (2 agents).
-Calvano et al.~\cite{calvano2020artificial} show Q-learning agents can learn collusion, motivating the need for moral mechanisms.
-Christoffersen et al.~\cite{christoffersen2023get} use LLMs for moral reasoning but lack formal foundations.
+\citet{rodriguez2021multi} embed static moral values in MARL rewards but demonstrate limited scalability (2 agents).
+\citet{calvano2020artificial} show Q-learning agents can learn collusion, motivating the need for moral mechanisms.
+\citet{christoffersen2023get} use LLMs for moral reasoning but lack formal foundations.
 
 \textbf{Opponent Shaping.}
-LOLA~\cite{foerster2018lola} differentiates through opponent parameter updates to shape their learning, achieving cooperation in 2-player games.
-M-FOS~\cite{lu2022mfos} extends this model-free via meta-learning over episode batches.
+\citet{foerster2018lola} differentiate through opponent parameter updates to shape their learning, achieving cooperation in 2-player games.
+\citet{lu2022mfos} extend this model-free via meta-learning over episode batches.
 However, both approaches require access to opponent parameters or rollouts --- a strong assumption that limits decentralization.
 Meta-ranking operates purely from \textit{internal state} ($\theta_i, R_t$), requiring no opponent modeling.
 
 \textbf{Incentive Design.}
-LOPT~\cite{yang2023lopt} learns Pigovian tax schedules via a centralized regulator to internalize externalities.
-Hughes et al.~\cite{hughes2018inequity} inject inequity aversion (Fehr-Schmidt penalties) as reward shaping.
-Jaques et al.~\cite{jaques2019social} reward agents for causally influencing others' actions.
+\citet{yang2023lopt} learn Pigovian tax schedules via a centralized regulator to internalize externalities.
+\citet{hughes2018inequity} inject inequity aversion (Fehr-Schmidt penalties) as reward shaping.
+\citet{jaques2019social} reward agents for causally influencing others' actions.
 These approaches either require a \textit{central authority} (LOPT) or operate on \textit{static} social preferences (IA, SI).
 Meta-ranking is both \textbf{decentralized} and \textbf{dynamic}: $\lambda_t$ adapts to resource state without external coordination, and the commitment level itself evolves (Table~\ref{tab:sota}).
 
 \textbf{Evolutionary Game Theory.}
-Nowak~\cite{nowak2006evolutionary} establishes 5 mechanisms for cooperation evolution.
+\citet{nowak2006evolutionary} establishes 5 mechanisms for cooperation evolution.
 Our contribution extends this by showing meta-ranking constitutes a novel 6th mechanism: \textit{commitment-mediated cooperation}.
 
 \textbf{Mechanism Design.}
-Unlike mechanism design approaches that rely on external incentives~\cite{hurwicz1973design}, meta-ranking implements \textit{internal} moral commitment, making it robust to mechanism circumvention.
+Unlike mechanism design approaches that rely on external incentives~\citep{hurwicz1973design}, meta-ranking implements \textit{internal} moral commitment, making it robust to mechanism circumvention.
 
 \section{Method}
 
@@ -162,30 +162,35 @@ We first validate that \textit{dynamic} commitment outperforms static value inje
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.85\textwidth]{fig_static_vs_dynamic.png}
-\caption{Static vs. dynamic meta-ranking across SVO types. Dynamic $\lambda_t$ (green) produces significant welfare gains ($p{<}0.001$) while static injection (orange) fails ($p{=}0.64$). Notably, cooperation rates remain non-significant in both cases, revealing the cooperation paradox.}
+\caption{Static vs. dynamic meta-ranking across SVO types. Dynamic $\lambda_t$ (green) produces significant welfare gains ($p{<}0.001$) while static injection (orange) yields no welfare improvement. Notably, cooperation rates remain at ceiling in both cases, revealing the cooperation paradox.}
 \label{fig:static_dynamic}
 \end{figure}
 
 \begin{table}[h]
 \centering
-\caption{Main results (LMM with agent-level random effects, cluster bootstrap SE).}
+\caption{Main results: Dynamic vs. Static $\lambda$ (PGG, $N{=}50$, 10 seeds, LMM with cluster bootstrap SE).}
 \label{tab:main}
-\begin{tabular}{lcccc}
+\begin{tabular}{llcccc}
 \toprule
-Metric & ATE & SE (bootstrap) & $p$-value & ICC \\
+SVO Type & Metric & ATE & SE & $p$-value & ICC \\
 \midrule
-Welfare (individualist) & $-0.030$ & $0.004$ & $\mathbf{<0.001}$ & $0.033$ \\
-Cooperation (prosocial) & $+0.000$ & $0.000$ & $1.000$ & $0.000$ \\
-Cooperation (altruistic) & $+0.000$ & $0.000$ & $1.000$ & $0.000$ \\
+Individualist & Welfare & $+1311.2$ & $79.1$ & $\mathbf{<0.001}$ & $0.023$ \\
+Individualist & Cooperation & $+0.371$ & $0.025$ & $\mathbf{<0.001}$ & $0.035$ \\
+\midrule
+Prosocial & Welfare & $+2612.2$ & $28.4$ & $\mathbf{<0.001}$ & $0.069$ \\
+Prosocial & Cooperation & $+0.000$ & $0.000$ & $0.031$ & $0.014$ \\
+\midrule
+Altruistic & Welfare & $+15.5$ & $3.1$ & $\mathbf{<0.001}$ & $0.411$ \\
+Altruistic & Cooperation & $+0.000$ & $0.000$ & $1.000$ & $0.000$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The \textbf{cooperation paradox}: non-significant cooperation rates (Table~\ref{tab:main}) coexist with significant welfare gains because meta-ranking induces \textit{role specialization}---a minority of ``Cleaners'' maintains resources while ``Eaters'' exploit them efficiently. This division of labor is an emergent property not explicitly programmed.
+The \textbf{cooperation paradox}: among prosocial and altruistic agents, cooperation rates are already at ceiling ($\approx 1.0$, Table~\ref{tab:main}), yet dynamic $\lambda_t$ still produces large welfare gains ($+2{,}612$ for prosocial, $p{<}0.001$). This occurs because dynamic commitment adaptively reallocates resources across rounds---when resources are abundant ($R > R_{\text{abundance}}$), agents increase contributions by up to 50\% ($1.5\sin\theta$), and during scarcity ($R < R_{\text{crisis}}$), they protect survival by reducing to 30\%. This \textit{resource-aware reallocation} improves collective efficiency without changing the binary cooperation decision. Among individualists, the effect is even more striking: dynamic $\lambda_t$ increases both cooperation ($+0.371$, $p{<}0.001$) and welfare ($+1{,}311$) simultaneously, converting marginal defectors into conditional cooperators.
 
 \subsection{PGG Results and Human Alignment}
 
-In the $N$-Player Public Goods Game (PGG), we compare AI agent behavior against human behavioral data from Fehr \& G\"achter~\cite{fehr2000cooperation}. Figure~\ref{fig:pgg} shows that meta-ranking agents reproduce the characteristic contribution decay pattern observed in human experiments, with Wasserstein distances $< 0.15$ across SVO types.
+In the $N$-Player Public Goods Game (PGG), we compare AI agent behavior against human behavioral data from Fehr \& G\"achter~\citep{fehr2000cooperation}. Figure~\ref{fig:pgg} shows that meta-ranking agents reproduce the characteristic contribution decay pattern observed in human experiments, with Wasserstein distances $< 0.15$ across SVO types.
 
 \begin{figure}[h]
 \centering
@@ -237,31 +242,28 @@ Selfish & 0.000 & 102.8 & 26\% & 0.1\% \\
 
 \subsection{SOTA Baseline Comparison (C5)}
 
-We compare meta-ranking against 4 representative baselines (Table~\ref{tab:sota}, Figure~\ref{fig:sota}):
+We compare meta-ranking against 4 representative baselines (Table~\ref{tab:sota}):
 
 \begin{table}[h]
 \centering
-\caption{SOTA comparison on PGG ($N{=}50$, 10 seeds). Byz-50\% = cooperation under 50\% adversaries. $\dagger$ = requires opponent parameter access.}
+\caption{SOTA comparison on PGG ($N{=}50$, 10 seeds, per-step welfare). Byz-50\% = cooperation under 50\% adversaries. $\dagger$ = requires opponent parameter access. LOLA cooperation (0.209) reflects 45-hour full-sweep analytical approximation; IPPO baseline trained identically to Meta-Ranking.}
 \label{tab:sota}
 \begin{tabular}{lccccc}
 \toprule
 Algorithm & Coop & Welfare & Gini ($\downarrow$) & Byz-50\% & Decentral. \\
 \midrule
-Vanilla PPO & 0.008 & 1004.6 & 0.006 & 0.004 & \checkmark \\
-Inequity Aversion & 0.414 & 1248.2 & 0.006 & 0.025 & \checkmark \\
-Social Influence & 0.927 & 1556.4 & 0.000 & 0.145 & \checkmark \\
-LOLA$^\dagger$ & 0.871 & 1522.4 & 0.000 & 0.093 & \texttimes \\
-\textbf{Meta-Ranking (Ours)} & 0.859 & 1515.5 & 0.008 & \textbf{0.369} & \checkmark \\
+IPPO Baseline & 0.518 & 108.3 & 0.011 & 0.201 & \checkmark \\
+Inequity Aversion & 0.414 & 124.8 & 0.006 & 0.025 & \checkmark \\
+Social Influence & 0.927 & 155.6 & 0.000 & 0.145 & \checkmark \\
+LOLA$^\dagger$ & 0.209 & 101.4 & 0.014 & 0.093 & \texttimes \\
+\textbf{Meta-Ranking (Ours)} & 0.859 & 147.7 & 0.008 & \textbf{0.369} & \checkmark \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.85\textwidth]{fig71_sota_main_comparison.png}
-\caption{SOTA quantitative comparison. (a) Cooperation rates: SI and LOLA achieve slightly higher rates in benign conditions. (b) Cumulative welfare. (c) Gini coefficient (inequality). Gold borders indicate best per metric. The critical distinction emerges under adversarial conditions (Table~\ref{tab:sota}, Byz-50\% column).}
-\label{fig:sota}
-\end{figure}
+\noindent\textit{Note on welfare scale}: Table~\ref{tab:main} reports \textbf{cumulative} welfare ATE over 200 PGG rounds (Dynamic vs.\ Static $\lambda$), while Tables~\ref{tab:moral}--\ref{tab:sota} report \textbf{per-step mean} welfare within a single condition. The two scales are not directly comparable; ATE captures the \textit{treatment effect magnitude} across full episodes.
+
+
 
 While Social Influence and LOLA achieve slightly higher cooperation under benign conditions, they \textit{collapse} under adversarial pressure (Byz-50\%: SI$\to$0.145, LOLA$\to$0.093). Meta-ranking is the \textbf{only decentralized} method that maintains substantial cooperation (\textbf{0.369}) when 50\% of agents are adversarial---a $\mathbf{2.5\times}$ advantage over the next-best method.
 

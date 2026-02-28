@@ -28,7 +28,7 @@
 - [x] 알고리즘, 데이터 전처리, 실험 설정의 충분한 세부 정보가 제공되는가?
   - Yes. 전체 코드가 GitHub에 공개, requirements.txt 포함.
 - [x] 코드가 제출되거나 공개 약속이 되어 있는가?
-  - Yes. https://github.com/Yesol-Pilot/EthicaAI (MIT License).
+  - Yes. https://anonymous.4open.science/r/EthicaAI (MIT License).
 - [x] 실험 결과 재현에 필요한 자원(compute)이 명시되어 있는가?
   - Yes. RTX 4070 SUPER (12GB VRAM), ~35분/sweep.
 

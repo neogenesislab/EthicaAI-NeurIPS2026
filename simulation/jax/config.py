@@ -21,6 +21,9 @@ _HRL_DEFAULTS = {
     "META_SURVIVAL_THRESHOLD": -5.0,  # wealth below → λ→0 (survival mode)
     "META_WEALTH_BOOST": 5.0,         # wealth above → λ×1.5 (generosity)
     "META_LAMBDA_EMA": 0.9,           # λ smoothing factor (EMA)
+    # Dynamic λ resource thresholds — Eq. (2) in paper
+    "R_CRISIS": 0.2,                   # Resource crisis threshold (survival mode)
+    "R_ABUNDANCE": 0.7,                # Resource abundance threshold (generosity mode)
     # Experiment Control Flags
     "USE_META_RANKING": True,          # False = baseline (순수 SVO 보상변환)
     "META_USE_DYNAMIC_LAMBDA": True,   # False = λ = sin(θ) 고정 (ablation)

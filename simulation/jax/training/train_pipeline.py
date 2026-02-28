@@ -223,21 +223,24 @@ def make_train(config):
             # λ_base from SVO angle: sin(θ) maps 0°→0, 45°→0.71, 90°→1
             lambda_base = jnp.sin(svo_theta)  # scalar
             
-            # Dynamic λ: resource-dependent commitment (곳간에서 인심)
-            # Use agent's internal need levels as wealth proxy
-            wealth = flat_levels.mean(axis=-1).reshape((B, N))  # (B, N)
-            meta_survival = config.get("META_SURVIVAL_THRESHOLD", -5.0)
-            meta_boost = config.get("META_WEALTH_BOOST", 5.0)
+            # Dynamic λ: resource-dependent commitment — Eq. (2)
+            # g(θ, R) = max(0, sinθ·0.3)        if R < R_crisis
+            #          = min(1, 1.5·sinθ)        if R > R_abundance
+            #          = sinθ·(0.7 + 1.6·R)      otherwise
+            # Resource proxy: average need level across agents (0~1 scale)
+            resource_level = flat_levels.mean()  # scalar: community resource proxy
+            R_crisis = config.get("R_CRISIS", 0.2)
+            R_abundance = config.get("R_ABUNDANCE", 0.7)
             
             lambda_dynamic_full = jnp.where(
-                wealth < meta_survival,
-                0.0,  # Survival mode: pure selfish
+                resource_level < R_crisis,
+                jnp.maximum(0.0, lambda_base * 0.3),   # Crisis: survival mode
                 jnp.where(
-                    wealth > meta_boost,
-                    jnp.minimum(1.0, lambda_base * 1.5),  # Generosity mode
-                    lambda_base  # Normal mode
+                    resource_level > R_abundance,
+                    jnp.minimum(1.0, lambda_base * 1.5),  # Abundance: generosity
+                    lambda_base * (0.7 + 1.6 * resource_level)  # Normal: interpolation
                 )
-            )  # (B, N)
+            )  # scalar, broadcast to (B, N)
             
             # Ablation 분기: 동적 λ vs 정적 λ
             use_dynamic = config.get("META_USE_DYNAMIC_LAMBDA", True)

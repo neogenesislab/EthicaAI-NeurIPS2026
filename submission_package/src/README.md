@@ -36,7 +36,7 @@
 
 ```bash
 # Clone & setup
-git clone https://github.com/Yesol-Pilot/EthicaAI.git
+git clone https://anonymous.4open.science/r/EthicaAI
 cd EthicaAI
 
 python -m venv ethica_env
@@ -159,7 +159,7 @@ $ python reproduce.py
 @article{heo2026ethicaai,
   title={Beyond Homo Economicus: Computational Verification of Amartya Sen's
          Meta-Ranking Theory in Multi-Agent Social Dilemmas},
-  author={Heo, Yesol},
+  author={Anonymous},
   journal={arXiv preprint arXiv:2602.XXXXX},
   year={2026},
   note={74 figures, 38 modules, 8 environments, NeurIPS 2026}
