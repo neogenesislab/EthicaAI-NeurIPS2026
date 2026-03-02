@@ -41,7 +41,7 @@ We demonstrate that this failure is \textbf{consistent across all evaluated arch
 Parameter optimization reveals that only \textbf{unconditional commitment} ($\phi_1^* = 1.0$) prevents collapse.
 Meta-learning validation confirms that this optimal commitment function is \emph{independently recoverable}: evolutionary search over parameterized $g_\phi(\theta, R)$ converges to $\phi_1 = 1.0$ (maximum crisis commitment), matching the hand-designed specification.
 Our central finding is a \textbf{Moral Commitment Spectrum}: the degree of commitment required for system survival is determined by the environment's non-linearity.
-Moderate environments permit flexible morality; catastrophic environments demand unconditional sacrifice---an engineering necessity, not a philosophical preference.
+Moderate environments permit flexible morality; catastrophic environments with irreversible tipping points require unconditional commitment---a design principle suggested by the tested non-linear PGG class.
 \end{abstract}
 
 % ================================================================
@@ -61,7 +61,7 @@ We address these questions through a systematic investigation spanning environme
     \item[(C1)] \textbf{Computational Instantiation of Sen's Meta-Ranking}: We formalize commitment as a dynamic parameter $\lambda_t \in [0,1]$ that adapts to resource state $R_t$ and Social Value Orientation $\theta_i$, enabling agents to balance self-interest and prosocial behavior (Section~\ref{sec:method}).
     \item[(C2)] \textbf{Situational Commitment Works in Linear Environments}: In standard PGG with moderate recovery dynamics, resource-conditioned commitment achieves group-level ESS ($\bar{x}=0.987$), outperforming 8 baselines including M-FOS and POLA (Section~\ref{sec:linear}).
     \item[(C3)] \textbf{Consistent Cooperation Failure Across Evaluated Architectures}: When tipping points introduce irreversible collapse, independent policy-gradient (REINFORCE) agents fail across all three tested architectures (Linear, MLP, Actor-Critic)---converging to suboptimal equilibria ($\lambda \approx 0.05$--$0.5$) with $\leq$54\% survival even for the best-case architecture (Section~\ref{sec:nash_trap}).
-    \item[(C4)] \textbf{Unconditional Commitment as Engineering Necessity}: Only maximal crisis commitment ($\phi_1^* = 1.0$) guarantees survival. Meta-learning independently recovers this optimum, confirming it is a structural property of the environment (Section~\ref{sec:unconditional}).
+    \item[(C4)] \textbf{Unconditional Commitment as Design Requirement}: In the tested environments, only maximal crisis commitment ($\phi_1^* = 1.0$) reliably prevents collapse. Meta-learning independently recovers this optimum, suggesting it is a structural property of the non-linear PGG (Section~\ref{sec:unconditional}).
 \end{enumerate}
 
 Together, these results establish a \textbf{Moral Commitment Spectrum}: the severity of environmental non-linearity determines the minimum commitment required for collective survival.
@@ -259,7 +259,7 @@ where $f_\theta$ is one of: (1) \textbf{Linear}: $w^\top s + b$ (5 params); (2) 
 
 \begin{table}[t]
 \centering
-\caption{Cooperation failure across evaluated architectures: independent REINFORCE agents converge to suboptimal equilibria across all three tested architectures (non-linear PGG, $N{=}20$, Byz=30\%, 5 seeds).}
+\caption{Cooperation failure across evaluated algorithms: all tested approaches converge to suboptimal equilibria in the non-linear PGG ($N{=}20$, Byz=30\%, $T$=50 rounds, $R_{\text{crit}}$=0.15, last 30 episodes, 5--10 seeds).}
 \label{tab:emergence}
 \begin{tabular}{lcccc}
 \toprule
@@ -269,29 +269,30 @@ Ind.\ REINFORCE Linear & 5 & 0.488 $\pm$ 0.007 & 54.0 & 24.1 \\
 Ind.\ REINFORCE MLP & 161 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
 Ind.\ REINFORCE MLP + Critic & 322 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
 \midrule
-\multicolumn{5}{c}{\textit{Standard MARL baselines (10 seeds)}} \\
+\multicolumn{5}{c}{\textit{MARL baseline implementations$^*$ (10 seeds)}} \\
 \midrule
-True IPPO~\citep{schulman2017proximal} & 8,450 & 0.433 $\pm$ 0.009 & 35.7 & 23.6 \\
-MAPPO~\citep{yu2022surprising} & 8,450$^\dagger$ & 0.367 $\pm$ 0.010 & 22.3 & 23.1 \\
-QMIX~\citep{rashid2018qmix} & 8,450$^\ddagger$ & 0.176 $\pm$ 0.011 & \textbf{11.3} & 21.5 \\
+IPPO-style~\citep{schulman2017proximal} & 8,450 & 0.433 $\pm$ 0.009 & 35.7 & 23.6 \\
+MAPPO-style~\citep{yu2022surprising} & 8,450$^\dagger$ & 0.367 $\pm$ 0.010 & 22.3 & 23.1 \\
+QMIX-style~\citep{rashid2018qmix} & 8,450$^\ddagger$ & 0.176 $\pm$ 0.011 & \textbf{11.3} & 21.5 \\
 \midrule
 Fixed $\lambda=0.0$ & --- & 0.000 & 0.0 & 20.0 \\
 Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \bottomrule
+\multicolumn{5}{l}{\small $^*$Minimal implementations capturing core algorithmic ideas; see Appendix~\ref{app:baselines}.} \\
 \multicolumn{5}{l}{\small $^\dagger$Plus shared critic (4,225 params). $^\ddagger$Plus mixing network.} \\
 \end{tabular}
 \end{table}
 
-\textbf{Result}: Cooperation failure is \textbf{consistent across all evaluated algorithms}---from vanilla REINFORCE to standard PPO (clipped surrogate~\citep{schulman2017proximal}), MAPPO with shared centralized critic~\citep{yu2022surprising}, and QMIX with monotonic value decomposition~\citep{rashid2018qmix} (Table~\ref{tab:emergence}).
+\textbf{Result}: Cooperation failure is \textbf{consistent across all evaluated algorithms} (Table~\ref{tab:emergence}).
 Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.49$ with 54\% survival, while MLP agents converge to $\lambda \approx 0.05$ (6\% survival).
-Standard MARL algorithms fare no better: True IPPO with clipped surrogate converges to $\lambda = 0.433 \pm 0.009$ (35.7\% survival), MAPPO with shared critic to $\lambda = 0.367 \pm 0.010$ (22.3\% survival), and QMIX to $\lambda = 0.176 \pm 0.011$ (11.3\% survival).
-Notably, more sophisticated algorithms achieve \emph{worse} survival: the shared critic in MAPPO and centralized Q in QMIX enable agents to \emph{more precisely} identify the free-riding incentive ($M/N = 0.08 < 1$), accelerating convergence to defection.
+Minimal implementations of MARL algorithms fare no better: IPPO-style with clipped surrogate converges to $\lambda = 0.433 \pm 0.009$ (35.7\% survival), MAPPO-style with shared critic to $\lambda = 0.367 \pm 0.010$ (22.3\%), and QMIX-style to $\lambda = 0.176 \pm 0.011$ (11.3\%).
+Notably, algorithms with richer information sharing achieve \emph{worse} survival in our implementation: the shared critic and centralized Q enable agents to \emph{more precisely} identify the free-riding incentive ($M/N = 0.08 < 1$).
 Critically, \emph{no evaluated algorithm achieves the cooperation level needed for reliable survival}: even the best-case (Ind.\ REINFORCE Linear, 54\%) is far below the oracle optimum of 100\%.
 This result holds at $N=100$ (Table~\ref{tab:scale}) and under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}).
 
 \noindent\textit{Clarification}: We note that the one-shot PGG Nash equilibrium is $\lambda=0$ (full defection, since $M/N = 0.08 < 1$).
-However, in our \emph{repeated game with survival dynamics}, $\lambda=0$ yields 0\% survival and welfare of only 20.0 (Table~\ref{tab:emergence}, Fixed $\lambda=0.0$), while $\lambda=0.5$ achieves 87.3\% survival and welfare 26.0.
-The $\lambda \approx 0.5$ fixed point arises because the policy gradient balances the immediate cost of commitment ($\partial r/\partial \lambda < 0$) against the survival benefit ($\partial p_{\text{surv}}/\partial \lambda > 0$) in the dynamic game---not from sigmoid initialization bias (see Appendix~\ref{app:nash_trap}).
+However, in our \emph{repeated game with survival dynamics}, $\lambda=0$ yields 0\% survival and welfare of only 20.0 (Table~\ref{tab:emergence}, Fixed $\lambda=0.0$), while $\lambda=1.0$ yields 100\% survival and welfare 32.0.
+The $\lambda \approx 0.5$ fixed point arises because the policy gradient balances the immediate cost of commitment ($\partial r/\partial \lambda < 0$, since $M/N < 1$) against the survival benefit ($\partial p_{\text{surv}}/\partial \lambda > 0$) in the dynamic game---not from sigmoid initialization bias (see Appendix~\ref{app:nash_trap}).
 
 \begin{table}[t]
 \centering
@@ -313,7 +314,7 @@ Unconditional (Byz=30\%) & 28.4 & 1.000 & 100.0 \\
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{fig_p2_training_curves.png}
-    \caption{RL agents remain trapped at $\lambda \approx 0.5$ throughout training (5 seeds, mean $\pm$ std). Left: clean; Right: 30\% Byzantine. Crisis $\lambda$ (red dashed) never deviates from mean. Green shading: survival rate.}
+    \caption{Selfish RL agents (REINFORCE Linear) converge to $\lambda \approx 0.5$ throughout training (5 seeds, mean $\pm$ std). Left: no adversaries; Right: 30\% Byzantine. Crisis $\lambda$ (red dashed) tracks the mean, indicating no crisis-differentiated behavior. Green shading: survival rate.}
     \label{fig:training_curves}
 \end{figure}
 
@@ -350,8 +351,8 @@ $\boldsymbol{\phi_1}$ & \textbf{W (Byz=0\%)} & \textbf{W (Byz=30\%)} & \textbf{A
 \end{tabular}
 \end{table}
 
-$\phi_1^* = 1.0$ is optimal across all conditions (Table~\ref{tab:phi1}).
-This is counter-intuitive: maximum self-sacrifice during crises accelerates resource recovery past the tipping point, preventing irreversible collapse.
+$\phi_1^* = 1.0$ performs best across all tested conditions (Table~\ref{tab:phi1}).
+This is counter-intuitive: maximum crisis-time commitment accelerates resource recovery past the tipping point, preventing irreversible collapse in the tested PGG environments.
 
 \paragraph{Structural Immunity.}
 Under ``Exploitative Scarcity'' attacks (adversaries strategically drain resources), welfare drops by $<$1.3\% at $\phi_1 = 1.0$---comparable to the $\phi_1 = 0.21$ case.
@@ -458,7 +459,7 @@ We emphasize that meta-ranking and opponent-shaping methods (LOLA, POLA, M-FOS, 
 Opponent-shaping methods learn to \emph{influence} other agents' learning trajectories via meta-gradients---a powerful but computationally expensive approach.
 Meta-ranking implements \emph{pre-specified internal moral structure} conditioned on publicly observable resource levels, requiring no opponent modeling.
 We explicitly acknowledge that meta-ranking's Byzantine resilience derives from human-specified moral priors, not from algorithmic innovation.
-\textbf{This asymmetry is not a weakness but our central thesis}: the Nash Trap (Section~\ref{sec:nash_trap}), KPG failure (Appendix~\ref{app:kpg}), and IA/SI collapse (Table~\ref{tab:baselines}) collectively demonstrate that moral commitment \emph{was not learned} through reward optimization \emph{across six algorithms spanning three MARL paradigms} (independent policy gradient, centralized-critic PPO, value decomposition)---strongly suggesting it \emph{must be engineered} as a hard architectural constraint.
+\textbf{This asymmetry is not a weakness but our central thesis}: the Nash Trap (Section~\ref{sec:nash_trap}), KPG failure (Appendix~\ref{app:kpg}), and IA/SI collapse (Table~\ref{tab:baselines}) collectively demonstrate that moral commitment \emph{was not learned} through reward optimization \emph{across six algorithms spanning three MARL paradigms} (independent policy gradient, centralized-critic PPO, value decomposition)---strongly suggesting it \emph{may need to be architecturally encoded} as a hard constraint in environments of this class.
 Table~\ref{tab:sota}'s comparison demonstrates that pre-specified moral structure achieves \emph{comparable} Byzantine resilience to sophisticated learning-based approaches, despite fundamentally different design paradigms.
 
 \subsection{Defending Against High Migration Rates}
@@ -502,14 +503,14 @@ This suggests a \emph{second-order} Moral Commitment Spectrum: not only does env
 
 We establish the \textbf{Moral Commitment Spectrum}: a systematic relationship between environmental severity and the minimum moral commitment required for multi-agent system survival.
 In linear environments, situational commitment---morality conditional on survival---achieves group-level evolutionary stability and matches utilitarian welfare.
-In non-linear environments with catastrophic tipping points, pure RL with independent policy gradient fails (Nash Trap: $\lambda \approx 0.5$, 5.3\% survival), and only unconditional commitment ($\phi_1^* = 1.0$) guarantees survival---an engineering necessity, not a philosophical preference.
+In non-linear environments with catastrophic tipping points, pure RL with independent policy gradient fails (Nash Trap: $\lambda \approx 0.5$, $\leq$54\% survival even for the best-case architecture), and only unconditional commitment ($\phi_1^* = 1.0$) reliably prevents collapse across all tested conditions.
 
-This finding carries a clear design principle: \textbf{autonomous multi-agent systems must incorporate moral commitment as a hard constraint, with the commitment level calibrated to the environment's recovery dynamics.}
-We emphasize that this is not an ad-hoc engineering hack but a \emph{principled design requirement} derived from three independent lines of evidence:
+This finding suggests a design principle for the tested environment class: \textbf{multi-agent systems operating near irreversible tipping points may need to incorporate moral commitment as a hard constraint, calibrated to the environment's recovery dynamics.}
+This is supported by three independent lines of evidence:
 (i)~the Nash Trap demonstrates that moral commitment cannot emerge from reward optimization alone (Section~\ref{sec:nash_trap}, confirmed across 5 independent validations including DNN ablation and alternative activation functions);
 (ii)~state-of-the-art opponent shaping (KPG with $K{=}0,1,2$) fails identically, incurring $1.8\times$ computational overhead without escaping the trap (Appendix~\ref{app:kpg});
 and (iii)~the same pattern reproduces in spatially-extended grid environments with local tipping points (Appendix~\ref{app:spatial}).
-The contribution is not the hard constraint itself---which is trivial to implement---but the rigorous, multi-environment demonstration of \emph{when} (non-linear dynamics), \emph{why} (gradient equilibrium in the dynamic survival game), and \emph{to what degree} ($\phi_1^* = 1.0$) such constraints become mandatory.
+The contribution is not the hard constraint itself---which is trivial to implement---but the systematic, multi-environment demonstration of \emph{when} (non-linear dynamics), \emph{why} (gradient equilibrium in the dynamic survival game), and \emph{to what degree} ($\phi_1^* = 1.0$) such constraints appear necessary in the tested PGG class.
 
 \section*{Broader Impact}\label{sec:broader_impact}
 
