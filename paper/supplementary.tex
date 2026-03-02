@@ -241,18 +241,14 @@ Fig & Phase & Title & Key Result \\
 \section{Reproducibility Statement}
 \label{app:repro}
 
-All experiments are reproduced via a single command:
+All core experiments from the main paper are reproduced via a single script:
 
 \begin{lstlisting}[language=bash]
-git clone https://anonymous.4open.science/r/EthicaAI
-cd EthicaAI
-pip install -r requirements.txt
-python reproduce.py            # Full pipeline (38 modules)
-python reproduce.py --phase P  # Phase P only
-python reproduce.py --quick    # Quick demo mode
+pip install numpy matplotlib  # Only dependencies
+python scripts/reproduce_quick.py  # ~2 min, CPU only
 \end{lstlisting}
 
-The \texttt{reproduce.py} script contains 38 analysis modules generating all 78 figures and associated JSON result files. Total runtime: approximately 15 minutes on a single GPU (RTX 3090) or 45 minutes CPU-only.
+The \texttt{reproduce\_quick.py} script runs 5 core experiments sequentially (Nash Trap verification, DNN ablation, commitment sweep, scale test $N{=}100$, evolutionary stability) and outputs results to \texttt{outputs/quick\_verify/}. Each experiment uses fixed random seeds for deterministic reproduction. Total runtime: approximately 2 minutes on any modern CPU (no GPU required).
 
 
 \section{Broader Impact}
