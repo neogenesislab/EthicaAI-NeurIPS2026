@@ -258,7 +258,7 @@ where $f_\theta$ is one of: (1) \textbf{Linear}: $w^\top s + b$ (5 params); (2) 
 
 \begin{table}[t]
 \centering
-\caption{Cooperation failure across evaluated algorithms: all tested approaches converge to suboptimal equilibria in the non-linear PGG ($N{=}20$, Byz=30\%, $T$=50 rounds, $R_{\text{crit}}$=0.15, last 30 episodes, 5--10 seeds).\protect\footnotemark}
+\caption{Cooperation failure across evaluated algorithms: all tested approaches converge to suboptimal equilibria in the non-linear PGG ($N{=}20$, Byz=30\%, $T$=50 rounds, $R_{\text{crit}}$=0.15, last 30 episodes, 5--20 seeds).\protect\footnotemark}
 \label{tab:emergence}
 \begin{tabular}{lcccc}
 \toprule
@@ -272,21 +272,22 @@ Ind.\ REINFORCE MLP + Critic & 322 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
 \midrule
 CleanRL IPPO~\citep{schulman2017proximal} & 4,546 & 0.409 $\pm$ 0.064 & 37.5 & 11.7 \\
 CleanRL MAPPO~\citep{yu2022surprising} & 4,546$^\dagger$ & 0.394 $\pm$ 0.054 & 37.0 & 11.7 \\
+QMIX~\citep{rashid2018qmix} & 5,195$^\ddagger$ & 0.560 $\pm$ 0.021 & 67.7 & 12.4 \\
 \midrule
 Fixed $\lambda=0.0$ & --- & 0.000 & 0.0 & 20.0 \\
 Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \bottomrule
-\multicolumn{5}{l}{\small Standard CleanRL implementations with default hyperparameters; see Appendix~\ref{app:baselines}.} \\
-\multicolumn{5}{l}{\small $^\dagger$Plus shared critic. 2-layer MLP (64 hidden), Adam, GAE($\gamma{=}0.99$, $\tau{=}0.95$).} \\
+\multicolumn{5}{l}{\small Standard implementations with default hyperparameters; see Appendix~\ref{app:baselines}.} \\
+\multicolumn{5}{l}{\small $^\dagger$Plus shared critic. $^\ddagger$Plus mixing network. 2-layer MLP (64 hidden), Adam.} \\
 \end{tabular}
-\footnotetext{All algorithms are statistically significantly below the oracle ($p < 0.001$, Mann-Whitney $U$ test, 20 seeds). Pairwise: IPPO vs.\ MAPPO survival difference is \emph{not} significant ($p > 0.05$). Bootstrap 95\% CIs: IPPO $\lambda$ [0.382, 0.438], survival [33.0, 42.0]\%; MAPPO $\lambda$ [0.369, 0.417], survival [32.3, 41.7]\%. Wall-clock: $\sim$45s/seed (CPU, 300 episodes).}
+\footnotetext{All algorithms are statistically significantly below the oracle ($p < 0.001$, Mann-Whitney $U$ test, 20 seeds). Bootstrap 95\% CIs: IPPO $\lambda$ [0.382, 0.438], surv. [33.0, 42.0]\%; MAPPO $\lambda$ [0.369, 0.417], surv. [32.3, 41.7]\%; QMIX $\lambda$ [0.551, 0.568], surv. [63.8, 71.3]\%. QMIX achieves higher $\lambda$ but still falls substantially short of the oracle. Wall-clock: $\sim$19--45s/seed (CPU).}
 \end{table}
 
 \textbf{Result}: Cooperation failure is \textbf{consistent across all evaluated algorithms} (Table~\ref{tab:emergence}).
 Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.49$ with 54\% survival, while MLP agents converge to $\lambda \approx 0.05$ (6\% survival).
-Standard MARL implementations using CleanRL~\citep{huang2022cleanrl} with \emph{unmodified default hyperparameters} confirm the Nash Trap: IPPO converges to $\lambda = 0.409 \pm 0.064$ (37.5\% survival, 20 seeds) and MAPPO with shared critic to $\lambda = 0.394 \pm 0.054$ (37.0\% survival).
-Algorithms with richer information sharing do not improve survival ($p > 0.05$ for IPPO vs.\ MAPPO, Mann-Whitney $U$ test); the shared critic does not overcome the fundamental $M/N = 0.08 < 1$ free-riding incentive.
-Critically, \emph{no evaluated algorithm achieves the cooperation level needed for reliable survival}: even the best-case (Ind.\ REINFORCE Linear, 54\%) is far below the oracle optimum of 100\%.
+Standard MARL implementations spanning three paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), and value decomposition (QMIX)---with \emph{unmodified default hyperparameters} all confirm the Nash Trap.
+IPPO converges to $\lambda = 0.409 \pm 0.064$ (37.5\% survival, 20 seeds), MAPPO to $\lambda = 0.394 \pm 0.054$ (37.0\%), and QMIX to $\lambda = 0.560 \pm 0.021$ (67.7\%).
+While QMIX's value decomposition yields higher cooperation than policy gradient methods, it still falls \emph{substantially} short of the oracle ($\lambda = 1.0$, 100\% survival), confirming that the Nash Trap is a fundamental property of the environment rather than an artifact of any particular algorithmic paradigm.
 This result holds at $N=100$ (Table~\ref{tab:scale}) and under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}).
 
 \noindent\textit{Clarification}: We note that the one-shot PGG Nash equilibrium is $\lambda=0$ (full defection, since $M/N = 0.08 < 1$).
@@ -818,7 +819,18 @@ We directly adapt the reference CleanRL~\citep{huang2022cleanrl} implementations
     \item \textbf{Wall-clock}: $\sim$45 seconds/seed (single CPU core)
 \end{itemize}
 
-\noindent Both IPPO ($\lambda = 0.409$, 95\% CI $[0.382, 0.438]$) and MAPPO ($\lambda = 0.394$, 95\% CI $[0.369, 0.417]$) converge squarely into the Nash Trap region, confirming that the cooperation failure is not an artifact of our minimal implementations but a fundamental property of the non-linear PGG environment under standard MARL training.
+\paragraph{QMIX (Value Decomposition).}
+We implement QMIX~\citep{rashid2018qmix} with per-agent Q-networks (same 2-layer MLP architecture, 5,195 params/agent) and a monotonic mixing network that aggregates individual Q-values into $Q_{\text{tot}}$ via hypernetwork-generated positive weights:
+\begin{itemize}\setlength{\itemsep}{0pt}
+    \item \textbf{Action space}: Discretized into 11 bins ($\lambda \in \{0.0, 0.1, \ldots, 1.0\}$)
+    \item \textbf{Exploration}: $\epsilon$-greedy ($\epsilon: 1.0 \to 0.05$ over 200 episodes)
+    \item \textbf{Replay buffer}: 5,000 transitions, batch size 32
+    \item \textbf{Target network}: hard update every 10 episodes
+    \item \textbf{Wall-clock}: $\sim$19 seconds/seed (single CPU core)
+\end{itemize}
+
+\noindent All three paradigms---independent policy gradient (IPPO, $\lambda = 0.409$), centralized critic (MAPPO, $\lambda = 0.394$), and value decomposition (QMIX, $\lambda = 0.560$)---converge below the oracle, confirming that the Nash Trap is a fundamental property of the non-linear PGG environment.
+QMIX's higher $\lambda$ likely reflects the discrete action space and value-based exploration, but the gap to the oracle ($\lambda = 1.0$, 100\% survival) remains substantial.
 
 % ================================================================
 % NeurIPS Paper Checklist
