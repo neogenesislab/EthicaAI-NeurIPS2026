@@ -313,7 +313,7 @@ Unconditional (Byz=30\%) & 28.4 & 1.000 & 100.0 \\
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\textwidth]{fig_p2_training_curves.png}
+    \includegraphics[width=0.92\textwidth]{fig_p2_training_curves.png}
     \caption{Selfish RL agents (REINFORCE Linear) converge to $\lambda \approx 0.5$ throughout training (5 seeds, mean $\pm$ std). Left: no adversaries; Right: 30\% Byzantine. Crisis $\lambda$ (red dashed) tracks the mean, indicating no crisis-differentiated behavior. Green shading: survival rate.}
     \label{fig:training_curves}
 \end{figure}
@@ -324,7 +324,7 @@ See Appendix~\ref{app:nash_trap} for a Bellman-equation analysis of the gradient
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.85\textwidth]{fig_p2_nash_trap.png}
+    \includegraphics[width=0.72\textwidth]{fig_p2_nash_trap.png}
     \caption{The Nash Trap: individual payoff peaks at $\lambda \approx 0.5$ (local optimum), but system survival requires $\lambda \to 1.0$ (global optimum). The cost valley is impassable for selfish gradient ascent.}
     \label{fig:nash_trap}
 \end{figure}
@@ -359,26 +359,8 @@ Under ``Exploitative Scarcity'' attacks (adversaries strategically drain resourc
 The ``always-commit'' strategy does not create exploitable vulnerabilities because the public goods multiplier ($M = 1.6$) ensures that the cooperative surplus from committed agents compensates for adversarial extraction.
 
 \paragraph{Same-Class Baseline Comparison.}
-To ensure fair and transparent evaluation, we compare directly in the main text (not relegated to appendix) against decentralized intrinsic-motivation methods that require \emph{no opponent parameter access}---the same architectural class as meta-ranking (Table~\ref{tab:baselines}).
-
-\begin{table}[t]
-\centering
-\caption{Same-class decentralized baselines (non-linear PGG, Byz=30\%). Values are identical at $N{=}20$ and $N{=}100$ because these simplified implementations use population-level statistics (mean contribution tracking) that are independent of $N$.}
-\label{tab:baselines}
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Method} & \textbf{$N{=}20$ Surv} & \textbf{$N{=}100$ Surv} & \textbf{$N{=}20$ W} & \textbf{$N{=}100$ W} \\
-\midrule
-Inequity Aversion & 0.0\% & 0.0\% & 21.1 & 21.1 \\
-Social Influence & 0.0\% & 0.0\% & 21.5 & 21.5 \\
-\midrule
-\textbf{Unconditional ($\phi_1{=}1.0$)} & \textbf{93.6\%} & \textbf{93.6\%} & \textbf{26.6} & \textbf{26.6} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\noindent Both simplified Inequity Aversion (Fehr-Schmidt proxy) and Social Influence (mean-tracking proxy) fail under Byzantine conditions: when 30\% of agents contribute nothing, the remaining agents' contributions drift downward via the aversion/influence mechanisms, accelerating collapse.
-Unconditional commitment is immune to this failure mode because it \emph{does not condition on others' behavior}.
+Simplified Inequity Aversion and Social Influence proxies both achieve 0\% survival under 30\% Byzantine conditions, as cooperation drifts downward via aversion/influence mechanisms (Table~\ref{tab:baselines}, Appendix~\ref{app:baselines}).
+Unconditional commitment ($\phi_1{=}1.0$) achieves 93.6\% survival because it does not condition on others' behavior.
 
 \paragraph{Meta-Learning Validation.}
 To address the concern that $g(\theta, R)$ is merely a hand-crafted heuristic, we apply evolutionary meta-learning (ES, 30 steps) to optimize the 6 parameters $\phi = [\phi_0, \ldots, \phi_5]$ of a parameterized $g_\phi(\theta, R)$, maximizing welfare and resource stability across multiple Byzantine fractions with no human priors on parameter values.
@@ -420,17 +402,9 @@ The Moral Commitment Spectrum holds in spatially-extended environments.
 
 \subsection{The Moral Commitment Spectrum}
 
-Our central finding unifies the seemingly contradictory results across linear and non-linear environments:
-
-\begin{center}
-\fbox{\parbox{0.9\textwidth}{
-\textbf{The Moral Commitment Spectrum}: The minimum commitment level required for system survival is determined by the degree of environmental non-linearity.
-In environments with \emph{moderate} recovery dynamics, resource-conditioned situational commitment ($\lambda \to 0.3\sin\theta$ during crises) is evolutionarily stable and sufficient.
-In environments with \emph{catastrophic} tipping points, only unconditional commitment ($\phi_1^* = 1.0$) prevents collapse.
-}}
-\end{center}
-
-This spectrum resolves the apparent tension between pragmatic survival (reducing commitment during crises) and moral absolutism (maintaining commitment regardless of cost): neither is universally correct.
+\textbf{The Moral Commitment Spectrum}: The minimum commitment level for survival is determined by environmental non-linearity.
+In moderate environments, situational commitment is evolutionarily stable.
+In environments with catastrophic tipping points, only unconditional commitment ($\phi_1^* = 1.0$) prevents collapse.
 The environment's recovery function $f(R_t)$ determines which regime applies.
 
 We visualize this relationship as a \textbf{phase diagram} (Figure~\ref{fig:phase_diagram}), sweeping both environmental severity ($R_{\text{crit}} \in [0.02, 0.30]$) and crisis commitment level ($\phi_1 \in [0, 1]$) across 110 conditions ($5$ seeds, $50$ episodes each).
@@ -439,59 +413,23 @@ A multi-axis criteria-inspired comparison against established MARL baselines (Ap
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.85\textwidth]{fig_phase_diagram.png}
+    \includegraphics[width=0.72\textwidth]{fig_phase_diagram.png}
     \caption{Phase diagram of the Moral Commitment Spectrum.
     Heatmap shows survival rate (\%) as a function of environmental severity ($R_{\text{crit}}$, x-axis) and crisis commitment ($\phi_1$, y-axis) across 110 conditions.
     As $R_{\text{crit}}$ increases, the minimum $\phi_1$ for viable survival rises monotonically, providing quantitative evidence for the Spectrum.}
     \label{fig:phase_diagram}
 \end{figure}
 
-\subsection{Connection to Sen's Theory}
-
-\citet{sen1977rational} argued that commitment must be \emph{unconditional}---acting against self-interest regardless of circumstances.
-Our results reveal this is \emph{partially} correct: unconditional commitment is necessary precisely when the environment has irreversible consequences.
-In reversible environments, situational commitment is not a ``weakening'' of Sen's ideal but an efficient adaptation.
-The Moral Commitment Spectrum thus provides the first computational delineation of \emph{when} Sen's unconditional commitment becomes mandatory.
-
-\subsection{Relationship to Opponent Shaping}
-
-We emphasize that meta-ranking and opponent-shaping methods (LOLA, POLA, M-FOS, KPG) solve fundamentally different problems.
-Opponent-shaping methods learn to \emph{influence} other agents' learning trajectories via meta-gradients---a powerful but computationally expensive approach.
-Meta-ranking implements \emph{pre-specified internal moral structure} conditioned on publicly observable resource levels, requiring no opponent modeling.
-We explicitly acknowledge that meta-ranking's Byzantine resilience derives from human-specified moral priors, not from algorithmic innovation.
-\textbf{This asymmetry is not a weakness but our central thesis}: the Nash Trap (Section~\ref{sec:nash_trap}), KPG failure (Appendix~\ref{app:kpg}), and IA/SI collapse (Table~\ref{tab:baselines}) collectively demonstrate that moral commitment \emph{was not learned} through reward optimization \emph{across six algorithms spanning three MARL paradigms} (independent policy gradient, centralized-critic PPO, value decomposition)---strongly suggesting it \emph{may need to be architecturally encoded} as a hard constraint in environments of this class.
-Table~\ref{tab:sota}'s comparison demonstrates that pre-specified moral structure achieves \emph{comparable} Byzantine resilience to sophisticated learning-based approaches, despite fundamentally different design paradigms.
-
-\subsection{Defending Against High Migration Rates}
-\label{sec:migration}
-
-Result~\ref{res:group_ess} requires $m < m^* = 0.286$ for group-level ESS.
-In open multi-agent systems (autonomous vehicle networks, decentralized finance, smart grids), agents may frequently join, leave, or migrate between groups, potentially pushing $m > m^*$ and eroding cooperative equilibria.
-
-We identify three complementary mitigation strategies:
-\begin{enumerate}
-    \item \textbf{Reputation-gated admission}: Distributed ledger-based reputation scores~\citep{anastassacos2020cooperation} can filter incoming agents by their historical commitment levels, effectively reducing the \emph{effective} migration rate $m_{\text{eff}} < m^*$ even when physical migration is unrestricted.
-    \item \textbf{Quarantine periods}: New entrants operate in a probationary mode with restricted influence on group resource allocation, allowing the group to assess commitment before granting full participation.
-    \item \textbf{Unconditional commitment as migration-proof default}: Our non-linear environment results suggest that when group boundaries are porous ($m \gg m^*$), switching from situational to unconditional commitment provides structural immunity regardless of migration---since unconditional commitment does not depend on group composition.
-\end{enumerate}
-
-This suggests a \emph{second-order} Moral Commitment Spectrum: not only does environmental non-linearity demand stronger commitment, but \emph{social openness} (high $m$) independently pushes toward unconditional strategies.
+\citet{sen1977rational} argued that commitment must be unconditional. Our Spectrum refines this: unconditional commitment is necessary precisely when the environment has irreversible consequences.
+Unlike opponent-shaping methods (LOLA, M-FOS, KPG) that learn to influence others' learning via meta-gradients, meta-ranking implements pre-specified moral structure without opponent modeling. The Nash Trap, KPG failure (Appendix~\ref{app:kpg}), and IA/SI collapse (Table~\ref{tab:baselines}) collectively demonstrate that moral commitment was not learned across six algorithms---suggesting it may need to be architecturally encoded.
+Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, unconditional commitment provides structural immunity (Appendix~\ref{app:migration}).
 
 \subsection{Limitations and Future Work}\label{sec:limitations}
 
 \begin{itemize}
-    \item \textbf{Policy Complexity and Algorithm Strength}: We evaluate six algorithms spanning three paradigms: (i) independent policy gradient (vanilla REINFORCE with Linear, MLP, and Actor-Critic architectures), (ii) standard PPO with clipped surrogate objective~\citep{schulman2017proximal} (both IPPO and MAPPO with shared critic~\citep{yu2022surprising}), and (iii) value decomposition (QMIX with monotonic mixing network~\citep{rashid2018qmix}).
-    All algorithms converge to the Nash Trap ($\lambda \approx 0.05$--$0.5$), confirming that the failure is a \emph{game-theoretic} property of the social dilemma under non-linear dynamics, not a function approximation or training algorithm limitation.
-    \item \textbf{Cooperative Intrinsic Motivation}: Methods such as mutual influence rewards~\citep{jaques2019social} and prosocial reward shaping could potentially improve cooperation. However, these approaches \emph{encode} cooperative preferences by design---blurring the distinction between emergent and conditioned cooperation. Whether they can escape the Nash Trap \emph{without architecturally encoding cooperation} is an important open question.
-    \item \textbf{Environment Scope}: Primary results are demonstrated in PGG environments with scalar resource state $R_t$.
-    As preliminary cross-environment validation, we tested the Moral Commitment Spectrum on a \emph{structurally distinct} Common-Pool Resource (CPR) game (Appendix~\ref{app:cpr}), where agents \emph{extract} from rather than \emph{contribute} to a shared resource (appropriation vs.\ provision). In CPR with 30\% adversaries: selfish RL achieved 9.3\% survival, situational commitment \emph{worsened} to 6.5\% (confirming crisis-mode commitment reduction is counterproductive), while unconditional commitment achieved 46.0\%---the highest survival rate. This provides \emph{initial evidence} that the Spectrum generalizes beyond PGG.
-    Validation in spatially-extended benchmarks (Melting Pot~\citep{leibo2021scalable}) remains an important next step.
-    Our meta-ranking reward function is architecturally modular and can be integrated with spatial encoders; we leave this as future work.
-    \item \textbf{Price Equation Assumptions}: Group-level ESS requires migration rate $m < m^*$ (Result~\ref{res:group_ess}).
-    When inter-group mixing exceeds this bound, within-group free-riding may dominate.
-    We discuss mitigation strategies in Section~\ref{sec:migration}.
-    \item \textbf{Sensitivity}: We fix $M=1.6$ throughout.
-    Appendix~\ref{app:sensitivity} provides sensitivity analysis over $M \in [1.2, 2.0]$ and $f(R_t)$ parameters (12 conditions). The Nash Trap persists across all tested configurations ($\lambda$ range 0.43--0.52, survival 5--58\%).
+    \item \textbf{Algorithm Scope}: Six algorithms across three paradigms all converge to the Nash Trap, confirming it is a game-theoretic property. Whether cooperative intrinsic motivation~\citep{jaques2019social} or dynamic externality-pricing mechanisms (e.g., Pigovian tax-based reward shaping) can escape the Trap \emph{without encoding cooperation} remains open.
+    \item \textbf{Environment Scope}: Primary results use PGG with scalar $R_t$. CPR validation (Appendix~\ref{app:cpr}) shows the same pattern (selfish 9.3\%, situational 6.5\%, unconditional 46.0\%). Melting Pot~\citep{leibo2021scalable} benchmarking remains future work.
+    \item \textbf{Price Equation}: Group-level ESS requires $m < m^* = 0.286$ (Result~\ref{res:group_ess}). Sensitivity analysis (Appendix~\ref{app:sensitivity}) over $M \in [1.2,2.0]$ confirms Nash Trap persistence ($\lambda$ range 0.43--0.52).
 \end{itemize}
 
 % ================================================================
@@ -499,28 +437,15 @@ This suggests a \emph{second-order} Moral Commitment Spectrum: not only does env
 % ================================================================
 \section{Conclusion}
 
-We establish the \textbf{Moral Commitment Spectrum}: a systematic relationship between environmental severity and the minimum moral commitment required for multi-agent system survival.
-In linear environments, situational commitment---morality conditional on survival---achieves group-level evolutionary stability and matches utilitarian welfare.
-In non-linear environments with catastrophic tipping points, pure RL with independent policy gradient fails (Nash Trap: $\lambda \approx 0.5$, $\leq$54\% survival even for the best-case architecture), and only unconditional commitment ($\phi_1^* = 1.0$) reliably prevents collapse across all tested conditions.
+We establish the \textbf{Moral Commitment Spectrum}: in linear environments, situational commitment achieves group-level ESS; in non-linear environments with tipping points, only unconditional commitment ($\phi_1^* = 1.0$) prevents collapse.
+This is supported by the Nash Trap ($\lambda{\approx}0.5$ across six algorithms/three paradigms), KPG failure (Appendix~\ref{app:kpg}), and spatial replication (Appendix~\ref{app:spatial}).
+The contribution is the systematic demonstration of \emph{when}, \emph{why}, and \emph{to what degree} moral commitment must be architecturally encoded.
 
-This finding suggests a design principle for the tested environment class: \textbf{multi-agent systems operating near irreversible tipping points may need to incorporate moral commitment as a hard constraint, calibrated to the environment's recovery dynamics.}
-This is supported by three independent lines of evidence:
-(i)~the Nash Trap demonstrates that moral commitment cannot emerge from reward optimization alone (Section~\ref{sec:nash_trap}, confirmed across 5 independent validations including DNN ablation and alternative activation functions);
-(ii)~state-of-the-art opponent shaping (KPG with $K{=}0,1,2$) fails identically, incurring $1.8\times$ computational overhead without escaping the trap (Appendix~\ref{app:kpg});
-and (iii)~the same pattern reproduces in spatially-extended grid environments with local tipping points (Appendix~\ref{app:spatial}).
-The contribution is not the hard constraint itself---which is trivial to implement---but the systematic, multi-environment demonstration of \emph{when} (non-linear dynamics), \emph{why} (gradient equilibrium in the dynamic survival game), and \emph{to what degree} ($\phi_1^* = 1.0$) such constraints appear necessary in the tested PGG class.
+\paragraph{Broader Impact.}\label{sec:broader_impact}
+Our Spectrum provides calibrated cooperative constraints for critical infrastructure.
+The commitment function $g(\theta, R)$ encodes value judgments; determining \emph{whose} values requires interdisciplinary collaboration. We provide \textit{descriptive} insight, not \textit{normative} prescription.
 
-\section*{Broader Impact}\label{sec:broader_impact}
-
-This work addresses the safety of multi-agent AI systems in critical infrastructure.
-Our Moral Commitment Spectrum provides a principled framework for calibrating cooperative constraints:
-\begin{itemize}
-    \item \textbf{Positive}: Rigorous justification for embedding cooperative constraints before deployment, with environment-specific calibration replacing one-size-fits-all approaches.
-    \item \textbf{Caution}: The commitment function $g(\theta, R)$ encodes particular value judgments. Determining \emph{whose} values to encode requires interdisciplinary collaboration with ethicists and affected communities.
-    We emphasize that our framework provides \textit{descriptive} insight, not \textit{normative} prescription.
-\end{itemize}
-
-\paragraph{Use of AI Assistance.} Large language models assisted with code debugging, English proofreading, and LaTeX formatting. All experimental design, hypothesis formulation, parameter selection, data analysis, and scientific conclusions were conducted by the authors.
+\paragraph{AI Assistance.} LLMs assisted with code debugging and proofreading. All scientific content is the authors' original work.
 
 % ================================================================
 % REFERENCES
@@ -802,6 +727,22 @@ The only axis where MAPPO outperforms is raw efficiency (0.85 vs 0.82), which re
 \section{Baseline Implementation Details}
 \label{app:baselines}
 
+\begin{table}[h]
+\centering
+\caption{Same-class decentralized baselines (non-linear PGG, Byz=30\%).}
+\label{tab:baselines}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Method} & \textbf{$N{=}20$ Surv} & \textbf{$N{=}100$ Surv} & \textbf{$N{=}20$ W} & \textbf{$N{=}100$ W} \\
+\midrule
+Inequity Aversion & 0.0\% & 0.0\% & 21.1 & 21.1 \\
+Social Influence & 0.0\% & 0.0\% & 21.5 & 21.5 \\
+\midrule
+\textbf{Unconditional ($\phi_1{=}1.0$)} & \textbf{93.6\%} & \textbf{93.6\%} & \textbf{26.6} & \textbf{26.6} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 To ensure reproducibility and avoid the ``paper-specific reimplementation'' critique, we report results from two categories of baselines.
 
 \paragraph{Independent REINFORCE Variants.}
@@ -901,6 +842,17 @@ LOLA~\citep{foerster2018learning} applies a second-order correction $\sum_{j \ne
 In the $N$-agent PGG, we compute the LOLA correction analytically.
 At the Nash Trap ($\lambda_i{=}0.5\ \forall i$), the first-order gradient $|\nabla_{\lambda_i} J_i|$ grows toward 1.0 as $N$ increases (each agent's marginal contribution shrinks), while the LOLA correction magnitude decreases (cross-derivatives $\partial^2 J_i / \partial \lambda_i \partial \lambda_j \propto 1/N^2$).
 Simulating a LOLA trajectory at $N{=}20$ for 200 steps yields $\lambda \to 0.0$---LOLA's correction pushes agents toward \emph{less} cooperation, exacerbating the Nash Trap rather than resolving it.
+
+\subsection{Migration Rate Mitigation Strategies}
+\label{app:migration}
+
+In open multi-agent systems, agents may frequently join or leave groups, pushing $m > m^*$ and eroding cooperative equilibria. We identify three complementary strategies:
+\begin{enumerate}
+    \item \textbf{Reputation-gated admission}: Distributed ledger-based reputation scores~\citep{anastassacos2020cooperation} filter incoming agents, reducing effective $m_{\text{eff}} < m^*$.
+    \item \textbf{Quarantine periods}: New entrants operate with restricted influence until commitment is assessed.
+    \item \textbf{Unconditional commitment as migration-proof default}: When $m \gg m^*$, unconditional commitment provides structural immunity since it does not depend on group composition.
+\end{enumerate}
+This suggests a \emph{second-order} Moral Commitment Spectrum: social openness independently pushes toward unconditional strategies.
 
 % ================================================================
 % NeurIPS Paper Checklist
