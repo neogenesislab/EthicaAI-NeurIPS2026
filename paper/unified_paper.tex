@@ -260,7 +260,7 @@ where $f_\theta$ is one of: (1) \textbf{Linear}: $w^\top s + b$ (5 params); (2) 
 \centering
 \caption{Cooperation failure across evaluated algorithms: all tested approaches converge to suboptimal equilibria in the non-linear PGG ($N{=}20$, Byz=30\%, $T$=50 rounds, $R_{\text{crit}}$=0.15, last 30 episodes, 5--20 seeds).\protect\footnotemark}
 \label{tab:emergence}
-\begin{tabular}{lcccc}
+\resizebox{\textwidth}{!}{\begin{tabular}{lcccc}
 \toprule
 \textbf{Method} & \textbf{Params/agent} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Survival \%} & \textbf{Welfare} \\
 \midrule
@@ -279,8 +279,8 @@ Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \bottomrule
 \multicolumn{5}{l}{\small Standard implementations with default hyperparameters; see Appendix~\ref{app:baselines}.} \\
 \multicolumn{5}{l}{\small $^\dagger$Plus shared critic. $^\ddagger$Plus mixing network. 2-layer MLP (64 hidden), Adam.} \\
-\end{tabular}
-\footnotetext{All algorithms are statistically significantly below the oracle ($p < 0.001$, Mann-Whitney $U$ test, 20 seeds). Bootstrap 95\% CIs: IPPO $\lambda$ [0.382, 0.438], surv. [33.0, 42.0]\%; MAPPO $\lambda$ [0.369, 0.417], surv. [32.3, 41.7]\%; QMIX $\lambda$ [0.551, 0.568], surv. [63.8, 71.3]\%. QMIX achieves higher $\lambda$ but still falls substantially short of the oracle. Wall-clock: $\sim$19--45s/seed (CPU).}
+\end{tabular}}
+\footnotetext{All algorithms significantly below oracle ($p < 0.001$, Mann-Whitney $U$, 20 seeds). 95\% CIs: IPPO $\lambda$ [0.382, 0.438]; MAPPO $\lambda$ [0.369, 0.417]; QMIX $\lambda$ [0.551, 0.568]. Wall-clock: 19--45s/seed (CPU).}
 \end{table}
 
 \textbf{Result}: Cooperation failure is \textbf{consistent across all evaluated algorithms} (Table~\ref{tab:emergence}).
@@ -808,7 +808,7 @@ To ensure reproducibility and avoid the ``paper-specific reimplementation'' crit
 These are minimal single-agent policy gradient implementations (1-layer linear / 2-layer MLP) trained independently per agent with no parameter sharing or communication. Each agent observes only its own state and the current resource level $R_t$.
 
 \paragraph{Standard CleanRL Implementations (IPPO/MAPPO).}
-We directly adapt the reference CleanRL~\citep{huang2022cleanrl} implementations---the most widely-cited single-file MARL codebase---with \emph{zero hyperparameter tuning}:
+We adapt CleanRL~\citep{huang2022cleanrl} reference implementations with \emph{zero hyperparameter tuning}:
 \begin{itemize}\setlength{\itemsep}{0pt}
     \item \textbf{Architecture}: 2-layer MLP (64 hidden units, Tanh activation), 4,546 params/agent
     \item \textbf{Optimizer}: Adam (lr = $2.5 \times 10^{-4}$)
@@ -820,7 +820,7 @@ We directly adapt the reference CleanRL~\citep{huang2022cleanrl} implementations
 \end{itemize}
 
 \paragraph{QMIX (Value Decomposition).}
-We implement QMIX~\citep{rashid2018qmix} with per-agent Q-networks (same 2-layer MLP architecture, 5,195 params/agent) and a monotonic mixing network that aggregates individual Q-values into $Q_{\text{tot}}$ via hypernetwork-generated positive weights:
+We implement QMIX~\citep{rashid2018qmix} with per-agent Q-networks (same 2-layer MLP, 5,195 params/agent) and a monotonic mixing network:
 \begin{itemize}\setlength{\itemsep}{0pt}
     \item \textbf{Action space}: Discretized into 11 bins ($\lambda \in \{0.0, 0.1, \ldots, 1.0\}$)
     \item \textbf{Exploration}: $\epsilon$-greedy ($\epsilon: 1.0 \to 0.05$ over 200 episodes)
@@ -829,8 +829,8 @@ We implement QMIX~\citep{rashid2018qmix} with per-agent Q-networks (same 2-layer
     \item \textbf{Wall-clock}: $\sim$19 seconds/seed (single CPU core)
 \end{itemize}
 
-\noindent All three paradigms---independent policy gradient (IPPO, $\lambda = 0.409$), centralized critic (MAPPO, $\lambda = 0.394$), and value decomposition (QMIX, $\lambda = 0.560$)---converge below the oracle, confirming that the Nash Trap is a fundamental property of the non-linear PGG environment.
-QMIX's higher $\lambda$ likely reflects the discrete action space and value-based exploration, but the gap to the oracle ($\lambda = 1.0$, 100\% survival) remains substantial.
+\noindent All three paradigms---independent PG (IPPO, $\lambda{=}0.409$), centralized critic (MAPPO, $\lambda{=}0.394$), and value decomposition (QMIX, $\lambda{=}0.560$)---converge below the oracle.
+QMIX's higher $\lambda$ likely reflects the discrete action space and value-based exploration, but the gap to the oracle ($\lambda{=}1.0$, 100\% survival) remains substantial.
 
 % ================================================================
 % NeurIPS Paper Checklist
