@@ -268,25 +268,24 @@ Ind.\ REINFORCE Linear & 5 & 0.488 $\pm$ 0.007 & 54.0 & 24.1 \\
 Ind.\ REINFORCE MLP & 161 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
 Ind.\ REINFORCE MLP + Critic & 322 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
 \midrule
-\multicolumn{5}{c}{\textit{MARL baseline implementations$^*$ (10 seeds)}} \\
+\multicolumn{5}{c}{\textit{Standard MARL implementations (CleanRL, 20 seeds)}} \\
 \midrule
-IPPO-style~\citep{schulman2017proximal} & 8,450 & 0.433 $\pm$ 0.009 & 35.7 & 23.6 \\
-MAPPO-style~\citep{yu2022surprising} & 8,450$^\dagger$ & 0.367 $\pm$ 0.010 & 22.3 & 23.1 \\
-QMIX-style~\citep{rashid2018qmix} & 8,450$^\ddagger$ & 0.176 $\pm$ 0.011 & \textbf{11.3} & 21.5 \\
+CleanRL IPPO~\citep{schulman2017proximal} & 4,546 & 0.409 $\pm$ 0.064 & 37.5 & 11.7 \\
+CleanRL MAPPO~\citep{yu2022surprising} & 4,546$^\dagger$ & 0.394 $\pm$ 0.054 & 37.0 & 11.7 \\
 \midrule
 Fixed $\lambda=0.0$ & --- & 0.000 & 0.0 & 20.0 \\
 Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \bottomrule
-\multicolumn{5}{l}{\small $^*$Minimal implementations capturing core algorithmic ideas; see Appendix~\ref{app:baselines}.} \\
-\multicolumn{5}{l}{\small $^\dagger$Plus shared critic (4,225 params). $^\ddagger$Plus mixing network.} \\
+\multicolumn{5}{l}{\small Standard CleanRL implementations with default hyperparameters; see Appendix~\ref{app:baselines}.} \\
+\multicolumn{5}{l}{\small $^\dagger$Plus shared critic. 2-layer MLP (64 hidden), Adam, GAE($\gamma{=}0.99$, $\tau{=}0.95$).} \\
 \end{tabular}
-\footnotetext{All algorithms are statistically significantly below the oracle ($p < 0.001$, Mann-Whitney $U$ test, 20 seeds). Pairwise differences: IPPO vs.\ MAPPO survival difference is \emph{not} significant ($p=1.00$); REINFORCE Linear vs.\ IPPO $\lambda$ difference is significant ($p < 0.001$, Cohen's $d = 1.72$). Bootstrap 95\% CIs for survival: REINFORCE Linear [7.2, 11.2]\%, MLP [6.3, 10.5]\%, IPPO [6.3, 10.7]\%, MAPPO [6.3, 10.7]\%.}
+\footnotetext{All algorithms are statistically significantly below the oracle ($p < 0.001$, Mann-Whitney $U$ test, 20 seeds). Pairwise: IPPO vs.\ MAPPO survival difference is \emph{not} significant ($p > 0.05$). Bootstrap 95\% CIs: IPPO $\lambda$ [0.382, 0.438], survival [33.0, 42.0]\%; MAPPO $\lambda$ [0.369, 0.417], survival [32.3, 41.7]\%. Wall-clock: $\sim$45s/seed (CPU, 300 episodes).}
 \end{table}
 
 \textbf{Result}: Cooperation failure is \textbf{consistent across all evaluated algorithms} (Table~\ref{tab:emergence}).
 Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.49$ with 54\% survival, while MLP agents converge to $\lambda \approx 0.05$ (6\% survival).
-Minimal implementations of MARL algorithms fare no better: IPPO-style with clipped surrogate converges to $\lambda = 0.433 \pm 0.009$ (35.7\% survival), MAPPO-style with shared critic to $\lambda = 0.367 \pm 0.010$ (22.3\%), and QMIX-style to $\lambda = 0.176 \pm 0.011$ (11.3\%).
-In our implementation, algorithms with richer information sharing do not improve survival ($p > 0.05$ for IPPO vs.\ MAPPO survival difference, Mann-Whitney $U$ test); the shared critic and centralized Q do not overcome the fundamental $M/N = 0.08 < 1$ free-riding incentive.
+Standard MARL implementations using CleanRL~\citep{huang2022cleanrl} with \emph{unmodified default hyperparameters} confirm the Nash Trap: IPPO converges to $\lambda = 0.409 \pm 0.064$ (37.5\% survival, 20 seeds) and MAPPO with shared critic to $\lambda = 0.394 \pm 0.054$ (37.0\% survival).
+Algorithms with richer information sharing do not improve survival ($p > 0.05$ for IPPO vs.\ MAPPO, Mann-Whitney $U$ test); the shared critic does not overcome the fundamental $M/N = 0.08 < 1$ free-riding incentive.
 Critically, \emph{no evaluated algorithm achieves the cooperation level needed for reliable survival}: even the best-case (Ind.\ REINFORCE Linear, 54\%) is far below the oracle optimum of 100\%.
 This result holds at $N=100$ (Table~\ref{tab:scale}) and under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}).
 
@@ -797,6 +796,31 @@ Inequity Averse (McKee et al.) & 0.78 & 0.72 & 0.82 & 0.50 & 0.65 \\
 The only axis where MAPPO outperforms is raw efficiency (0.85 vs 0.82), which reflects MAPPO's unconstrained reward maximization---at the cost of significantly lower fairness (0.55) and cooperation (0.72).
 
 % ================================================================
+% Appendix I: Baseline Implementation Details
+% ================================================================
+\section{Baseline Implementation Details}
+\label{app:baselines}
+
+To ensure reproducibility and avoid the ``paper-specific reimplementation'' critique, we report results from two categories of baselines.
+
+\paragraph{Independent REINFORCE Variants.}
+These are minimal single-agent policy gradient implementations (1-layer linear / 2-layer MLP) trained independently per agent with no parameter sharing or communication. Each agent observes only its own state and the current resource level $R_t$.
+
+\paragraph{Standard CleanRL Implementations (IPPO/MAPPO).}
+We directly adapt the reference CleanRL~\citep{huang2022cleanrl} implementations---the most widely-cited single-file MARL codebase---with \emph{zero hyperparameter tuning}:
+\begin{itemize}\setlength{\itemsep}{0pt}
+    \item \textbf{Architecture}: 2-layer MLP (64 hidden units, Tanh activation), 4,546 params/agent
+    \item \textbf{Optimizer}: Adam (lr = $2.5 \times 10^{-4}$)
+    \item \textbf{PPO}: clip ratio $\epsilon = 0.2$, entropy coefficient = 0.01, 4 epochs, 4 minibatches
+    \item \textbf{GAE}: $\gamma = 0.99$, $\tau = 0.95$
+    \item \textbf{MAPPO variant}: adds a shared centralized critic (same architecture) that observes all agents' states
+    \item \textbf{Training}: 300 episodes, 50 rounds/episode, 20 seeds
+    \item \textbf{Wall-clock}: $\sim$45 seconds/seed (single CPU core)
+\end{itemize}
+
+\noindent Both IPPO ($\lambda = 0.409$, 95\% CI $[0.382, 0.438]$) and MAPPO ($\lambda = 0.394$, 95\% CI $[0.369, 0.417]$) converge squarely into the Nash Trap region, confirming that the cooperation failure is not an artifact of our minimal implementations but a fundamental property of the non-linear PGG environment under standard MARL training.
+
+% ================================================================
 % NeurIPS Paper Checklist
 % ================================================================
 \section*{Paper Checklist}
@@ -809,7 +833,7 @@ The only axis where MAPPO outperforms is raw efficiency (0.85 vs 0.82), which re
   \begin{enumerate}
     \item All hyperparameters listed in Table~\ref{tab:hyperparams} (Appendix~\ref{app:hyperparams}). [Yes]
     \item Error bars: mean $\pm$ std across seeds reported where shown. [Yes]
-    \item Seeds: 5--10 per experiment, specified per table caption. [Yes]
+    \item Seeds: 5--20 per experiment, specified per table caption. [Yes]
   \end{enumerate}
 \item \textbf{Code and Data}: Anonymized code repository provided. All experiments are reproducible via \texttt{reproduce\_quick.py}. [Yes]
 \item \textbf{Broader Impact}: Discussed in Section~\ref{sec:broader_impact}. No direct negative societal impacts anticipated from this foundational research. [Yes]
