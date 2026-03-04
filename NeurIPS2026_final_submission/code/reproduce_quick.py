@@ -73,6 +73,9 @@ def main():
     parser.add_argument("--fast", action="store_true", help="Quick smoke test (2 seeds)")
     args = parser.parse_args()
 
+    if args.fast:
+        os.environ["ETHICAAI_FAST"] = "1"
+
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     print("=" * 65)

@@ -296,12 +296,12 @@ Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \footnotetext{All experiments use $E{=}20$ (endowment). All algorithms significantly below oracle ($p < 0.001$, Mann-Whitney $U$, 20 seeds). 95\% CIs: IPPO $\lambda$ [0.374, 0.429]; MAPPO $\lambda$ [0.370, 0.414]; QMIX $\lambda$ [0.575, 0.593]. Wall-clock: 18--45s/seed (CPU).}
 \end{table}
 
-\textbf{Result}: Cooperation failure is \textbf{consistent across all six evaluated algorithms in our tested environments} (Table~\ref{tab:emergence}).
+\textbf{Result}: The Nash Trap presents a significant barrier across the evaluated algorithms, though to varying degrees (Table~\ref{tab:emergence}).
 Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.49$ with 54\% survival, while MLP agents converge to $\lambda \approx 0.05$ (6\% survival).
-Standard MARL implementations (CleanRL-style) spanning three paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), and value decomposition (QMIX)---with \emph{unmodified default hyperparameters} all confirm the Nash Trap.
+Standard MARL implementations (CleanRL-style) spanning three paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), and value decomposition (QMIX)---all converge to suboptimal equilibria.
 Crucially, this is not a failure of learning per se: the algorithms \emph{successfully} converge to a local optimum of their reward landscape. The Nash Trap is a \textbf{structural outcome} of individually-rational optimization in a game where the collective benefit of cooperation is not captured by individual payoffs.
-IPPO converges to $\lambda = 0.401 \pm 0.063$ (37.3\% survival, 20 seeds), MAPPO to $\lambda = 0.392 \pm 0.050$ (36.2\%), and QMIX to $\lambda = 0.584 \pm 0.021$ (71.8\%).
-While QMIX's value decomposition yields higher cooperation than policy gradient methods, it still falls \emph{substantially} short of the oracle ($\lambda = 1.0$, 100\% survival), suggesting that the Nash Trap is a robust property of the tested non-linear PGG environment rather than an artifact of any particular algorithm.
+IPPO converges to $\lambda = 0.401 \pm 0.063$ (37.3\% survival, 20 seeds), and MAPPO to $\lambda = 0.392 \pm 0.050$ (36.2\%).
+Notably, QMIX's value decomposition yields significantly higher cooperation ($\lambda = 0.584 \pm 0.021$, 71.8\% survival). This demonstrates that global value factorization mitigates the cooperation failure compared to independent policy gradients. However, even QMIX falls \emph{substantially} short of the oracle ($\lambda = 1.0$, 100\% survival) and unconditional priors, suggesting that the Nash Trap remains a robust structural barrier in the tested non-linear PGG environment.
 This result holds at $N=100$ (Table~\ref{tab:scale}), under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}), across a hyperparameter sweep (20 combinations $\times$ 10 seeds = 200 runs, Appendix~\ref{app:hp_sweep}), and under partial observability and adaptive adversaries (Appendix~\ref{app:robustness}).
 
 \noindent\textit{Clarification}: We note that the one-shot PGG Nash equilibrium is $\lambda=0$ (full defection, since $M/N = 0.08 < 1$).
@@ -357,10 +357,10 @@ We optimize the ethical prior $g_\phi(\theta, R)$ by sweeping the crisis commitm
 \toprule
 $\boldsymbol{\phi_1}$ & \textbf{W (Byz=0\%)} & \textbf{W (Byz=30\%)} & \textbf{Alive (0\%)} & \textbf{Alive (30\%)} \\
 \midrule
-0.00 & 27.3 $\pm$ 0.2 & 22.6 $\pm$ 0.4 & 59 $\pm$ 12\% & 22 $\pm$ 6\% \\
-0.21 & 29.1 $\pm$ 0.1 & 24.0 $\pm$ 0.2 & 71 $\pm$ 9\% & 34 $\pm$ 9\% \\
-0.50 & 30.8 $\pm$ 0.1 & 25.7 $\pm$ 0.2 & 83 $\pm$ 10\% & 50 $\pm$ 10\% \\
-\textbf{1.00} & \textbf{32.0 $\pm$ 0.0} & \textbf{28.2 $\pm$ 0.1} & \textbf{100 $\pm$ 0\%} & \textbf{91 $\pm$ 8\%} \\
+0.00 & 25.7 $\pm$ 0.6 & 24.7 $\pm$ 0.3 & 29 $\pm$ 10\% & 19 $\pm$ 6\% \\
+0.21 & 25.8 $\pm$ 0.4 & 24.8 $\pm$ 0.3 & 34 $\pm$ 10\% & 22 $\pm$ 7\% \\
+0.50 & 25.6 $\pm$ 0.2 & 25.2 $\pm$ 0.2 & 82 $\pm$ 9\% & 42 $\pm$ 9\% \\
+\textbf{1.00} & \textbf{30.8 $\pm$ 0.0} & \textbf{27.5 $\pm$ 0.0} & \textbf{100 $\pm$ 0\%} & \textbf{96 $\pm$ 4\%} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -566,12 +566,12 @@ Table~\ref{tab:partial_obs} shows that the Nash Trap persists across all partial
 \toprule
 \textbf{Condition} & \textbf{Selfish RL (IPPO)} & \textbf{Situational} & \textbf{Unconditional} \\
 \midrule
-Full Obs (Baseline) & X\% & X\% & X\% \\
-Noisy ($\sigma=0.10$) & X\% & X\% & X\% \\
-Noisy ($\sigma=0.20$) & X\% & X\% & X\% \\
-Delayed ($k=2$) & X\% & X\% & X\% \\
-Delayed ($k=5$) & X\% & X\% & X\% \\
-Local-only & X\% & X\% & X\% \\
+Full Obs (Baseline) & X\% & 82\% & 85\% \\
+Noisy ($\sigma=0.10$) & 40\% & 79\% & 86\% \\
+Noisy ($\sigma=0.20$) & 37\% & 75\% & 85\% \\
+Delayed ($k=2$) & 43\% & 85\% & 86\% \\
+Delayed ($k=5$) & 43\% & 86\% & 87\% \\
+Local-only & 33\% & 88\% & 88\% \\
 \bottomrule
 \end{tabular}
 \end{table}

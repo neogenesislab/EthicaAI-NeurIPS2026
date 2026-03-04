@@ -11,6 +11,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import json
 import os
+from pathlib import Path
 
 # ─── 환경 파라미터 (논문 Table 4 기반) ───
 N_AGENTS = 20
@@ -175,13 +176,17 @@ if __name__ == "__main__":
 
     results = run_sweep()
 
-    os.makedirs("outputs/phase_diagram", exist_ok=True)
-    json_path = "outputs/phase_diagram/results.json"
+    # Output paths
+    base_dir = Path(__file__).resolve().parent.parent
+    out_dir = base_dir / "outputs" / "phase_diagram"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    
+    json_path = out_dir / "results.json"
     with open(json_path, 'w') as f:
         json.dump(results, f, indent=2)
     print(f"[Phase] Results: {json_path}")
 
-    fig_path = "paper/fig_phase_diagram.png"
+    fig_path = base_dir.parent / "paper" / "fig_phase_diagram.png"
     plot_phase_diagram(results, fig_path)
 
     # 요약: 각 R_crit에서 50%+ 생존 달성하는 최소 phi1

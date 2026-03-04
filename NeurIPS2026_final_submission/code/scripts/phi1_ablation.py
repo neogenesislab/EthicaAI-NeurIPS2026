@@ -19,7 +19,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 N_EPISODES = 150
 N_EVAL = 30
-N_SEEDS = 10
+N_SEEDS = 20
 T = 50
 TOTAL_AGENTS = 20
 

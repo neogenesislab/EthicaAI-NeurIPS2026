@@ -38,7 +38,7 @@ def inject_partial_obs():
     ]
     
     for pattern, repl in mapping:
-        tex = re.sub(pattern, repl, tex)
+        tex = re.sub(pattern, lambda m: repl, tex)
         
     with open(PAPER_TEX, "w", encoding="utf-8") as f:
         f.write(tex)
@@ -83,7 +83,58 @@ def inject_hp_sweep():
     else:
         print("  -> Table marker not found")
 
+def inject_phi1():
+    print("Injecting Phase B: Phi_1 Table...")
+    data = load_json("phi1_ablation/phi1_results.json")
+    if not data:
+        print("  -> No phi1 data found.")
+        return
+        
+    with open(PAPER_TEX, "r", encoding="utf-8") as f:
+        tex = f.read()
+
+    start_marker = r"$\boldsymbol{\phi_1}$ & \textbf{W (Byz=0\%)} & \textbf{W (Byz=30\%)} & \textbf{Alive (0\%)} & \textbf{Alive (30\%)} \\"
+    end_marker = r"\bottomrule"
+    
+    match = re.search(re.escape(start_marker) + r"(.*?)" + re.escape(end_marker), tex, re.DOTALL)
+    if match:
+        rows = [r"\midrule"]
+        # phi_1 is string in json like '0.0', '0.21', '0.5', '1.0'
+        # we want them formatted and sorted. But they are keys. Let's just follow the existing keys natively.
+        for phi_key in ['0.0', '0.21', '0.5', '1.0']:
+            if phi_key not in data: continue
+            run = data[phi_key]
+            
+            w0 = run["byz_0"]["welfare_mean"]
+            w0_e = run["byz_0"]["welfare_std"]
+            a0 = run["byz_0"]["survival_mean"]
+            a0_e = run["byz_0"]["survival_std"]
+            
+            w30 = run["byz_30"]["welfare_mean"]
+            w30_e = run["byz_30"]["welfare_std"]
+            a30 = run["byz_30"]["survival_mean"]
+            a30_e = run["byz_30"]["survival_std"]
+            
+            # Ex: 0.00 & 27.3 $\pm$ 0.2 & 22.6 $\pm$ 0.4 & 59 $\pm$ 12\% & 22 $\pm$ 6\% \\
+            phi_f = f"{float(phi_key):.2f}"
+            if phi_f == "1.00":
+                # Make the row bold as in the original
+                row = f"\\textbf{{1.00}} & \\textbf{{{w0:.1f} $\\pm$ {w0_e:.1f}}} & \\textbf{{{w30:.1f} $\\pm$ {w30_e:.1f}}} & \\textbf{{{a0:.0f} $\\pm$ {a0_e:.0f}\\%}} & \\textbf{{{a30:.0f} $\\pm$ {a30_e:.0f}\\%}} \\\\"
+            else:
+                row = f"{phi_f} & {w0:.1f} $\\pm$ {w0_e:.1f} & {w30:.1f} $\\pm$ {w30_e:.1f} & {a0:.0f} $\\pm$ {a0_e:.0f}\\% & {a30:.0f} $\\pm$ {a30_e:.0f}\\% \\\\"
+            rows.append(row)
+            
+        replacement = start_marker + "\n" + "\n".join(rows) + "\n" + end_marker
+        tex = tex[:match.start()] + replacement + tex[match.end():]
+        
+        with open(PAPER_TEX, "w", encoding="utf-8") as f:
+            f.write(tex)
+        print("  -> Injected Phi_1 Table")
+    else:
+        print("  -> Phi_1 Table marker not found")
+
 if __name__ == "__main__":
     inject_partial_obs()
     inject_hp_sweep()
+    inject_phi1()
     print("DONE")

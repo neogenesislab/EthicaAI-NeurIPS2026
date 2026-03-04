@@ -36,6 +36,12 @@ N_EPISODES = 300
 N_EVAL = 30
 N_SEEDS = 20
 
+if os.environ.get("ETHICAAI_FAST") == "1":
+    print("  [FAST MODE] Overriding N_SEEDS=2, N_EPISODES=10")
+    N_SEEDS = 2
+    N_EPISODES = 10
+
+
 
 def relu(x):
     return np.maximum(0, x)

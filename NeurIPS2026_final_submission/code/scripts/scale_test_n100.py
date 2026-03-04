@@ -34,6 +34,12 @@ GAMMA = 0.99
 N_EPISODES = 50
 N_SEEDS = 10
 
+if os.environ.get("ETHICAAI_FAST") == "1":
+    print("  [FAST MODE] Overriding N_SEEDS=2, N_EPISODES=10")
+    N_SEEDS = 2
+    N_EPISODES = 10
+
+
 
 def sigmoid(x):
     return 1.0 / (1.0 + np.exp(-np.clip(x, -20, 20)))

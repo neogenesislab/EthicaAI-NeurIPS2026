@@ -45,6 +45,12 @@ STATE_DIM = 4  # (R, mean_c, my_lam_prev, crisis)
 GAMMA = 0.99
 N_EPISODES = 300
 N_SEEDS = 5
+
+if os.environ.get("ETHICAAI_FAST") == "1":
+    print("  [FAST MODE] Overriding N_SEEDS=2, N_EPISODES=10")
+    N_SEEDS = 2
+    N_EPISODES = 10
+
 BYZ_FRAC = 0.3
 N_BYZ = int(N_AGENTS * BYZ_FRAC)
 

@@ -1,44 +1,44 @@
 {
   "0.0": {
     "byz_0": {
-      "survival_mean": 29.5,
-      "survival_std": 9.340770846134703,
-      "welfare_mean": 25.807633993804377,
-      "welfare_std": 0.5785859246572257
+      "survival_mean": 29.0,
+      "survival_std": 9.695359714832659,
+      "welfare_mean": 25.695641722752335,
+      "welfare_std": 0.5903708264700288
     },
     "byz_30": {
-      "survival_mean": 21.5,
-      "survival_std": 5.5,
-      "welfare_mean": 24.855545980310943,
-      "welfare_std": 0.34229494319781795
+      "survival_mean": 19.25,
+      "survival_std": 5.539629951540085,
+      "welfare_mean": 24.699365516080963,
+      "welfare_std": 0.33937439940574543
     }
   },
   "0.21": {
     "byz_0": {
-      "survival_mean": 33.0,
-      "survival_std": 11.661903789690603,
-      "welfare_mean": 25.725862429484287,
-      "welfare_std": 0.4602317865617313
+      "survival_mean": 34.25,
+      "survival_std": 9.522998477370455,
+      "welfare_mean": 25.775465094401703,
+      "welfare_std": 0.4236201503479844
     },
     "byz_30": {
-      "survival_mean": 24.5,
-      "survival_std": 7.566372975210778,
-      "welfare_mean": 24.856333728696683,
-      "welfare_std": 0.27925601664790717
+      "survival_mean": 22.25,
+      "survival_std": 7.1545440106270926,
+      "welfare_mean": 24.772340235950796,
+      "welfare_std": 0.26545234476829
     }
   },
   "0.5": {
     "byz_0": {
       "survival_mean": 81.5,
-      "survival_std": 9.233092656309694,
-      "welfare_mean": 25.62533471108323,
-      "welfare_std": 0.15877580025221244
+      "survival_std": 8.674675786448736,
+      "welfare_mean": 25.615124047661386,
+      "welfare_std": 0.18899545384157732
     },
     "byz_30": {
-      "survival_mean": 38.5,
-      "survival_std": 9.500000000000002,
-      "welfare_mean": 25.082995997273095,
-      "welfare_std": 0.2070101932183076
+      "survival_mean": 42.0,
+      "survival_std": 8.573214099741126,
+      "welfare_mean": 25.156989336786392,
+      "welfare_std": 0.20684382210325697
     }
   },
   "1.0": {
@@ -49,10 +49,10 @@
       "welfare_std": 7.105427357601002e-15
     },
     "byz_30": {
-      "survival_mean": 95.5,
-      "survival_std": 4.716990566028302,
-      "welfare_mean": 27.49061083380102,
-      "welfare_std": 0.039520495250352415
+      "survival_mean": 96.5,
+      "survival_std": 4.2130748865881795,
+      "welfare_mean": 27.50534037623,
+      "welfare_std": 0.03802147898390954
     }
   }
 }

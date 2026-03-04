@@ -1,32 +1,37 @@
 {
-  "total_time": 179.55055236816406,
+  "total_time": 11.527659893035889,
   "results": [
     {
       "name": "Table 3: Ind. REINFORCE (Linear/MLP/Critic)",
       "passed": true,
-      "time": 38.68073630332947
+      "time": 1.4799726009368896
     },
     {
-      "name": "Table 3: True IPPO + MAPPO + QMIX",
-      "passed": false,
-      "time": 0
+      "name": "Table 3: CleanRL MAPPO",
+      "passed": true,
+      "time": 4.094161033630371
+    },
+    {
+      "name": "Table 3: CleanRL QMIX",
+      "passed": true,
+      "time": 1.5660254955291748
     },
     {
       "name": "Appendix: DNN Ablation",
       "passed": true,
-      "time": 17.996856451034546
+      "time": 0.39765381813049316
     },
     {
       "name": "Appendix: KPG Experiment",
       "passed": true,
-      "time": 21.337178707122803
+      "time": 0.3493459224700928
     },
     {
       "name": "Table 5: Scale Test N=100",
       "passed": true,
-      "time": 101.5341362953186
+      "time": 3.637948989868164
     }
   ],
-  "passed": 4,
-  "failed": 1
+  "passed": 6,
+  "failed": 0
 }
