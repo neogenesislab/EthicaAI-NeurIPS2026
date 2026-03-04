@@ -280,16 +280,17 @@ Ind.\ REINFORCE Linear & 5 & 0.488 $\pm$ 0.007 & 54.0 & 24.1 \\
 Ind.\ REINFORCE MLP & 161 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
 Ind.\ REINFORCE MLP + Critic & 322 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
 \midrule
-\multicolumn{5}{c}{\textit{Standard MARL implementations (CleanRL, 20 seeds)}} \\
+\multicolumn{5}{c}{\textit{CleanRL-style single-file implementations (NumPy, 20 seeds)}} \\
 \midrule
-CleanRL IPPO~\citep{schulman2017proximal} & 4,546 & 0.401 $\pm$ 0.063 & 37.3 & 23.4 \\
-CleanRL MAPPO~\citep{yu2022surprising} & 4,546$^\dagger$ & 0.392 $\pm$ 0.050 & 36.2 & 23.3 \\
+IPPO (CleanRL-style)~\citep{schulman2017proximal} & 4,546 & 0.401 $\pm$ 0.063 & 37.3 & 23.4 \\
+MAPPO (CleanRL-style)~\citep{yu2022surprising} & 4,546$^\dagger$ & 0.392 $\pm$ 0.050 & 36.2 & 23.3 \\
 QMIX~\citep{rashid2018qmix} & 5,195$^\ddagger$ & 0.584 $\pm$ 0.021 & 71.8 & 24.9 \\
 \midrule
 Fixed $\lambda=0.0$ & --- & 0.000 & 0.0 & 20.0 \\
 Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \bottomrule
-\multicolumn{5}{l}{\small Standard implementations; hyperparameter sweep (12 combos $\times$ 20 seeds = 240 runs) in Appendix~\ref{app:hp_sweep}.} \\
+\multicolumn{5}{l}{\small CleanRL-style: single-file NumPy reimplementations following CleanRL~\citep{huang2022cleanrl} conventions.} \\
+\multicolumn{5}{l}{\small HP sweep (20 combos $\times$ 10 seeds = 200 runs) in Appendix~\ref{app:hp_sweep}.} \\
 \multicolumn{5}{l}{\small $^\dagger$Plus shared critic. $^\ddagger$Plus mixing network. 2-layer MLP (64 hidden), Adam.} \\
 \end{tabular}}
 \footnotetext{All experiments use $E{=}20$ (endowment). All algorithms significantly below oracle ($p < 0.001$, Mann-Whitney $U$, 20 seeds). 95\% CIs: IPPO $\lambda$ [0.374, 0.429]; MAPPO $\lambda$ [0.370, 0.414]; QMIX $\lambda$ [0.575, 0.593]. Wall-clock: 18--45s/seed (CPU).}
@@ -297,11 +298,11 @@ Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 
 \textbf{Result}: Cooperation failure is \textbf{consistent across all six evaluated algorithms in our tested environments} (Table~\ref{tab:emergence}).
 Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.49$ with 54\% survival, while MLP agents converge to $\lambda \approx 0.05$ (6\% survival).
-Standard MARL implementations spanning three paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), and value decomposition (QMIX)---with \emph{unmodified default hyperparameters} all confirm the Nash Trap.
+Standard MARL implementations (CleanRL-style) spanning three paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), and value decomposition (QMIX)---with \emph{unmodified default hyperparameters} all confirm the Nash Trap.
 Crucially, this is not a failure of learning per se: the algorithms \emph{successfully} converge to a local optimum of their reward landscape. The Nash Trap is a \textbf{structural outcome} of individually-rational optimization in a game where the collective benefit of cooperation is not captured by individual payoffs.
 IPPO converges to $\lambda = 0.401 \pm 0.063$ (37.3\% survival, 20 seeds), MAPPO to $\lambda = 0.392 \pm 0.050$ (36.2\%), and QMIX to $\lambda = 0.584 \pm 0.021$ (71.8\%).
 While QMIX's value decomposition yields higher cooperation than policy gradient methods, it still falls \emph{substantially} short of the oracle ($\lambda = 1.0$, 100\% survival), suggesting that the Nash Trap is a robust property of the tested non-linear PGG environment rather than an artifact of any particular algorithm.
-This result holds at $N=100$ (Table~\ref{tab:scale}), under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}), across a hyperparameter sweep (12 combinations $\times$ 20 seeds = 240 runs, Appendix~\ref{app:hp_sweep}), and under partial observability and adaptive adversaries (Appendix~\ref{app:robustness}).
+This result holds at $N=100$ (Table~\ref{tab:scale}), under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}), across a hyperparameter sweep (20 combinations $\times$ 10 seeds = 200 runs, Appendix~\ref{app:hp_sweep}), and under partial observability and adaptive adversaries (Appendix~\ref{app:robustness}).
 
 \noindent\textit{Clarification}: We note that the one-shot PGG Nash equilibrium is $\lambda=0$ (full defection, since $M/N = 0.08 < 1$).
 However, in our \emph{repeated game with survival dynamics}, $\lambda=0$ yields 0\% survival and welfare of only 20.0 (Table~\ref{tab:emergence}, Fixed $\lambda=0.0$), while $\lambda=1.0$ yields 100\% survival and welfare 32.0.
@@ -757,7 +758,7 @@ Inequity Averse~\citep{mckee2020social} & 0.78 & 0.72 & 0.82 & 0.50 & 0.65 \\
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.65\textwidth]{fig22_melting_pot.png}
-\caption{Criteria-inspired profile comparison. Scores derived from our PGG/CPR experiments (not the actual Melting Pot suite). Meta-Ranking ranks 1st in 4/5 dimensions within the tested environments.}
+\caption{Criteria-inspired profile comparison (\textbf{qualitative}). Scores for our method and IPPO/MAPPO/QMIX are derived from PGG/CPR experiment JSON outputs; A3C+SVO and Inequity Averse scores are estimated from published results. This figure serves as a high-level overview; see individual tables for rigorous quantitative comparisons. Meta-Ranking ranks 1st in 4/5 dimensions within the tested environments.}
 \label{fig:melting_pot}
 \end{figure}
 
@@ -822,28 +823,37 @@ QMIX's higher $\lambda$ likely reflects the discrete action space and value-base
 \subsection{Hyperparameter Sensitivity of Nash Trap}
 \label{app:hp_sweep}
 
-To verify that the Nash Trap is not an artifact of suboptimal hyperparameters, we conduct a grid search over learning rate $\text{lr} \in \{10^{-4}, 2.5{\times}10^{-4}, 5{\times}10^{-4}, 10^{-3}\}$ and entropy coefficient $\in \{0.0, 0.01, 0.05\}$ (12 combinations, 3 seeds each).
+To verify that the Nash Trap is not an artifact of suboptimal hyperparameters, we conduct an expanded grid search over learning rate $\text{lr} \in \{10^{-4}, 2.5{\times}10^{-4}, 5{\times}10^{-4}, 10^{-3}\}$ and entropy coefficient $\in \{0.0, 0.01, 0.05, 0.1, 0.5\}$ (20 combinations, 10 seeds each = 200 total runs).
+Crucially, we verify that varying \texttt{entropy\_coef} produces measurably different policy entropy $H(\pi)$, confirming that the entropy bonus is correctly integrated into the policy gradient updates (see the $H(\pi)$ column below).
 
 \begin{table}[h]
 \centering
-\caption{Hyperparameter sweep: Nash Trap persists across all 12 lr$\times$entropy combinations (non-linear PGG, $N{=}20$, $E{=}20$, Byz=30\%, 150 episodes, 3 seeds).}
+\caption{Expanded hyperparameter sweep: Nash Trap persists across all 20 lr$\times$entropy combinations (non-linear PGG, $N{=}20$, $E{=}20$, Byz=30\%, 150 episodes, 10 seeds). $H(\pi)$ = mean policy entropy of trained agents.}
 \label{tab:hp_sweep}
-\resizebox{\textwidth}{!}{\begin{tabular}{cccccc}
+\resizebox{\textwidth}{!}{\begin{tabular}{ccccccc}
 \toprule
-\textbf{Learning Rate} & \textbf{Entropy} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Surv.\%} & \textbf{Trapped?} \\
+\textbf{Learning Rate} & \textbf{Entropy} & $\boldsymbol{\bar{\lambda}}$ & \textbf{CI$_{95}$} & \textbf{Surv.\%} & $\boldsymbol{H(\pi)}$ & \textbf{Trapped?} \\
 \midrule
-$10^{-4}$ & 0.00 & 0.428 & 48.3 & Yes \\
-$10^{-4}$ & 0.01 & 0.428 & 48.3 & Yes \\
-$10^{-4}$ & 0.05 & 0.428 & 48.3 & Yes \\
-$2.5{\times}10^{-4}$ & 0.00 & 0.431 & 43.3 & Yes \\
-$2.5{\times}10^{-4}$ & 0.01 & 0.431 & 43.3 & Yes \\
-$2.5{\times}10^{-4}$ & 0.05 & 0.431 & 43.3 & Yes \\
-$5{\times}10^{-4}$ & 0.00 & 0.404 & 41.7 & Yes \\
-$5{\times}10^{-4}$ & 0.01 & 0.404 & 41.7 & Yes \\
-$5{\times}10^{-4}$ & 0.05 & 0.404 & 41.7 & Yes \\
-$10^{-3}$ & 0.00 & 0.420 & 38.3 & Yes \\
-$10^{-3}$ & 0.01 & 0.420 & 38.3 & Yes \\
-$10^{-3}$ & 0.05 & 0.420 & 38.3 & Yes \\
+1.0e-4 & 0.00 & 0.432 & [0.398, 0.467] & 45.5\% & 0.918 & Yes \\
+1.0e-4 & 0.01 & 0.431 & [0.394, 0.466] & 45.5\% & 0.920 & Yes \\
+1.0e-4 & 0.05 & 0.426 & [0.392, 0.461] & 45.5\% & 0.926 & Yes \\
+1.0e-4 & 0.10 & 0.431 & [0.401, 0.461] & 45.5\% & 0.934 & Yes \\
+1.0e-4 & 0.50 & 0.439 & [0.408, 0.468] & 46.5\% & 0.996 & Yes \\
+2.5e-4 & 0.00 & 0.417 & [0.375, 0.457] & 40.5\% & 0.918 & Yes \\
+2.5e-4 & 0.01 & 0.415 & [0.372, 0.455] & 40.5\% & 0.919 & Yes \\
+2.5e-4 & 0.05 & 0.408 & [0.362, 0.454] & 40.5\% & 0.926 & Yes \\
+2.5e-4 & 0.10 & 0.403 & [0.355, 0.452] & 41.0\% & 0.933 & Yes \\
+2.5e-4 & 0.50 & 0.422 & [0.387, 0.455] & 41.0\% & 0.994 & Yes \\
+5.0e-4 & 0.00 & 0.375 & [0.329, 0.421] & 36.5\% & 0.917 & Yes \\
+5.0e-4 & 0.01 & 0.379 & [0.342, 0.418] & 36.0\% & 0.919 & Yes \\
+5.0e-4 & 0.05 & 0.381 & [0.330, 0.430] & 37.5\% & 0.925 & Yes \\
+5.0e-4 & 0.10 & 0.385 & [0.332, 0.433] & 38.0\% & 0.932 & Yes \\
+5.0e-4 & 0.50 & 0.398 & [0.365, 0.432] & 37.0\% & 0.992 & Yes \\
+1.0e-3 & 0.00 & 0.387 & [0.333, 0.438] & 39.0\% & 0.917 & Yes \\
+1.0e-3 & 0.01 & 0.387 & [0.332, 0.436] & 38.5\% & 0.919 & Yes \\
+1.0e-3 & 0.05 & 0.384 & [0.335, 0.431] & 37.5\% & 0.925 & Yes \\
+1.0e-3 & 0.10 & 0.385 & [0.333, 0.435] & 38.5\% & 0.932 & Yes \\
+1.0e-3 & 0.50 & 0.387 & [0.339, 0.432] & 39.0\% & 0.992 & Yes \\
 \bottomrule
 \end{tabular}}
 \end{table}

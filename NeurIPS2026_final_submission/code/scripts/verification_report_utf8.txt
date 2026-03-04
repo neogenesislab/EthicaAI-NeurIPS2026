@@ -1,0 +1,74 @@
+﻿======================================================================
+  NEURIPS SUBMISSION VERIFICATION
+======================================================================
+
+[1] PDF Output
+
+[2] Page Count
+
+[3] LaTeX Errors & Warnings
+
+[4] Figure Files
+
+[5] Bibliography
+
+[6] NeurIPS Format Compliance
+
+[7] Key Content
+
+[8] Reproducibility Package
+
+[9] Anonymization & Security
+
+[10] Data Consistency
+
+======================================================================
+  VERIFICATION RESULTS
+======================================================================
+  [PASS] PDF file exists
+  [PASS] PDF size reasonable
+      1.7 MB
+  [PASS] Page count: 22
+  [PASS] No LaTeX errors
+  [PASS] No undefined references
+  [PASS] No undefined citations
+  [FAIL] No significant overfull hboxes (>10pt)
+      1 significant overfull
+  [PASS] Figure exists: fig_p2_training_curves.png
+  [PASS] Figure exists: fig_p2_nash_trap.png
+  [PASS] Figure exists: fig_phase_diagram.png
+  [PASS] Figure exists: fig22_melting_pot.png
+  [PASS] All citations in bib (23 cited, 24 in bib)
+  [PASS] Uses neurips style
+  [PASS] No author names in anonymous mode
+  [PASS] Abstract present
+  [PASS] Paper checklist present
+  [PASS] Broader impact section
+  [PASS] Limitations section
+  [PASS] Bootstrap CI mentioned
+  [PASS] p-values reported
+  [PASS] Mann-Whitney test
+  [PASS] Seeds reported
+  [PASS] reproduce_quick.py exists
+  [PASS] requirements.txt exists
+  [PASS] CleanRL IPPO/MAPPO results
+  [PASS] QMIX results
+  [PASS] No email in tex
+  [PASS] No GitHub username in tex
+  [PASS] No API key reference in tex
+  [PASS] IPPO lambda in tex matches JSON
+      JSON=0.401
+  [PASS] MAPPO lambda in tex matches JSON
+      JSON=0.392
+  [PASS] QMIX lambda in tex matches JSON
+      JSON=0.584
+  [PASS] QMIX survival in tex matches JSON
+      JSON=71.8
+
+  WARNINGS:
+  [WARN] Unused bib entries: {'lerer2017maintaining'}
+
+  TOTAL: 18/19 passed, 1 failed, 1 warnings
+
+  [!!] 1 ISSUES NEED ATTENTION
+======================================================================

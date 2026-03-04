@@ -54,9 +54,8 @@ def inject_hp_sweep():
     with open(PAPER_TEX, "r", encoding="utf-8") as f:
         tex = f.read()
 
-    # The table is in Appendix H. Line: \textbf{Learning Rate} & \textbf{Entropy} ...
-    # We will just replace the entire tabular body.
-    start_marker = r"\textbf{Learning Rate} & \textbf{Entropy} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Surv.\%} & \textbf{Trapped?} \\"
+    # Updated 7-column table header
+    start_marker = r"\textbf{Learning Rate} & \textbf{Entropy} & $\boldsymbol{\bar{\lambda}}$ & \textbf{CI$_{95}$} & \textbf{Surv.\%} & $\boldsymbol{H(\pi)}$ & \textbf{Trapped?} \\"
     end_marker = r"\bottomrule"
     
     match = re.search(re.escape(start_marker) + r"(.*?)" + re.escape(end_marker), tex, re.DOTALL)
@@ -68,10 +67,11 @@ def inject_hp_sweep():
             lam = run.get("lambda_mean", 0)
             ci = run.get("lambda_ci95", [0,0])
             surv = run.get("survival_mean", 0)
+            h_pi = run.get("policy_entropy_mean", 0)
             trapped = "Yes" if run.get("still_trapped", True) else "No"
             
             lr_str = f"{lr:.1e}".replace("e-0", "e-")
-            row = f"{lr_str} & {ent:.2f} & {lam:.3f} [{ci[0]:.3f}, {ci[1]:.3f}] & {surv:.1f}\\% & {trapped} \\\\"
+            row = f"{lr_str} & {ent:.2f} & {lam:.3f} & [{ci[0]:.3f}, {ci[1]:.3f}] & {surv:.1f}\\% & {h_pi:.3f} & {trapped} \\\\"
             rows.append(row)
             
         replacement = start_marker + "\n" + "\n".join(rows) + "\n" + end_marker

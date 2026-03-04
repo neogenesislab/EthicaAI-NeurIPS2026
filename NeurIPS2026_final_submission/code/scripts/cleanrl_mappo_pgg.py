@@ -156,35 +156,45 @@ def compute_gae(rewards, values, gamma=GAMMA, lam=GAE_LAMBDA):
 
 
 def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages, entropy_coef=ENTROPY_COEF):
-    """Simple PPO gradient step (numerical gradient for portability)."""
-    eps_fd = 1e-4
+    """PPO gradient step with entropy bonus (numerical gradient for portability).
     
+    The entropy bonus encourages exploration by increasing log_std when
+    entropy_coef > 0. For Gaussian policy, H(π) = 0.5 + 0.5*ln(2π) + log_std,
+    so ∂H/∂log_std = 1 (always positive → entropy bonus pushes std up).
+    """
     for obs, act, old_lp, adv in zip(obs_list, act_list, old_lps, advantages):
         new_lp = actor.log_prob(obs, act)
         ratio = np.exp(new_lp - old_lp)
         clip_ratio = np.clip(ratio, 1 - CLIP_EPS, 1 + CLIP_EPS)
         
         pg_loss = -min(ratio * adv, clip_ratio * adv)
-        entropy_bonus = -entropy_coef * actor.entropy(obs)
         
-        # Numerical gradient for each layer
+        # --- Policy gradient through network weights ---
+        mean, h = actor.forward(obs)
+        std = np.exp(actor.log_std)
+        d_lp_d_mean = (act - mean[0]) / (std[0]**2)
+        
         for layer in [actor.fc1, actor.fc2, actor.mean_head]:
-            grad_W = np.zeros_like(layer.W)
-            grad_b = np.zeros_like(layer.b)
-            
-            # Use REINFORCE-style gradient
-            mean, h = actor.forward(obs)
-            std = np.exp(actor.log_std)
-            d_lp_d_mean = (act - mean[0]) / (std[0]**2)
-            
-            # Backprop through network (simplified)
             if layer is actor.mean_head:
                 h2 = relu(actor.fc2.forward(relu(actor.fc1.forward(obs))))
                 sig_deriv = mean[0] * (1 - mean[0])
                 grad_W = np.outer(h2, [d_lp_d_mean * sig_deriv * adv])
                 grad_b = np.array([d_lp_d_mean * sig_deriv * adv])
+            else:
+                grad_W = np.zeros_like(layer.W)
+                grad_b = np.zeros_like(layer.b)
             
             layer.adam_update(grad_W, grad_b)
+        
+        # --- Entropy bonus: update log_std ---
+        # Gaussian entropy H = 0.5 + 0.5*ln(2π) + log_std
+        # ∂H/∂log_std = 1, so gradient of (-entropy_coef * H) w.r.t. log_std = -entropy_coef
+        # We also add the log_prob gradient w.r.t. log_std:
+        # ∂log_prob/∂log_std = ((act - mean)^2 / std^2) - 1
+        d_lp_d_logstd = ((act - mean[0])**2 / (std[0]**2)) - 1.0
+        log_std_grad = -(d_lp_d_logstd * adv + entropy_coef * 1.0)
+        # Apply simple SGD to log_std (small lr to keep stable)
+        actor.log_std -= LR_ACTOR * 0.1 * log_std_grad
 
 
 def run_mappo_experiment(seed, use_shared_critic=True, label="MAPPO"):

@@ -87,9 +87,12 @@ def run_ippo_hp(seed, lr, entropy_coef):
     
     wc = time.time() - t0
     ev = episodes[-N_EVAL:]
+    # Collect final policy entropy from all actors
+    final_entropy = float(np.mean([actors[i].entropy(None) for i in range(n)]))
     return {
         "mean_lambda": float(np.mean([d["mean_lambda"] for d in ev])),
         "survival": float(np.mean([float(d["survived"]) for d in ev]) * 100),
+        "policy_entropy": final_entropy,
         "wall_clock": wc,
     }
 
@@ -120,6 +123,7 @@ def main():
             
             lams = [r["mean_lambda"] for r in seed_results]
             survs = [r["survival"] for r in seed_results]
+            ents = [r["policy_entropy"] for r in seed_results]
             ci_l = bootstrap_ci(lams)
             
             results[key] = {
@@ -129,6 +133,8 @@ def main():
                 "lambda_ci95": [float(ci_l[0]), float(ci_l[1])],
                 "survival_mean": float(np.mean(survs)),
                 "survival_std": float(np.std(survs)),
+                "policy_entropy_mean": float(np.mean(ents)),
+                "policy_entropy_std": float(np.std(ents)),
                 "still_trapped": float(np.mean(lams)) < 0.7,  # Nash Trap threshold
             }
             
