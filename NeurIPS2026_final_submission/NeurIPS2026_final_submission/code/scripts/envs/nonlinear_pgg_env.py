@@ -36,7 +36,7 @@ class NonlinearPGGEnv(gym.Env):
         self,
         n_agents: int = 20,
         multiplier: float = 1.6,
-        endowment: float = 20.0,
+        endowment: float = 10.0,
         t_horizon: int = 50,
         r_crit: float = 0.15,
         r_recov: float = 0.25,

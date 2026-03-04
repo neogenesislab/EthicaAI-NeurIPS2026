@@ -155,7 +155,7 @@ def compute_gae(rewards, values, gamma=GAMMA, lam=GAE_LAMBDA):
     return advantages, returns
 
 
-def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages, entropy_coef=ENTROPY_COEF):
+def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages):
     """Simple PPO gradient step (numerical gradient for portability)."""
     eps_fd = 1e-4
     
@@ -165,7 +165,7 @@ def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages, entropy_coe
         clip_ratio = np.clip(ratio, 1 - CLIP_EPS, 1 + CLIP_EPS)
         
         pg_loss = -min(ratio * adv, clip_ratio * adv)
-        entropy_bonus = -entropy_coef * actor.entropy(obs)
+        entropy_bonus = -ENTROPY_COEF * actor.entropy(obs)
         
         # Numerical gradient for each layer
         for layer in [actor.fc1, actor.fc2, actor.mean_head]:

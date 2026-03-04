@@ -24,8 +24,8 @@ import time
 import json
 import argparse
 
-SCRIPT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scripts")
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(SCRIPT_DIR)
 OUTPUT_DIR = os.path.join(ROOT_DIR, "outputs", "reproduce")
 
 
@@ -88,13 +88,9 @@ def main():
     ok, t = run_script("Table 3: Ind. REINFORCE", "ppo_nash_trap.py")
     results.append(("Table 3: Ind. REINFORCE (Linear/MLP/Critic)", ok, t))
 
-    # 2. Table 3 extended: CleanRL MAPPO baseline
-    ok, t = run_script("Table 3: MAPPO", "cleanrl_mappo_pgg.py")
-    results.append(("Table 3: CleanRL MAPPO", ok, t))
-
-    # 2b. Table 3 extended: CleanRL QMIX baseline
-    ok, t = run_script("Table 3: QMIX", "cleanrl_qmix_pgg.py")
-    results.append(("Table 3: CleanRL QMIX", ok, t))
+    # 2. Table 3 extended: Strong MARL baselines (True IPPO, MAPPO, QMIX)
+    ok, t = run_script("Table 3: Strong MARL", "p3_fast_baselines.py")
+    results.append(("Table 3: True IPPO + MAPPO + QMIX", ok, t))
 
     # 3. DNN Ablation
     ok, t = run_script("DNN Ablation", "dnn_ablation.py")

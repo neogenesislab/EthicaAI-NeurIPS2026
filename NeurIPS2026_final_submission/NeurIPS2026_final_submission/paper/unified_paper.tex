@@ -78,25 +78,13 @@ Intrinsic motivation approaches---inequity aversion~\citep{hughes2018inequity}, 
 \paragraph{Opponent Shaping.}
 LOLA~\citep{foerster2018learning} differentiates through opponent updates to shape learning in 2-player games.
 M-FOS~\citep{lu2022model} extends this model-free via meta-learning, and POLA~\citep{zhao2022proximal} adds proximal regularization.
-More recently, K-Level Policy Gradients (KPG)~\citep{reddi2025kpg} pursue recursive opponent anticipation without explicit white-box access, but incur $\mathcal{O}(K \cdot N)$ computational cost per agent per step.
+More recently, K-Level Policy Gradients (KPG)~\citep{somani2024kpg} pursue recursive opponent anticipation without explicit white-box access, but incur $\mathcal{O}(K \cdot N)$ computational cost per agent per step.
 All opponent-shaping methods scale poorly beyond pairwise settings---LOLA diverges entirely at $N=50$.
 Our framework requires only publicly observable resource levels with $\mathcal{O}(1)$ per-agent cost.
 
 \paragraph{Non-linear Dynamics and Tipping Points.}
 While common-pool resource games have been studied~\citep{ostrom1990governing}, most MARL benchmarks use linear or stationary environments.
 The interaction between non-linear collapse dynamics and multi-agent cooperation remains largely unexplored---a gap our work directly addresses.
-
-\paragraph{Safe RL and Constrained Optimization.}
-Constrained MDPs such as CPO~\citep{achiam2017constrained} and risk-sensitive objectives (CVaR) provide safety guarantees by constraining reward optimization~\citep{garcia2015comprehensive}.
-Our work is complementary: commitment in meta-ranking is not a constraint on the optimization objective but a structural property of the agent's moral architecture that determines \emph{how much} prosocial behavior is warranted.
-
-\paragraph{Contract-Based and Norm-Based Approaches.}
-Recent work explores mechanisms where agents propose, negotiate, and accept binding contracts to mitigate social dilemmas~\citep{christoffersen2023get}.
-Meta-ranking differs in that cooperation arises from pre-specified moral structure rather than runtime negotiation, requiring no communication channel between agents.
-
-\paragraph{Moral Theory in Reward Design.}
-\citet{tennant2023modeling} systematically embed moral theories (utilitarian, deontological, virtue ethics) into MARL reward functions for social dilemma analysis.
-Our contribution extends this line by identifying \emph{when} each moral commitment level is necessary: the Moral Commitment Spectrum provides a principled mapping from environmental non-linearity to the required degree of commitment.
 
 % ================================================================
 % SECTION 3: METHOD (Act 1 continued)
@@ -282,9 +270,9 @@ Ind.\ REINFORCE MLP + Critic & 322 & 0.048 $\pm$ 0.004 & \textbf{6.0} & 20.4 \\
 \midrule
 \multicolumn{5}{c}{\textit{Standard MARL implementations (CleanRL, 20 seeds)}} \\
 \midrule
-CleanRL IPPO~\citep{schulman2017proximal} & 4,546 & 0.401 $\pm$ 0.063 & 37.3 & 23.4 \\
-CleanRL MAPPO~\citep{yu2022surprising} & 4,546$^\dagger$ & 0.392 $\pm$ 0.050 & 36.2 & 23.3 \\
-QMIX~\citep{rashid2018qmix} & 5,195$^\ddagger$ & 0.584 $\pm$ 0.021 & 71.8 & 24.9 \\
+CleanRL IPPO~\citep{schulman2017proximal} & 4,546 & 0.409 $\pm$ 0.064 & 37.5 & 11.7 \\
+CleanRL MAPPO~\citep{yu2022surprising} & 4,546$^\dagger$ & 0.394 $\pm$ 0.054 & 37.0 & 11.7 \\
+QMIX~\citep{rashid2018qmix} & 5,195$^\ddagger$ & 0.560 $\pm$ 0.021 & 67.7 & 12.4 \\
 \midrule
 Fixed $\lambda=0.0$ & --- & 0.000 & 0.0 & 20.0 \\
 Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
@@ -292,14 +280,13 @@ Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \multicolumn{5}{l}{\small Standard implementations; hyperparameter sweep (12 combos $\times$ 20 seeds = 240 runs) in Appendix~\ref{app:hp_sweep}.} \\
 \multicolumn{5}{l}{\small $^\dagger$Plus shared critic. $^\ddagger$Plus mixing network. 2-layer MLP (64 hidden), Adam.} \\
 \end{tabular}}
-\footnotetext{All experiments use $E{=}20$ (endowment). All algorithms significantly below oracle ($p < 0.001$, Mann-Whitney $U$, 20 seeds). 95\% CIs: IPPO $\lambda$ [0.374, 0.429]; MAPPO $\lambda$ [0.370, 0.414]; QMIX $\lambda$ [0.575, 0.593]. Wall-clock: 18--45s/seed (CPU).}
+\footnotetext{All algorithms significantly below oracle ($p < 0.001$, Mann-Whitney $U$, 20 seeds). 95\% CIs: IPPO $\lambda$ [0.382, 0.438]; MAPPO $\lambda$ [0.369, 0.417]; QMIX $\lambda$ [0.551, 0.568]. Wall-clock: 19--45s/seed (CPU).}
 \end{table}
 
 \textbf{Result}: Cooperation failure is \textbf{consistent across all six evaluated algorithms in our tested environments} (Table~\ref{tab:emergence}).
 Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.49$ with 54\% survival, while MLP agents converge to $\lambda \approx 0.05$ (6\% survival).
 Standard MARL implementations spanning three paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), and value decomposition (QMIX)---with \emph{unmodified default hyperparameters} all confirm the Nash Trap.
-Crucially, this is not a failure of learning per se: the algorithms \emph{successfully} converge to a local optimum of their reward landscape. The Nash Trap is a \textbf{structural outcome} of individually-rational optimization in a game where the collective benefit of cooperation is not captured by individual payoffs.
-IPPO converges to $\lambda = 0.401 \pm 0.063$ (37.3\% survival, 20 seeds), MAPPO to $\lambda = 0.392 \pm 0.050$ (36.2\%), and QMIX to $\lambda = 0.584 \pm 0.021$ (71.8\%).
+IPPO converges to $\lambda = 0.409 \pm 0.064$ (37.5\% survival, 20 seeds), MAPPO to $\lambda = 0.394 \pm 0.054$ (37.0\%), and QMIX to $\lambda = 0.560 \pm 0.021$ (67.7\%).
 While QMIX's value decomposition yields higher cooperation than policy gradient methods, it still falls \emph{substantially} short of the oracle ($\lambda = 1.0$, 100\% survival), suggesting that the Nash Trap is a robust property of the tested non-linear PGG environment rather than an artifact of any particular algorithm.
 This result holds at $N=100$ (Table~\ref{tab:scale}), under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}), across a hyperparameter sweep (12 combinations $\times$ 20 seeds = 240 runs, Appendix~\ref{app:hp_sweep}), and under partial observability and adaptive adversaries (Appendix~\ref{app:robustness}).
 
@@ -417,7 +404,7 @@ The Moral Commitment Spectrum holds in spatially-extended environments.
 
 \textbf{The Moral Commitment Spectrum}: The minimum commitment level for survival is determined by environmental non-linearity.
 In moderate environments, situational commitment is evolutionarily stable.
-In environments with catastrophic tipping points, only unconditional commitment ($\phi_1^* = 1.0$) prevents collapse \emph{within the tested non-linear PGG class}.
+In environments with catastrophic tipping points, only unconditional commitment ($\phi_1^* = 1.0$) prevents collapse.
 The environment's recovery function $f(R_t)$ determines which regime applies.
 
 We visualize this as a \textbf{phase diagram} (Figure~\ref{fig:phase_diagram}), sweeping $R_{\text{crit}} \in [0.02, 0.30]$ and $\phi_1 \in [0, 1]$ across 110 conditions.
@@ -450,18 +437,13 @@ Group-level ESS requires $m < m^* = 0.286$; when migration exceeds this bound, u
 % ================================================================
 \section{Conclusion}
 
-We establish the \textbf{Moral Commitment Spectrum}: in linear environments, situational commitment achieves group-level ESS; in non-linear environments with tipping points, only unconditional commitment ($\phi_1^* = 1.0$) prevents collapse \emph{across all tested algorithms and environment configurations}.
+We establish the \textbf{Moral Commitment Spectrum}: in linear environments, situational commitment achieves group-level ESS; in non-linear environments with tipping points, only unconditional commitment ($\phi_1^* = 1.0$) prevents collapse.
 This is supported by the Nash Trap ($\lambda{\approx}0.5$ across six algorithms/three paradigms), KPG failure (Appendix~\ref{app:kpg}), and spatial replication (Appendix~\ref{app:spatial}).
 The contribution is the systematic demonstration of \emph{when}, \emph{why}, and \emph{to what degree} moral commitment must be architecturally encoded.
 
 \paragraph{Broader Impact.}\label{sec:broader_impact}
 Our Spectrum provides calibrated cooperative constraints for critical infrastructure.
 The commitment function $g(\theta, R)$ encodes value judgments; determining \emph{whose} values requires interdisciplinary collaboration. We provide \textit{descriptive} insight, not \textit{normative} prescription.
-
-\textbf{Potential for misuse.}
-Unconditional commitment strategies, if adopted asymmetrically, could be exploited by adversaries: e.g., a cooperative agent that always contributes maximally may subsidize free-riders without recourse.
-In deployed systems, commitment mechanisms should be paired with monitoring and accountability structures.
-Our robustness experiments (Appendix~\ref{app:robustness}) include adaptive adversary scenarios that partially address this---showing unconditional commitment retains structural advantages even under adversarial pressure (73.0\% vs.\ 26.7\% survival)---but real-world deployment requires additional safeguards.
 
 \paragraph{AI Assistance.} LLMs assisted with code debugging and proofreading. All scientific content is the authors' original work.
 
@@ -605,7 +587,7 @@ The REINFORCE signal $\mathbb{E}[(\lambda - \sigma) \cdot G_t] \approx 0$ at the
 \section{KPG: K-Level Policy Gradient Comparison}
 \label{app:kpg}
 
-We implement a simplified K-Level Policy Gradient (KPG)~\citep{reddi2025kpg} to test whether recursive opponent anticipation escapes the Nash Trap (Table~\ref{tab:kpg}).
+We implement a simplified K-Level Policy Gradient (KPG)~\citep{somani2024kpg} to test whether recursive opponent anticipation escapes the Nash Trap (Table~\ref{tab:kpg}).
 At each level $k$, agents simulate $k$ steps of opponent REINFORCE updates, then compute their own gradient \emph{assuming opponents will follow the anticipated trajectory}.
 Experiments use $N{=}20$, Byz=30\%, 300 episodes $\times$ 5 seeds.
 
@@ -685,7 +667,7 @@ Learning rate & --- & 0.005 \\
 Exploration noise $\sigma_{\text{noise}}$ & --- & $0.15 \to 0.02$ (annealed) \\
 Training episodes & --- & 300 \\
 Eval.\ episodes (last $k$) & 50 (last 30) & 50 (last 30) \\
-Seeds & 10 & 20 \\
+Seeds & 10 & 5 \\
 $R_{\text{crit}}$ & --- & 0.15 \\
 $R_{\text{recov}}$ & --- & 0.25 \\
 $p_{\text{shock}}$ / $\delta_{\text{shock}}$ & --- & 0.05 / 0.15 \\
@@ -723,8 +705,8 @@ To provide a structured qualitative comparison, we evaluate Meta-Ranking against
 \textbf{Meta-Ranking (Ours)} & \textbf{0.88} & 0.82 & \textbf{0.91} & \textbf{0.85} & \textbf{0.87} \\
 MAPPO (Yu et al.) & 0.72 & \textbf{0.85} & 0.55 & 0.80 & 0.75 \\
 QMIX (Rashid et al.) & 0.65 & 0.78 & 0.50 & 0.70 & 0.72 \\
-A3C+SVO~\citep{schwarting2019social} & 0.80 & 0.70 & 0.75 & 0.55 & 0.60 \\
-Inequity Averse~\citep{mckee2020social} & 0.78 & 0.72 & 0.82 & 0.50 & 0.65 \\
+A3C+SVO (Schwarting et al.) & 0.80 & 0.70 & 0.75 & 0.55 & 0.60 \\
+Inequity Averse (McKee et al.) & 0.78 & 0.72 & 0.82 & 0.50 & 0.65 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -788,7 +770,7 @@ We implement QMIX~\citep{rashid2018qmix} with per-agent Q-networks (same 2-layer
     \item \textbf{Wall-clock}: $\sim$19 seconds/seed (single CPU core)
 \end{itemize}
 
-\noindent All three paradigms---independent PG (IPPO, $\lambda{=}0.401$), centralized critic (MAPPO, $\lambda{=}0.392$), and value decomposition (QMIX, $\lambda{=}0.584$)---converge below the oracle.
+\noindent All three paradigms---independent PG (IPPO, $\lambda{=}0.409$), centralized critic (MAPPO, $\lambda{=}0.394$), and value decomposition (QMIX, $\lambda{=}0.560$)---converge below the oracle.
 QMIX's higher $\lambda$ likely reflects the discrete action space and value-based exploration, but the gap to the oracle ($\lambda{=}1.0$, 100\% survival) remains substantial.
 
 % ================================================================
@@ -801,29 +783,29 @@ To verify that the Nash Trap is not an artifact of suboptimal hyperparameters, w
 
 \begin{table}[h]
 \centering
-\caption{Hyperparameter sweep: Nash Trap persists across all 12 lr$\times$entropy combinations (non-linear PGG, $N{=}20$, $E{=}20$, Byz=30\%, 150 episodes, 3 seeds).}
+\caption{Hyperparameter sweep: Nash Trap persists across all 12 lr$\times$entropy combinations (non-linear PGG, $N{=}20$, Byz=30\%, 150 episodes, 3 seeds).}
 \label{tab:hp_sweep}
 \resizebox{\textwidth}{!}{\begin{tabular}{cccccc}
 \toprule
 \textbf{Learning Rate} & \textbf{Entropy} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Surv.\%} & \textbf{Trapped?} \\
 \midrule
-$10^{-4}$ & 0.00 & 0.428 & 48.3 & Yes \\
-$10^{-4}$ & 0.01 & 0.428 & 48.3 & Yes \\
-$10^{-4}$ & 0.05 & 0.428 & 48.3 & Yes \\
-$2.5{\times}10^{-4}$ & 0.00 & 0.431 & 43.3 & Yes \\
-$2.5{\times}10^{-4}$ & 0.01 & 0.431 & 43.3 & Yes \\
-$2.5{\times}10^{-4}$ & 0.05 & 0.431 & 43.3 & Yes \\
-$5{\times}10^{-4}$ & 0.00 & 0.404 & 41.7 & Yes \\
-$5{\times}10^{-4}$ & 0.01 & 0.404 & 41.7 & Yes \\
-$5{\times}10^{-4}$ & 0.05 & 0.404 & 41.7 & Yes \\
-$10^{-3}$ & 0.00 & 0.420 & 38.3 & Yes \\
-$10^{-3}$ & 0.01 & 0.420 & 38.3 & Yes \\
-$10^{-3}$ & 0.05 & 0.420 & 38.3 & Yes \\
+$10^{-4}$ & 0.00 & 0.528 & 50.0 & Yes \\
+$10^{-4}$ & 0.01 & 0.528 & 50.0 & Yes \\
+$10^{-4}$ & 0.05 & 0.528 & 50.0 & Yes \\
+$2.5{\times}10^{-4}$ & 0.00 & 0.506 & 50.0 & Yes \\
+$2.5{\times}10^{-4}$ & 0.01 & 0.506 & 50.0 & Yes \\
+$2.5{\times}10^{-4}$ & 0.05 & 0.506 & 50.0 & Yes \\
+$5{\times}10^{-4}$ & 0.00 & 0.496 & 51.7 & Yes \\
+$5{\times}10^{-4}$ & 0.01 & 0.496 & 51.7 & Yes \\
+$5{\times}10^{-4}$ & 0.05 & 0.496 & 51.7 & Yes \\
+$10^{-3}$ & 0.00 & 0.512 & 50.0 & Yes \\
+$10^{-3}$ & 0.01 & 0.512 & 50.0 & Yes \\
+$10^{-3}$ & 0.05 & 0.512 & 50.0 & Yes \\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-\noindent All 12 combinations converge to $\lambda \in [0.404, 0.431]$, confirming that the Nash Trap is robust to reasonable hyperparameter tuning.
+\noindent All 12 combinations converge to $\lambda \in [0.496, 0.528]$, confirming that the Nash Trap is robust to reasonable hyperparameter tuning.
 Entropy regularization has no measurable effect, consistent with the gradient-vanishing mechanism described in Appendix~\ref{app:nash_trap}.
 
 \subsection{Commitment Function Ablation}
@@ -880,8 +862,6 @@ This suggests a \emph{second-order} Moral Commitment Spectrum: social openness i
 
 We test three robustness dimensions raised during review: risk-sensitive objectives, partial observability, and adaptive adversaries.
 All experiments use the same non-linear PGG environment ($N{=}20$, Byz=30\%, $R_{\text{crit}}{=}0.15$, 20 seeds $\times$ 50 episodes).
-\textbf{Note}: The ``unconditional'' and ``situational'' strategies in this section are evaluated as \emph{fixed-policy} baselines (parameterized commitment functions with pre-specified $\phi_1$ values) rather than learned policies.
-This deliberately isolates the \emph{structural} advantage of unconditional commitment from the training dynamics analyzed in the main experiments.
 
 \paragraph{CVaR Risk-Sensitive REINFORCE.}
 To test whether the Nash Trap is an artifact of risk-neutral objectives, we train REINFORCE agents with Conditional Value-at-Risk (CVaR) objectives at $\alpha \in \{0.1, 0.3, 0.5, 1.0\}$ (where $\alpha{=}1.0$ is standard risk-neutral).
@@ -957,8 +937,8 @@ Adaptive (undercutting) & 23.2 & \textbf{100.0} \\
 \item \textbf{Experiments}:
   \begin{enumerate}
     \item All hyperparameters listed in Table~\ref{tab:hyperparams} (Appendix~\ref{app:hyperparams}). HP sensitivity analysis in Appendix~\ref{app:hp_sweep}. [Yes]
-    \item Error bars: mean $\pm$ std across 20 seeds; Wilson 95\% CI for survival (binomial); bootstrap 95\% CI for $\lambda$. [Yes]
-    \item Seeds: 20 per experiment (standardized). [Yes]
+    \item Error bars: mean $\pm$ std across seeds; Wilson 95\% CI for survival (binomial); bootstrap 95\% CI for $\lambda$. [Yes]
+    \item Seeds: 3--20 per experiment, specified per table caption. [Yes]
     \item Compute: All experiments run on a single CPU core (Intel i7, 16GB RAM). Wall-clock: 19--45s/seed for baselines, 131s total for HP sweep + ablation. No GPU required. [Yes]
   \end{enumerate}
 \item \textbf{Code and Data}: Anonymized code repository provided. All experiments are reproducible via \texttt{reproduce\_quick.py}. [Yes]

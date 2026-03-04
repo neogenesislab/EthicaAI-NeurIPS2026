@@ -1,0 +1,34 @@
+[
+  {
+    "method": "Meta-Ranking (Ours)",
+    "cooperation": 0.99,
+    "scalability": 0.99,
+    "robustness": 0.99,
+    "efficiency": 1.0,
+    "fairness": 0.95
+  },
+  {
+    "method": "CleanRL IPPO",
+    "cooperation": 0.4,
+    "scalability": 0.37,
+    "robustness": 0.37,
+    "efficiency": 1.0,
+    "fairness": 1.0
+  },
+  {
+    "method": "CleanRL MAPPO",
+    "cooperation": 0.39,
+    "scalability": 0.36,
+    "robustness": 0.36,
+    "efficiency": 1.0,
+    "fairness": 1.0
+  },
+  {
+    "method": "QMIX",
+    "cooperation": 0.58,
+    "scalability": 0.72,
+    "robustness": 0.72,
+    "efficiency": 0.96,
+    "fairness": 1.0
+  }
+]

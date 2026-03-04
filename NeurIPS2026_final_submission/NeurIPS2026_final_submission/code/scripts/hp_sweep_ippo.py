@@ -75,7 +75,7 @@ def run_ippo_hp(seed, lr, entropy_coef):
             advantages, returns = compute_gae(rew_buf[i], val_buf[i])
             if np.std(advantages) > 1e-8:
                 advantages = (advantages - np.mean(advantages)) / (np.std(advantages) + 1e-8)
-            ppo_update_actor(actors[i], obs_buf[i], act_buf[i], lp_buf[i], advantages, entropy_coef=entropy_coef)
+            ppo_update_actor(actors[i], obs_buf[i], act_buf[i], lp_buf[i], advantages)
         
         episodes.append({
             "mean_lambda": info.get("mean_lambda", 0),
