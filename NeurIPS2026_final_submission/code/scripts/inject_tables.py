@@ -5,7 +5,7 @@ import re
 PAPER_TEX = os.path.join("..", "..", "paper", "unified_paper.tex")
 
 def load_json(path):
-    p = os.path.join("..", "..", "outputs", path)
+    p = os.path.join("..", "outputs", path)
     if not os.path.exists(p):
         return None
     with open(p) as f:
@@ -56,7 +56,7 @@ def inject_hp_sweep():
 
     # The table is in Appendix H. Line: \textbf{Learning Rate} & \textbf{Entropy} ...
     # We will just replace the entire tabular body.
-    start_marker = r"\textbf{Learning Rate} & \textbf{Entropy} & \(\boldsymbol{\bar{\lambda}}\) & \textbf{Surv.\%} & \textbf{Trapped?} \\"
+    start_marker = r"\textbf{Learning Rate} & \textbf{Entropy} & $\boldsymbol{\bar{\lambda}}$ & \textbf{Surv.\%} & \textbf{Trapped?} \\"
     end_marker = r"\bottomrule"
     
     match = re.search(re.escape(start_marker) + r"(.*?)" + re.escape(end_marker), tex, re.DOTALL)
