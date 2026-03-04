@@ -556,17 +556,17 @@ The qualitative pattern---moderate environments permit situational commitment, c
 \paragraph{Partial Observability (Noisy, Delayed, Local).}
 Our primary results assume agents observe the precise resource state $R_t$. 
 To test realism, we injected observation noise ($R_t + \mathcal{N}(0, \sigma^2)$), delayed observations ($R_{t-k}$), and local-only observations (where $R_t$ is hidden entirely) under Byz=30\% conditions.
-Table~\ref{tab:partial_obs} shows that the Nash Trap persists across all partial observability conditions. Situational commitment performance degrades further under noisy or delayed signals, while unconditional commitment remains impervious, as it requires no environmental feedback.
+Table~\ref{tab:partial_obs_extended} shows that the Nash Trap persists across all partial observability conditions. Situational commitment performance degrades further under noisy or delayed signals, while unconditional commitment remains impervious, as it requires no environmental feedback.
 
 \begin{table}[h]
 \centering
 \caption{Survival under Partial Observability conditions (non-linear PGG, Byz=30\%).}
-\label{tab:partial_obs}
+\label{tab:partial_obs_extended}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Condition} & \textbf{Selfish RL (IPPO)} & \textbf{Situational} & \textbf{Unconditional} \\
 \midrule
-Full Obs (Baseline) & X\% & 82\% & 85\% \\
+Full Obs (Baseline) & 33\% & 82\% & 85\% \\
 Noisy ($\sigma=0.10$) & 40\% & 79\% & 86\% \\
 Noisy ($\sigma=0.20$) & 37\% & 75\% & 85\% \\
 Delayed ($k=2$) & 43\% & 85\% & 86\% \\

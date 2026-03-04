@@ -3,7 +3,7 @@
 > **From Situational to Unconditional: The Spectrum of Moral Commitment Required for Multi-Agent Survival in Non-linear Social Dilemmas**
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](code/LICENSE)
 
 ---
 
@@ -16,10 +16,56 @@ We investigate this question through a systematic empirical study of cooperation
 
 1. **(C1) Computational Meta-Ranking**: MARL formalization of Sen's theory with dynamic commitment λₜ ∈ [0,1] conditioned on resource state and SVO
 2. **(C2) Situational Commitment in Linear Environments**: Group-level ESS (x̄=0.987) outperforming 8 baselines including M-FOS and POLA
-3. **(C3) Algorithm-Invariant Cooperation Failure**: Independent RL agents (Linear, MLP, Actor-Critic) all converge to suboptimal equilibria (λ≈0.05–0.49, ≤6% survival)
+3. **(C3) Algorithm-Invariant Cooperation Failure**: Independent RL agents (Linear, MLP, Actor-Critic, IPPO, MAPPO, QMIX) all converge to suboptimal equilibria — though QMIX achieves notably higher cooperation (71.8%) than IPPO/MAPPO (~37%), it still falls short of the oracle (100%)
 4. **(C4) Unconditional Commitment + Meta-Learning Validation**: Only φ₁*=1.0 prevents collapse. Meta-learning independently recovers this optimum.
 
-**Central finding: The Moral Commitment Spectrum** — the severity of environmental non-linearity determines the minimum commitment required for collective survival.
+---
+
+## Repository Structure
+
+```
+NeurIPS2026_final_submission/
+├── paper/                          # LaTeX source + compiled PDF
+│   ├── unified_paper.tex
+│   ├── unified_paper.pdf
+│   ├── unified_references.bib
+│   └── *.png                       # Figures
+├── code/
+│   ├── reproduce_quick.py          # Entry point for reproduction
+│   ├── requirements.txt            # Python dependencies (pinned)
+│   ├── Dockerfile                  # Reproducible environment
+│   ├── LICENSE                     # MIT License
+│   ├── robustness_experiments.py   # CVaR, partial obs, adaptive adversaries
+│   ├── scripts/
+│   │   ├── envs/
+│   │   │   └── nonlinear_pgg_env.py    # Gymnasium-style PGG environment
+│   │   ├── ppo_nash_trap.py            # Ind. REINFORCE (Linear/MLP/Critic)
+│   │   ├── cleanrl_mappo_pgg.py        # CleanRL IPPO/MAPPO (20 seeds)
+│   │   ├── cleanrl_qmix_pgg.py         # CleanRL QMIX (20 seeds)
+│   │   ├── hp_sweep_ippo.py            # HP sensitivity (20 combos × 10 seeds)
+│   │   ├── phi1_ablation.py            # φ₁ sweep (20 seeds)
+│   │   ├── scale_test_n100.py          # N=100 scale test
+│   │   ├── dnn_ablation.py             # Network depth ablation
+│   │   ├── kpg_experiment.py           # K-level anticipation
+│   │   ├── meta_learn_g.py             # Meta-learning g(θ,R)
+│   │   ├── spatial_dilemma.py          # Spatial social dilemma
+│   │   ├── cpr_experiment.py           # CPR cross-environment
+│   │   ├── partial_obs_experiment.py   # Partial observability
+│   │   ├── inject_tables.py            # JSON → LaTeX table injection
+│   │   ├── audit_submission.py         # Submission integrity checker
+│   │   └── build_submission_zip.py     # ZIP packager
+│   └── outputs/                    # Experiment results (JSON)
+│       ├── cleanrl_baselines/
+│       ├── phi1_ablation/
+│       ├── ppo_nash_trap/
+│       ├── scale_n100/
+│       ├── dnn_ablation/
+│       ├── kpg_experiment/
+│       ├── meta_learn_g/
+│       ├── partial_obs/
+│       └── round2/
+└── README.md                       # This file
+```
 
 ---
 
@@ -27,56 +73,33 @@ We investigate this question through a systematic empirical study of cooperation
 
 ```bash
 # Install dependencies
-pip install numpy matplotlib
+cd code
+pip install -r requirements.txt
 
-# Run IPPO Nash Trap experiment (CPU, ~30s)
-python scripts/ppo_nash_trap.py
+# Quick smoke test (~12 seconds)
+python reproduce_quick.py --fast
 
-# Run meta-learning validation (~3 min)
-python scripts/meta_learn_g.py
-
-# Run extended experiments (N=100, baselines, sensitivity)
-python scripts/extended_experiments.py
+# Full reproduction (~15 minutes, CPU)
+python reproduce_quick.py
 ```
 
 ---
 
-## Repository Structure
-
-```
-EthicaAI/
-├── paper/                    # LaTeX source + compiled PDF
-│   ├── unified_paper.tex
-│   └── unified_paper.pdf
-├── scripts/                  # Experiment scripts
-│   ├── ppo_nash_trap.py      # IPPO 3-level Nash Trap (NEW)
-│   ├── meta_learn_g.py       # Meta-learning g(θ,R) validation
-│   ├── mappo_emergence.py    # REINFORCE emergence baseline
-│   ├── extended_experiments.py # Scale/baseline/sensitivity tests
-│   ├── kpg_experiment.py     # K-level anticipation ablation
-│   ├── spatial_dilemma.py    # Spatial social dilemma
-│   ├── phase_diagram.py      # Phase diagram generation
-│   └── reproduce.py          # One-click reproduction
-├── outputs/                  # Experiment results (JSON)
-└── simulation/               # JAX simulation core
-```
-
----
-
-## Reproducing Results
-
-All paper figures and tables can be reproduced from the scripts:
+## Reproducing Key Results
 
 | Table/Figure | Script | Output |
 |:---|:---|:---|
-| Table 3 (IPPO) | `ppo_nash_trap.py` | `outputs/ppo_nash_trap/ippo_results.json` |
-| Table 6 (Meta-learn) | `meta_learn_g.py` | `outputs/meta_learn_g/meta_learn_results.json` |
-| Fig. Phase Diagram | `phase_diagram.py` | `outputs/phase_diagram/results.json` |
-| Table 4 (Scale) | `extended_experiments.py` | `outputs/extended_experiments/extended_results.json` |
-| Table 5 (Baselines) | `extended_experiments.py` | `outputs/extended_experiments/extended_results.json` |
+| Table 3 (Nash Trap) | `ppo_nash_trap.py`, `cleanrl_mappo_pgg.py`, `cleanrl_qmix_pgg.py` | `outputs/ppo_nash_trap/`, `outputs/cleanrl_baselines/` |
+| Table 4 (Scale N=100) | `scale_test_n100.py` | `outputs/scale_n100/` |
+| Table 5 (φ₁ Sweep) | `phi1_ablation.py` | `outputs/phi1_ablation/phi1_results.json` |
+| Table 6 (Meta-Learn) | `meta_learn_g.py` | `outputs/meta_learn_g/` |
+| HP Sweep (Appendix) | `hp_sweep_ippo.py` | `outputs/cleanrl_baselines/hp_sweep_results.json` |
+| DNN Ablation | `dnn_ablation.py` | `outputs/dnn_ablation/` |
+| KPG Experiment | `kpg_experiment.py` | `outputs/kpg_experiment/` |
+| Robustness (CVaR, PO, Adv) | `robustness_experiments.py` | `outputs/round2/` |
 
 ---
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License — see `code/LICENSE` for details.

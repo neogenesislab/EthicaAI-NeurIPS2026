@@ -1,0 +1,168 @@
+========================================================================
+  NeurIPS 2026 제출물 종합 감사 보고서
+  대상: D:\00.test\PAPER\EthicaAI\NeurIPS2026_final_submission
+========================================================================
+
+  ❌ FAIL: 0건
+  ⚠️ WARN: 30건
+  ℹ️ INFO: 1건
+
+─── Module 1: TeX ↔ JSON 수치 교차 검증 [✅ PASS] ───
+  (이상 없음)
+
+─── Module 2: BibTeX 무결성 [⚠️ WARN] ───
+  ⚠️ BibTeX 엔트리 'lerer2017maintaining' → 논문에서 미참조
+
+─── Module 3: 그림 파일 존재 [✅ PASS] ───
+  (이상 없음)
+
+─── Module 4: 플레이스홀더 잔류 [✅ PASS] ───
+  (이상 없음)
+
+─── Module 5: LaTeX 빌드 로그 [⚠️ WARN] ───
+  ⚠️ LaTeX Warning: Package geometry Warning: Over-specification in `h'-direction.
+  ⚠️ LaTeX Warning: Package geometry Warning: Over-specification in `v'-direction.
+  ⚠️ LaTeX Warning: LaTeX Warning: `h' float specifier changed to `ht'.
+  ⚠️ LaTeX Warning: LaTeX Warning: `h' float specifier changed to `ht'.
+  ⚠️ LaTeX Warning: LaTeX Warning: `h' float specifier changed to `ht'.
+  ⚠️ Overfull boxes: 2개 (hbox 넘침)
+  ℹ️ PDF 생성 성공: 22페이지
+
+─── Module 6: README 팩트체크 [⚠️ WARN] ───
+  ⚠️ README에 언급된 '
+NeurIPS2026_final_submission/
+├── paper/                          # LaTeX source + compiled PDF
+│   ├── unified_paper.tex
+│   ├── unified_paper.pdf
+│   ├── unified_references.bib
+│   └── *.png                       # Figures
+├── code/
+│   ├── reproduce_quick.py          # Entry point for reproduction
+│   ├── requirements.txt            # Python dependencies (pinned)
+│   ├── Dockerfile                  # Reproducible environment
+│   ├── LICENSE                     # MIT License
+│   ├── robustness_experiments.py   # CVaR, partial obs, adaptive adversaries
+│   ├── scripts/
+│   │   ├── envs/
+│   │   │   └── nonlinear_pgg_env.py    # Gymnasium-style PGG environment
+│   │   ├── ppo_nash_trap.py            # Ind. REINFORCE (Linear/MLP/Critic)
+│   │   ├── cleanrl_mappo_pgg.py        # CleanRL IPPO/MAPPO (20 seeds)
+│   │   ├── cleanrl_qmix_pgg.py         # CleanRL QMIX (20 seeds)
+│   │   ├── hp_sweep_ippo.py            # HP sensitivity (20 combos × 10 seeds)
+│   │   ├── phi1_ablation.py            # φ₁ sweep (20 seeds)
+│   │   ├── scale_test_n100.py          # N=100 scale test
+│   │   ├── dnn_ablation.py             # Network depth ablation
+│   │   ├── kpg_experiment.py           # K-level anticipation
+│   │   ├── meta_learn_g.py             # Meta-learning g(θ,R)
+│   │   ├── spatial_dilemma.py          # Spatial social dilemma
+│   │   ├── cpr_experiment.py           # CPR cross-environment
+│   │   ├── partial_obs_experiment.py   # Partial observability
+│   │   ├── inject_tables.py            # JSON → LaTeX table injection
+│   │   ├── audit_submission.py         # Submission integrity checker
+│   │   └── build_submission_zip.py     # ZIP packager
+│   └── outputs/                    # Experiment results (JSON)
+│       ├── cleanrl_baselines/
+│       ├── phi1_ablation/
+│       ├── ppo_nash_trap/
+│       ├── scale_n100/
+│       ├── dnn_ablation/
+│       ├── kpg_experiment/
+│       ├── meta_learn_g/
+│       ├── partial_obs/
+│       └── round2/
+└── README.md                       # This file
+' → 실제 파일 없음 (README.md)
+  ⚠️ README에 언급된 'bash
+# Install dependencies
+cd code
+pip install -r requirements.txt
+
+# Quick smoke test (~12 seconds)
+python reproduce_quick.py --fast
+
+# Full reproduction (~15 minutes, CPU)
+python reproduce_quick.py
+' → 실제 파일 없음 (README.md)
+  ⚠️ README에 언급된 'outputs/ppo_nash_trap/hp_sweep_results.json' → 실제 파일 없음 (README.md)
+  ⚠️ README에 언급된 'bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Quick smoke test (~12 seconds)
+python reproduce_quick.py --fast
+
+# Full reproduction (~15 minutes, CPU)
+python reproduce_quick.py
+' → 실제 파일 없음 (README.md)
+  ⚠️ README에 언급된 '
+code/
+├── reproduce_quick.py           # Entry point for reproduction
+├── robustness_experiments.py    # CVaR, partial obs, adaptive adversaries
+├── requirements.txt             # Python dependencies (pinned versions)
+├── Dockerfile                   # Reproducible environment
+├── LICENSE                      # MIT License
+├── scripts/
+│   ├── envs/
+│   │   └── nonlinear_pgg_env.py       # Gymnasium-style PGG environment
+│   ├── ppo_nash_trap.py               # Ind. REINFORCE (Linear/MLP/Critic)
+│   ├── cleanrl_mappo_pgg.py           # CleanRL IPPO/MAPPO baselines (20 seeds)
+│   ├── cleanrl_qmix_pgg.py            # CleanRL QMIX baseline (20 seeds)
+│   ├── hp_sweep_ippo.py               # HP sensitivity (20 combos × 10 seeds)
+│   ├── phi1_ablation.py               # φ₁ sweep (20 seeds)
+│   ├── scale_test_n100.py             # N=100 scale test
+│   ├── dnn_ablation.py                # Network depth ablation
+│   ├── kpg_experiment.py              # K-level anticipation
+│   ├── meta_learn_g.py                # Meta-learning g(θ,R)
+│   ├── spatial_dilemma.py             # Spatial social dilemma
+│   ├── cpr_experiment.py              # CPR cross-environment
+│   ├── partial_obs_experiment.py      # Partial observability
+│   ├── inject_tables.py               # JSON → LaTeX table injection
+│   ├── audit_submission.py            # Submission integrity checker (8 modules)
+│   └── build_submission_zip.py        # ZIP packager
+└── outputs/                     # Experiment results (JSON)
+    ├── cleanrl_baselines/
+    │   ├── cleanrl_baseline_results.json   # IPPO/MAPPO results
+    │   ├── qmix_baseline_results.json      # QMIX results
+    │   └── hp_sweep_results.json           # HP sweep results
+    ├── phi1_ablation/phi1_results.json
+    ├── ppo_nash_trap/
+    ├── scale_n100/
+    ├── dnn_ablation/
+    ├── kpg_experiment/
+    ├── meta_learn_g/
+    ├── partial_obs/
+    └── round2/
+' → 실제 파일 없음 (README.md)
+  ⚠️ README에 언급된 'outputs/ppo_nash_trap/hp_sweep_results.json' → 실제 파일 없음 (README.md)
+  ⚠️ README에 언급된 'bash
+# Run submission integrity audit (8 modules)
+python scripts/audit_submission.py
+
+# Inject latest JSON data into LaTeX tables
+python scripts/inject_tables.py
+' → 실제 파일 없음 (README.md)
+
+─── Module 7: 코드 일관성 [✅ PASS] ───
+  (이상 없음)
+
+─── Module 8: 교차참조 무결성 [⚠️ WARN] ───
+  ⚠️ \label{app:ablation} → 본문에서 미참조
+  ⚠️ \label{app:lola} → 본문에서 미참조
+  ⚠️ \label{eq:lambda} → 본문에서 미참조
+  ⚠️ \label{eq:reward} → 본문에서 미참조
+  ⚠️ \label{fig:melting_pot} → 본문에서 미참조
+  ⚠️ \label{fig:nash_trap} → 본문에서 미참조
+  ⚠️ \label{fig:training_curves} → 본문에서 미참조
+  ⚠️ \label{sec:discussion} → 본문에서 미참조
+  ⚠️ \label{sec:turning_point} → 본문에서 미참조
+  ⚠️ \label{tab:ablation} → 본문에서 미참조
+  ⚠️ \label{tab:adaptive_adv} → 본문에서 미참조
+  ⚠️ \label{tab:cpr} → 본문에서 미참조
+  ⚠️ \label{tab:cvar} → 본문에서 미참조
+  ⚠️ \label{tab:hp_sweep} → 본문에서 미참조
+  ⚠️ \label{tab:melting_pot} → 본문에서 미참조
+  ⚠️ \label{tab:partial_obs} → 본문에서 미참조
+
+========================================================================
+  최종 판정: PASS ✅
+========================================================================
