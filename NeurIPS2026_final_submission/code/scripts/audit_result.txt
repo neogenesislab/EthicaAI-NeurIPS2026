@@ -1,0 +1,185 @@
+﻿python : D:\00.test\PAPER\E
+thicaAI\NeurIPS2026_final_s
+ubmission\code\scripts\audi
+t_submission.py:9: SyntaxWa
+rning: invalid escape seque
+nce '\i'
+위치 줄:1 문자:1
++ python audit_submission.p
+y 2>&1 | Out-File -FilePath
+ audit_result.txt ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~
+    + CategoryInfo         
+     : NotSpecified: (D:\  
+  00.test\PAPE...e seque   
+ nce '\i':String) [], R    
+emoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+  Module 3: 洹몃┝ ?뚯씪 議댁옱 ?щ?
+ (\includegraphics 寃쎈줈 ?꾩닔 
+?먭?)
+NeurIPS ?쒖텧臾?醫낇빀 媛먯궗 ?쒖옉...
+
+========================================================================
+  NeurIPS 2026 ?쒖텧臾?醫낇빀 媛먯궗 蹂닿퀬??
+  ??? D:\00.test\PAPER\EthicaAI\NeurIPS2026_final_submission
+========================================================================
+
+  ??FAIL: 0嫄?
+  ?좑툘 WARN: 22嫄?
+  ?뱄툘 INFO: 1嫄?
+
+??? Module 1: TeX ??JSON ?섏튂 援먯감 寃利?[?좑툘 WARN] ???
+  ?좑툘 phi1=0.0, byz_0: W=29.5 ??TeX???놁쓬
+  ?좑툘 phi1=0.21, byz_0: W=29.5 ??TeX???놁쓬
+  ?좑툘 phi1=0.5, byz_0: W=29.5 ??TeX???놁쓬
+  ?좑툘 phi1=1.0, byz_0: W=29.5 ??TeX???놁쓬
+  ?좑툘 phi1=1.0, byz_30: W=26.2 ??TeX???놁쓬
+
+??? Module 2: BibTeX 臾닿껐??[??PASS] ???
+  (?댁긽 ?놁쓬)
+
+??? Module 3: 洹몃┝ ?뚯씪 議댁옱 [??PASS] ???
+  (?댁긽 ?놁쓬)
+
+??? Module 4: ?뚮젅?댁뒪????붾쪟 [??PASS] ???
+  (?댁긽 ?놁쓬)
+
+??? Module 5: LaTeX 鍮뚮뱶 濡쒓렇 [?좑툘 WARN] ???
+  ?좑툘 LaTeX Warning: Package geometry Warning: Over-specification in `h'-direction.
+  ?좑툘 LaTeX Warning: Package geometry Warning: Over-specification in `v'-direction.
+  ?좑툘 LaTeX Warning: LaTeX Warning: `h' float specifier changed to `ht'.
+  ?좑툘 LaTeX Warning: LaTeX Warning: `h' float specifier changed to `ht'.
+  ?좑툘 LaTeX Warning: LaTeX Warning: `h' float specifier changed to `ht'.
+  ?좑툘 Overfull boxes: 2媛?(hbox ?섏묠)
+  ?뱄툘 PDF ?앹꽦 ?깃났: 22?섏씠吏
+
+??? Module 6: README ?⑺듃泥댄겕 [?좑툘 WARN] ???
+  ?좑툘 README???멸툒??'
+NeurIPS2026_final_submission/
+?쒋?? paper/                          # LaTeX source + compiled PDF
+??  ?쒋?? unified_paper.tex
+??  ?쒋?? unified_paper.pdf
+??  ?쒋?? unified_references.bib
+??  ?붴?? *.png                       # Figures
+?쒋?? code/
+??  ?쒋?? reproduce_quick.py          # Entry point for reproduction
+??  ?쒋?? requirements.txt            # Python dependencies (pinned)
+??  ?쒋?? Dockerfile                  # Reproducible environment
+??  ?쒋?? LICENSE                     # MIT License
+??  ?쒋?? robustness_experiments.py   # CVaR, partial obs, adaptive adversaries
+??  ?쒋?? scripts/
+??  ??  ?쒋?? envs/
+??  ??  ??  ?붴?? nonlinear_pgg_env.py    # Gymnasium-style PGG environment
+??  ??  ?쒋?? ppo_nash_trap.py            # Ind. REINFORCE (Linear/MLP/Critic)
+??  ??  ?쒋?? cleanrl_mappo_pgg.py        # CleanRL IPPO/MAPPO (20 seeds)
+??  ??  ?쒋?? cleanrl_qmix_pgg.py         # CleanRL IQL (20 seeds)
+??  ??  ?쒋?? hp_sweep_ippo.py            # HP sensitivity (20 combos 횞 10 seeds)
+??  ??  ?쒋?? phi1_ablation.py            # ???sweep (20 seeds)
+??  ??  ?쒋?? scale_test_n100.py          # N=100 scale test
+??  ??  ?쒋?? dnn_ablation.py             # Network depth ablation
+??  ??  ?쒋?? kpg_experiment.py           # K-level anticipation
+??  ??  ?쒋?? meta_learn_g.py             # Meta-learning g(罐,R)
+??  ??  ?쒋?? spatial_dilemma.py          # Spatial social dilemma
+??  ??  ?쒋?? cpr_experiment.py           # CPR cross-environment
+??  ??  ?쒋?? partial_obs_experiment.py   # Partial observability
+??  ??  ?쒋?? inject_tables.py            # JSON ??LaTeX table injection
+??  ??  ?쒋?? audit_submission.py         # Submission integrity checker
+??  ??  ?붴?? build_submission_zip.py     # ZIP packager
+??  ?붴?? outputs/                    # Experiment results (JSON)
+??      ?쒋?? cleanrl_baselines/
+??      ?쒋?? phi1_ablation/
+??      ?쒋?? ppo_nash_trap/
+??      ?쒋?? scale_n100/
+??      ?쒋?? dnn_ablation/
+??      ?쒋?? kpg_experiment/
+??      ?쒋?? meta_learn_g/
+??      ?쒋?? partial_obs/
+??      ?붴?? round2/
+?붴?? README.md                       # This file
+' ???ㅼ젣 ?뚯씪 ?놁쓬 (README.md)
+  ?좑툘 README???멸툒??'bash
+# Install dependencies
+cd code
+pip install -r requirements.txt
+
+# Quick smoke test (~12 seconds)
+python reproduce_quick.py --fast
+
+# Full reproduction (~15 minutes, CPU)
+python reproduce_quick.py
+' ???ㅼ젣 ?뚯씪 ?놁쓬 (README.md)
+  ?좑툘 README???멸툒??'bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Quick smoke test (~12 seconds)
+python reproduce_quick.py --fast
+
+# Full reproduction (~15 minutes, CPU)
+python reproduce_quick.py
+' ???ㅼ젣 ?뚯씪 ?놁쓬 (README.md)
+  ?좑툘 README???멸툒??'
+code/
+?쒋?? reproduce_quick.py           # Entry point for reproduction
+?쒋?? robustness_experiments.py    # CVaR, partial obs, adaptive adversaries
+?쒋?? requirements.txt             # Python dependencies (pinned versions)
+?쒋?? Dockerfile                   # Reproducible environment
+?쒋?? LICENSE                      # MIT License
+?쒋?? scripts/
+??  ?쒋?? envs/
+??  ??  ?붴?? nonlinear_pgg_env.py       # Gymnasium-style PGG environment
+??  ?쒋?? ppo_nash_trap.py               # Ind. REINFORCE (Linear/MLP/Critic)
+??  ?쒋?? cleanrl_mappo_pgg.py           # CleanRL IPPO/MAPPO baselines (20 seeds)
+??  ?쒋?? cleanrl_qmix_pgg.py            # CleanRL IQL baseline (20 seeds)
+??  ?쒋?? hp_sweep_ippo.py               # HP sensitivity (20 combos 횞 10 seeds)
+??  ?쒋?? phi1_ablation.py               # ???sweep (20 seeds)
+??  ?쒋?? scale_test_n100.py             # N=100 scale test
+??  ?쒋?? dnn_ablation.py                # Network depth ablation
+??  ?쒋?? kpg_experiment.py              # K-level anticipation
+??  ?쒋?? meta_learn_g.py                # Meta-learning g(罐,R)
+??  ?쒋?? spatial_dilemma.py             # Spatial social dilemma
+??  ?쒋?? cpr_experiment.py              # CPR cross-environment
+??  ?쒋?? partial_obs_experiment.py      # Partial observability
+??  ?쒋?? inject_tables.py               # JSON ??LaTeX table injection
+??  ?쒋?? audit_submission.py            # Submission integrity checker (8 modules)
+??  ?붴?? build_submission_zip.py        # ZIP packager
+?붴?? outputs/                     # Experiment results (JSON)
+    ?쒋?? cleanrl_baselines/
+    ??  ?쒋?? cleanrl_baseline_results.json   # IPPO/MAPPO results
+    ??  ?쒋?? iql_baseline_results.json      # IQL results
+    ??  ?붴?? hp_sweep_results.json           # HP sweep results
+    ?쒋?? phi1_ablation/phi1_results.json
+    ?쒋?? ppo_nash_trap/
+    ?쒋?? scale_n100/
+    ?쒋?? dnn_ablation/
+    ?쒋?? kpg_experiment/
+    ?쒋?? meta_learn_g/
+    ?쒋?? partial_obs/
+    ?붴?? round2/
+' ???ㅼ젣 ?뚯씪 ?놁쓬 (README.md)
+  ?좑툘 README???멸툒??'bash
+# Run submission integrity audit (8 modules)
+python scripts/audit_submission.py
+
+# Inject latest JSON data into LaTeX tables
+python scripts/inject_tables.py
+' ???ㅼ젣 ?뚯씪 ?놁쓬 (README.md)
+
+??? Module 7: 肄붾뱶 ?쇨???[??PASS] ???
+  (?댁긽 ?놁쓬)
+
+??? Module 8: 援먯감李몄“ 臾닿껐??[?좑툘 WARN] ???
+  ?좑툘 \label{app:ablation} ??蹂몃Ц?먯꽌 誘몄갭議?
+  ?좑툘 \label{app:lola} ??蹂몃Ц?먯꽌 誘몄갭議?
+  ?좑툘 \label{eq:lambda} ??蹂몃Ц?먯꽌 誘몄갭議?
+  ?좑툘 \label{eq:reward} ??蹂몃Ц?먯꽌 誘몄갭議?
+  ?좑툘 \label{sec:discussion} ??蹂몃Ц?먯꽌 誘몄갭議?
+  ?좑툘 \label{sec:turning_point} ??蹂몃Ц?먯꽌 誘몄갭議?
+
+========================================================================
+  理쒖쥌 ?먯젙: PASS ??
+========================================================================

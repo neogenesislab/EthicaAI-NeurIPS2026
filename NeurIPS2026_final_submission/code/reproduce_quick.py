@@ -12,7 +12,7 @@ Expected runtime:
   full:    ~15 minutes (CPU)
 
 Experiments reproduced:
-  1. Table 3: Nash Trap (Ind. REINFORCE x3 + True IPPO + MAPPO + QMIX)
+  1. Table 3: Nash Trap (Ind. REINFORCE x3 + True IPPO + MAPPO + IQL)
   2. Table 5: Scale test N=100
   3. DNN Ablation (Appendix)
 """
@@ -95,9 +95,9 @@ def main():
     ok, t = run_script("Table 3: MAPPO", "cleanrl_mappo_pgg.py")
     results.append(("Table 3: CleanRL MAPPO", ok, t))
 
-    # 2b. Table 3 extended: CleanRL QMIX baseline
-    ok, t = run_script("Table 3: QMIX", "cleanrl_qmix_pgg.py")
-    results.append(("Table 3: CleanRL QMIX", ok, t))
+    # 2b. Table 3 extended: CleanRL IQL baseline
+    ok, t = run_script("Table 3: IQL", "cleanrl_qmix_pgg.py")
+    results.append(("Table 3: CleanRL IQL", ok, t))
 
     # 3. DNN Ablation
     ok, t = run_script("DNN Ablation", "dnn_ablation.py")

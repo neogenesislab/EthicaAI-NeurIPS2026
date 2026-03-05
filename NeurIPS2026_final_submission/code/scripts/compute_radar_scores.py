@@ -113,10 +113,10 @@ def main():
                 ))
 
     # QMIX
-    qm_path = os.path.join(outputs_dir, "cleanrl_baselines", "qmix_baseline_results.json")
+    qm_path = os.path.join(outputs_dir, "cleanrl_baselines", "iql_baseline_results.json")
     qm_data = load_json_safe(qm_path)
-    if qm_data and "CleanRL QMIX" in qm_data:
-        d = qm_data["CleanRL QMIX"]
+    if qm_data and "CleanRL IQL" in qm_data:
+        d = qm_data["CleanRL IQL"]
         results.append(compute_scores(
             "QMIX",
             lam_mean=d["lambda"]["mean"],

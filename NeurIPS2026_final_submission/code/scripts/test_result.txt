@@ -1,0 +1,10 @@
+﻿============================================================
+  Algorithm Correctness Unit Tests
+============================================================
+  [PASS] MAPPO gradient flow: fc1, fc2, mean_head all updated
+  [ERROR] test_iql_weight_change: cannot import name 'QNetwork' from 'cleanrl_qmix_pgg' (D:\00.test\PAPER\EthicaAI\NeurIPS2026_final_submission\code\scripts\cleanrl_qmix_pgg.py)
+  [PASS] obs index semantics: [R, prev_貫, crisis_flag, t/T]
+  [ERROR] test_phi1_uses_correct_obs: module 'phi1_ablation' has no attribute 'run_phi1_experiment'
+
+  Results: 2 passed, 2 failed
+============================================================

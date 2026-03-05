@@ -4,14 +4,18 @@
 ========================================================================
 
   ❌ FAIL: 0건
-  ⚠️ WARN: 19건
+  ⚠️ WARN: 22건
   ℹ️ INFO: 1건
 
-─── Module 1: TeX ↔ JSON 수치 교차 검증 [✅ PASS] ───
-  (이상 없음)
+─── Module 1: TeX ↔ JSON 수치 교차 검증 [⚠️ WARN] ───
+  ⚠️ phi1=0.0, byz_0: W=29.5 이 TeX에 없음
+  ⚠️ phi1=0.21, byz_0: W=29.5 이 TeX에 없음
+  ⚠️ phi1=0.5, byz_0: W=29.5 이 TeX에 없음
+  ⚠️ phi1=1.0, byz_0: W=29.5 이 TeX에 없음
+  ⚠️ phi1=1.0, byz_30: W=26.2 이 TeX에 없음
 
-─── Module 2: BibTeX 무결성 [⚠️ WARN] ───
-  ⚠️ BibTeX 엔트리 'lerer2017maintaining' → 논문에서 미참조
+─── Module 2: BibTeX 무결성 [✅ PASS] ───
+  (이상 없음)
 
 ─── Module 3: 그림 파일 존재 [✅ PASS] ───
   (이상 없음)
@@ -47,7 +51,7 @@ NeurIPS2026_final_submission/
 │   │   │   └── nonlinear_pgg_env.py    # Gymnasium-style PGG environment
 │   │   ├── ppo_nash_trap.py            # Ind. REINFORCE (Linear/MLP/Critic)
 │   │   ├── cleanrl_mappo_pgg.py        # CleanRL IPPO/MAPPO (20 seeds)
-│   │   ├── cleanrl_qmix_pgg.py         # CleanRL QMIX (20 seeds)
+│   │   ├── cleanrl_qmix_pgg.py         # CleanRL IQL (20 seeds)
 │   │   ├── hp_sweep_ippo.py            # HP sensitivity (20 combos × 10 seeds)
 │   │   ├── phi1_ablation.py            # φ₁ sweep (20 seeds)
 │   │   ├── scale_test_n100.py          # N=100 scale test
@@ -105,7 +109,7 @@ code/
 │   │   └── nonlinear_pgg_env.py       # Gymnasium-style PGG environment
 │   ├── ppo_nash_trap.py               # Ind. REINFORCE (Linear/MLP/Critic)
 │   ├── cleanrl_mappo_pgg.py           # CleanRL IPPO/MAPPO baselines (20 seeds)
-│   ├── cleanrl_qmix_pgg.py            # CleanRL QMIX baseline (20 seeds)
+│   ├── cleanrl_qmix_pgg.py            # CleanRL IQL baseline (20 seeds)
 │   ├── hp_sweep_ippo.py               # HP sensitivity (20 combos × 10 seeds)
 │   ├── phi1_ablation.py               # φ₁ sweep (20 seeds)
 │   ├── scale_test_n100.py             # N=100 scale test
@@ -121,7 +125,7 @@ code/
 └── outputs/                     # Experiment results (JSON)
     ├── cleanrl_baselines/
     │   ├── cleanrl_baseline_results.json   # IPPO/MAPPO results
-    │   ├── qmix_baseline_results.json      # QMIX results
+    │   ├── iql_baseline_results.json      # IQL results
     │   └── hp_sweep_results.json           # HP sweep results
     ├── phi1_ablation/phi1_results.json
     ├── ppo_nash_trap/
@@ -148,7 +152,6 @@ python scripts/inject_tables.py
   ⚠️ \label{app:lola} → 본문에서 미참조
   ⚠️ \label{eq:lambda} → 본문에서 미참조
   ⚠️ \label{eq:reward} → 본문에서 미참조
-  ⚠️ \label{fig:melting_pot} → 본문에서 미참조
   ⚠️ \label{sec:discussion} → 본문에서 미참조
   ⚠️ \label{sec:turning_point} → 본문에서 미참조
 

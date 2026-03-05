@@ -1,0 +1,28 @@
+﻿============================================================
+  Chain Rule Verification: Analytical vs Finite-Difference
+============================================================
+
+  Computing finite-difference gradients (this takes a moment)...
+
+  fc1:
+    Analytical norm:  0.069434
+    Numerical norm:   0.069434
+    Max abs diff:     6.95e-11
+    Max rel error:    1.26e-08
+    [PASS]
+
+  fc2:
+    Analytical norm:  0.314007
+    Numerical norm:   0.314007
+    Max abs diff:     1.75e-10
+    Max rel error:    2.20e-07
+    [PASS]
+
+  mean_head:
+    Analytical norm:  0.314787
+    Numerical norm:   0.314787
+    Max abs diff:     5.74e-10
+    Max rel error:    3.48e-09
+    [PASS]
+
+============================================================

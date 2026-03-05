@@ -175,29 +175,54 @@ def ppo_update_actor(actor, obs_list, act_list, old_lps, advantages, entropy_coe
         
         pg_loss = -min(ratio * adv, clip_ratio * adv)
         
-        # --- Policy gradient through network weights ---
-        mean, h = actor.forward(obs)
+        # --- Policy gradient through network weights (full chain rule) ---
+        # Forward pass (recompute intermediates for gradient)
+        z1 = actor.fc1.forward(obs)          # pre-activation fc1
+        h1 = relu(z1)                        # post-activation fc1
+        z2 = actor.fc2.forward(h1)           # pre-activation fc2
+        h2 = relu(z2)                        # post-activation fc2
+        z_out = actor.mean_head.forward(h2)  # pre-sigmoid
+        mean_val = 1.0 / (1.0 + np.exp(-z_out.flatten()))  # sigmoid
         std = np.exp(actor.log_std)
-        d_lp_d_mean = (act - mean[0]) / (std[0]**2)
         
-        for layer in [actor.fc1, actor.fc2, actor.mean_head]:
-            if layer is actor.mean_head:
-                h2 = relu(actor.fc2.forward(relu(actor.fc1.forward(obs))))
-                sig_deriv = mean[0] * (1 - mean[0])
-                grad_W = np.outer(h2, [d_lp_d_mean * sig_deriv * adv])
-                grad_b = np.array([d_lp_d_mean * sig_deriv * adv])
-            else:
-                grad_W = np.zeros_like(layer.W)
-                grad_b = np.zeros_like(layer.b)
-            
-            layer.adam_update(grad_W, grad_b)
+        # Gradient of log_prob w.r.t. mean
+        d_lp_d_mean = (act - mean_val[0]) / (std[0]**2)
+        
+        # Through sigmoid: d_mean/d_z_out = mean*(1-mean)
+        sig_deriv = mean_val[0] * (1 - mean_val[0])
+        
+        # Signal at mean_head input: scalar
+        delta_out = d_lp_d_mean * sig_deriv * adv
+        
+        # --- mean_head gradient ---
+        grad_W_mh = np.outer(h2, [delta_out])
+        grad_b_mh = np.array([delta_out])
+        actor.mean_head.adam_update(grad_W_mh, grad_b_mh)
+        
+        # --- fc2 gradient (backprop through mean_head) ---
+        # delta at h2: delta_out * mean_head.W^T, shape (hidden,)
+        delta_h2 = delta_out * actor.mean_head.W.flatten()
+        # Through relu: element-wise multiply by relu'(z2)
+        delta_z2 = delta_h2 * (z2 > 0).astype(np.float32)
+        grad_W_fc2 = np.outer(h1, delta_z2)
+        grad_b_fc2 = delta_z2
+        actor.fc2.adam_update(grad_W_fc2, grad_b_fc2)
+        
+        # --- fc1 gradient (backprop through fc2) ---
+        # delta at h1: delta_z2 @ fc2.W^T, shape (hidden,)
+        delta_h1 = delta_z2 @ actor.fc2.W.T
+        # Through relu: element-wise multiply by relu'(z1)
+        delta_z1 = delta_h1 * (z1 > 0).astype(np.float32)
+        grad_W_fc1 = np.outer(obs, delta_z1)
+        grad_b_fc1 = delta_z1
+        actor.fc1.adam_update(grad_W_fc1, grad_b_fc1)
         
         # --- Entropy bonus: update log_std ---
         # Gaussian entropy H = 0.5 + 0.5*ln(2π) + log_std
         # ∂H/∂log_std = 1, so gradient of (-entropy_coef * H) w.r.t. log_std = -entropy_coef
         # We also add the log_prob gradient w.r.t. log_std:
         # ∂log_prob/∂log_std = ((act - mean)^2 / std^2) - 1
-        d_lp_d_logstd = ((act - mean[0])**2 / (std[0]**2)) - 1.0
+        d_lp_d_logstd = ((act - mean_val[0])**2 / (std[0]**2)) - 1.0
         log_std_grad = -(d_lp_d_logstd * adv + entropy_coef * 1.0)
         # Apply simple SGD to log_std (small lr to keep stable)
         actor.log_std -= LR_ACTOR * 0.1 * log_std_grad

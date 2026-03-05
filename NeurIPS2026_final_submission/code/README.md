@@ -36,7 +36,7 @@ code/
 │   │   └── nonlinear_pgg_env.py       # Gymnasium-style PGG environment
 │   ├── ppo_nash_trap.py               # Ind. REINFORCE (Linear/MLP/Critic)
 │   ├── cleanrl_mappo_pgg.py           # CleanRL IPPO/MAPPO baselines (20 seeds)
-│   ├── cleanrl_qmix_pgg.py            # CleanRL QMIX baseline (20 seeds)
+│   ├── cleanrl_qmix_pgg.py            # CleanRL IQL baseline (20 seeds)
 │   ├── hp_sweep_ippo.py               # HP sensitivity (20 combos × 10 seeds)
 │   ├── phi1_ablation.py               # φ₁ sweep (20 seeds)
 │   ├── scale_test_n100.py             # N=100 scale test
@@ -52,7 +52,7 @@ code/
 └── outputs/                     # Experiment results (JSON)
     ├── cleanrl_baselines/
     │   ├── cleanrl_baseline_results.json   # IPPO/MAPPO results
-    │   ├── qmix_baseline_results.json      # QMIX results
+    │   ├── iql_baseline_results.json      # IQL results
     │   └── hp_sweep_results.json           # HP sweep results
     ├── phi1_ablation/phi1_results.json
     ├── ppo_nash_trap/
@@ -72,7 +72,7 @@ All experiments use N=20 agents, E=20.0 endowment, 30% Byzantine adversaries, an
 |---|---|---|---|
 | Ind. REINFORCE (Table 3) | `ppo_nash_trap.py` | 5 | `outputs/ppo_nash_trap/` |
 | IPPO/MAPPO (Table 3) | `cleanrl_mappo_pgg.py` | 20 | `outputs/cleanrl_baselines/cleanrl_baseline_results.json` |
-| QMIX (Table 3) | `cleanrl_qmix_pgg.py` | 20 | `outputs/cleanrl_baselines/qmix_baseline_results.json` |
+| IQL (Table 3) | `cleanrl_qmix_pgg.py` | 20 | `outputs/cleanrl_baselines/iql_baseline_results.json` |
 | HP Sweep (Appendix) | `hp_sweep_ippo.py` | 10×20 | `outputs/cleanrl_baselines/hp_sweep_results.json` |
 | φ₁ Ablation (Table 5) | `phi1_ablation.py` | 20 | `outputs/phi1_ablation/phi1_results.json` |
 | Scale N=100 (Table 4) | `scale_test_n100.py` | 10 | `outputs/scale_n100/` |

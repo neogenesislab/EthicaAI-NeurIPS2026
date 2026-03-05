@@ -146,8 +146,8 @@ check("requirements.txt exists", (repo_root / "requirements.txt").exists() or
 # Check experiment output files
 check("CleanRL IPPO/MAPPO results", 
       (OUTPUTS_DIR / "cleanrl_baselines" / "cleanrl_baseline_results.json").exists())
-check("QMIX results",
-      (OUTPUTS_DIR / "cleanrl_baselines" / "qmix_baseline_results.json").exists())
+check("IQL results",
+      (OUTPUTS_DIR / "cleanrl_baselines" / "iql_baseline_results.json").exists())
 
 # ─── 9. Sensitive Info Check ─────────────────────────────────
 print("\n[9] Anonymization & Security")
@@ -188,11 +188,11 @@ if json_path.exists():
     check("MAPPO lambda in tex matches JSON",
           mappo_lam in tex_text, f"JSON={mappo_lam}")
 
-qmix_path = OUTPUTS_DIR / "cleanrl_baselines" / "qmix_baseline_results.json"
+qmix_path = OUTPUTS_DIR / "cleanrl_baselines" / "iql_baseline_results.json"
 if qmix_path.exists():
     with open(qmix_path) as f:
         qdata = json.load(f)
-    qmix = qdata["CleanRL QMIX"]
+    qmix = qdata["CleanRL IQL"]
     qmix_lam = f"{qmix['lambda']['mean']:.3f}"
     check("QMIX lambda in tex matches JSON",
           qmix_lam in tex_text, f"JSON={qmix_lam}")

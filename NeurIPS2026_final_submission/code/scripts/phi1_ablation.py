@@ -57,7 +57,7 @@ def run_phi1(seed, phi_1, byz_frac):
         agent_lambdas = np.full(n_honest, 0.5)
         
         for t in range(T):
-            R_t = obs[2] if len(obs) > 2 else 0.5
+            R_t = obs[0]  # obs = [R, prev_mean_lambda, crisis_flag, t/T]
             
             for i in range(n_honest):
                 agent_lambdas[i] = compute_lambda(R_t, phi_1, agent_lambdas[i])

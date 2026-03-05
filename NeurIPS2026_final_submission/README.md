@@ -41,7 +41,7 @@ NeurIPS2026_final_submission/
 │   │   │   └── nonlinear_pgg_env.py    # Gymnasium-style PGG environment
 │   │   ├── ppo_nash_trap.py            # Ind. REINFORCE (Linear/MLP/Critic)
 │   │   ├── cleanrl_mappo_pgg.py        # CleanRL IPPO/MAPPO (20 seeds)
-│   │   ├── cleanrl_qmix_pgg.py         # CleanRL QMIX (20 seeds)
+│   │   ├── cleanrl_qmix_pgg.py         # CleanRL IQL (20 seeds)
 │   │   ├── hp_sweep_ippo.py            # HP sensitivity (20 combos × 10 seeds)
 │   │   ├── phi1_ablation.py            # φ₁ sweep (20 seeds)
 │   │   ├── scale_test_n100.py          # N=100 scale test

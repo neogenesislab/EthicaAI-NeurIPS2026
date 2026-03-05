@@ -45,13 +45,13 @@ def generate_table3():
                       f"surv={fmt(surv['mean'])}%, W={fmt(w['mean'])}")
 
     # QMIX
-    qmix = load_json("cleanrl_baselines/qmix_baseline_results.json")
-    if qmix and "CleanRL QMIX" in qmix:
-        d = qmix["CleanRL QMIX"]
+    qmix = load_json("cleanrl_baselines/iql_baseline_results.json")
+    if qmix and "CleanRL IQL" in qmix:
+        d = qmix["CleanRL IQL"]
         lam = d["lambda"]
         surv = d["survival"]
         w = d["welfare"]
-        print(f"CleanRL QMIX: λ={fmt(lam['mean'], 3)} ± {fmt(lam['std'], 3)}, "
+        print(f"CleanRL IQL: λ={fmt(lam['mean'], 3)} ± {fmt(lam['std'], 3)}, "
               f"surv={fmt(surv['mean'])}%, W={fmt(w['mean'])}")
 
 

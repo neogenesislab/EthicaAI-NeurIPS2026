@@ -1,11 +1,15 @@
 """
-Phase 1b: QMIX Baseline for Non-linear PGG
-=============================================
-Value-based MARL with monotonic mixing network (Rashid et al., 2018).
-Uses analytical backpropagation for efficient gradient computation.
+Phase 1b: IQL (Independent Q-Learning) Baseline for Non-linear PGG
+====================================================================
+Value-based MARL with independent per-agent Q-networks and shared
+team reward. Uses analytical backpropagation for gradient computation.
+
+Note: This implementation uses independent Q-learning WITHOUT the
+mixing network from the QMIX paper (Rashid et al., 2018). Each
+agent learns its own Q-function independently. Results reflect
+IQL characteristics, not QMIX's centralized value decomposition.
 
 Architecture: 2-layer MLP (64 hidden) per agent Q-network
-Mixing: monotonic mixing via abs(hypernetwork weights)
 """
 import numpy as np
 import json
@@ -180,7 +184,7 @@ def run_qmix(seed):
         if len(buf) >= BATCH_SIZE:
             batch = buf.sample(BATCH_SIZE, rng)
             for b_obs, b_acts, b_rew, b_nobs, b_done in batch:
-                # Per-agent DQN update (independent Q-learning, QMIX-style)
+                # Per-agent DQN update (independent Q-learning with shared team reward)
                 for i in range(n):
                     # Current Q
                     q_all = q_nets[i].forward(b_obs)
@@ -211,7 +215,7 @@ def run_qmix(seed):
     wc = time.time() - t0
     ev = episodes[-N_EVAL:]
     return {
-        "label": "CleanRL QMIX",
+        "label": "CleanRL IQL",
         "params_per_agent": q_nets[0].param_count(),
         "mean_lambda": np.mean([d["mean_lambda"] for d in ev]),
         "mean_survival": np.mean([float(d["survived"]) for d in ev]) * 100,
@@ -222,11 +226,11 @@ def run_qmix(seed):
 
 def main():
     print("=" * 70)
-    print("  Phase 1b: QMIX Baseline (analytical backprop)")
+    print("  Phase 1b: IQL Baseline (Independent Q-Learning)")
     print("  N_SEEDS=%d, N_EPISODES=%d" % (N_SEEDS, N_EPISODES))
     print("=" * 70)
     
-    print(f"\n  [QMIX] Running {N_SEEDS} seeds...")
+    print(f"\n  [IQL] Running {N_SEEDS} seeds...")
     t0 = time.time()
     
     results = []
@@ -247,8 +251,8 @@ def main():
     ci_s = bootstrap_ci(survs)
     
     out = {
-        "CleanRL QMIX": {
-            "label": "CleanRL QMIX",
+        "CleanRL IQL": {
+            "label": "CleanRL IQL",
             "params_per_agent": results[0]["params_per_agent"],
             "lambda": {"mean": float(np.mean(lams)), "std": float(np.std(lams)), "ci95": [float(ci_l[0]), float(ci_l[1])]},
             "survival": {"mean": float(np.mean(survs)), "std": float(np.std(survs)), "ci95": [float(ci_s[0]), float(ci_s[1])]},
@@ -259,7 +263,7 @@ def main():
         }
     }
     
-    p = OUTPUT_DIR / "qmix_baseline_results.json"
+    p = OUTPUT_DIR / "iql_baseline_results.json"
     with open(p, "w") as f:
         json.dump(out, f, indent=2)
     print(f"\n  Saved: {p}")
@@ -267,8 +271,8 @@ def main():
     print("\n" + "=" * 70)
     print("  LATEX-READY SUMMARY")
     print("=" * 70)
-    d = out["CleanRL QMIX"]
-    print(f"  QMIX | params={d['params_per_agent']} | "
+    d = out["CleanRL IQL"]
+    print(f"  IQL | params={d['params_per_agent']} | "
           f"lambda={d['lambda']['mean']:.3f} [{d['lambda']['ci95'][0]:.3f},{d['lambda']['ci95'][1]:.3f}] | "
           f"surv={d['survival']['mean']:.1f}% [{d['survival']['ci95'][0]:.1f},{d['survival']['ci95'][1]:.1f}] | "
           f"t={d['wall_clock']['mean']:.1f}s/seed")

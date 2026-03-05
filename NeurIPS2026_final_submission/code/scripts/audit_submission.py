@@ -49,7 +49,7 @@ def audit_tex_json():
     tex = load_tex()
 
     # 1-a: cleanrl_baselines (combined IPPO/MAPPO and QMIX)
-    for name in ["cleanrl_baseline_results.json", "qmix_baseline_results.json"]:
+    for name in ["cleanrl_baseline_results.json", "iql_baseline_results.json"]:
         p = OUTPUTS_DIR / "cleanrl_baselines" / name
         if not p.exists():
             add("FAIL", 1, f"JSON 누락: {p.relative_to(ROOT)}")
