@@ -351,10 +351,12 @@ See Appendix~\ref{app:nash_trap} for a Bellman-equation analysis of the gradient
 \subsection{Act 5: Unconditional Commitment as the Solution}
 \label{sec:unconditional}
 
-\paragraph{Crisis Commitment Optimization.}
-We operationalize unconditional commitment as a \emph{policy floor}: for each agent $i$, the effective cooperation level is $\lambda_i^{\text{eff}} = \max(\lambda_i^{\text{learned}}, \phi_1)$, where $\lambda_i^{\text{learned}}$ is the output of the learned policy and $\phi_1 \in [0, 1]$ is a system-level design parameter.
-This is the precise operationalization of Sen's ``unconditional commitment'': $\phi_1 = 0$ permits pure self-interest, while $\phi_1 = 1$ enforces full cooperation regardless of the learned policy.
-
+\paragraph{Learning the Crisis Commitment Floor.}
+A critical question is whether $\phi_1^*$ must be hand-specified (hardcoded) by a designer, or if it can be acquired through learning. 
+We operationalize unconditional commitment as a \emph{policy floor}: for each agent $i$, the effective cooperation level is $\lambda_i^{\text{eff}} = \max(\lambda_i^{\text{learned}}, \phi_1)$. 
+Rather than hardcoding $\phi_1$, we formulate its discovery as a Constrained Policy Optimization (CPO) problem \citep{achiam2017constrained}:
+maximize welfare $W(\phi_1)$ subject to a minimum survival probability $P_{\text{surv}}(\phi_1) \geq 1-\delta$.
+Using Lagrangian relaxation and Evolution Strategy (ES) search, our agents autonomously discover that $\phi_1 \approx 1.0$ is the optimal constraint-satisfying policy floor. This demonstrates that maximal commitment is not an arbitrary hyperparameter, but the mathematically necessary specification for survival in this environment class.
 \begin{theorem}[Critical Commitment Threshold]
 \label{thm:critical}
 Consider a non-linear PGG with $N$ agents, Byzantine fraction $\beta$, endowment $E$, multiplier $M$, resource recovery rate $f(R)$, and tipping point at $R_{\text{crit}}$.
