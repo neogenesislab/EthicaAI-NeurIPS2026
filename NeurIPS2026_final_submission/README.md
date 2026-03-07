@@ -10,96 +10,86 @@
 ## Abstract
 
 When must multi-agent systems move beyond self-interest, and how much moral commitment is enough?
-We investigate this question through a systematic empirical study of cooperation dynamics in Public Goods Games (PGG) of increasing environmental severity, drawing interpretive framing from Amartya Sen's meta-ranking theory.
+We investigate this through a systematic empirical study across **7 learning paradigms** in Public Goods Games with tipping-point dynamics, drawing from Amartya Sen's meta-ranking theory.
 
-### Key Contributions
+### Key Findings
 
-1. **(C1) Computational Meta-Ranking**: MARL formalization of Sen's theory with dynamic commitment λₜ ∈ [0,1] conditioned on resource state and SVO
-2. **(C2) Situational Commitment in Linear Environments**: Group-level ESS (x̄=0.987) outperforming 8 baselines including M-FOS and POLA
-3. **(C3) Algorithm-Invariant Cooperation Failure**: Independent RL agents (Linear, MLP, Actor-Critic, IPPO, MAPPO, QMIX) all converge to suboptimal equilibria — though QMIX achieves notably higher cooperation (71.8%) than IPPO/MAPPO (~37%), it still falls short of the oracle (100%)
-4. **(C4) Unconditional Commitment + Meta-Learning Validation**: Only φ₁*=1.0 prevents collapse. Meta-learning independently recovers this optimum.
-
----
-
-## Repository Structure
-
-```
-NeurIPS2026_final_submission/
-├── paper/                          # LaTeX source + compiled PDF
-│   ├── unified_paper.tex
-│   ├── unified_paper.pdf
-│   ├── unified_references.bib
-│   └── *.png                       # Figures
-├── code/
-│   ├── reproduce_quick.py          # Entry point for reproduction
-│   ├── requirements.txt            # Python dependencies (pinned)
-│   ├── Dockerfile                  # Reproducible environment
-│   ├── LICENSE                     # MIT License
-│   ├── robustness_experiments.py   # CVaR, partial obs, adaptive adversaries
-│   ├── scripts/
-│   │   ├── envs/
-│   │   │   └── nonlinear_pgg_env.py    # Gymnasium-style PGG environment
-│   │   ├── ppo_nash_trap.py            # Ind. REINFORCE (Linear/MLP/Critic)
-│   │   ├── cleanrl_mappo_pgg.py        # CleanRL IPPO/MAPPO (20 seeds)
-│   │   ├── cleanrl_qmix_pgg.py         # CleanRL IQL (20 seeds)
-│   │   ├── hp_sweep_ippo.py            # HP sensitivity (20 combos × 10 seeds)
-│   │   ├── phi1_ablation.py            # φ₁ sweep (20 seeds)
-│   │   ├── scale_test_n100.py          # N=100 scale test
-│   │   ├── dnn_ablation.py             # Network depth ablation
-│   │   ├── kpg_experiment.py           # K-level anticipation
-│   │   ├── meta_learn_g.py             # Meta-learning g(θ,R)
-│   │   ├── spatial_dilemma.py          # Spatial social dilemma
-│   │   ├── cpr_experiment.py           # CPR cross-environment
-│   │   ├── partial_obs_experiment.py   # Partial observability
-│   │   ├── inject_tables.py            # JSON → LaTeX table injection
-│   │   ├── audit_submission.py         # Submission integrity checker
-│   │   └── build_submission_zip.py     # ZIP packager
-│   └── outputs/                    # Experiment results (JSON)
-│       ├── cleanrl_baselines/
-│       ├── phi1_ablation/
-│       ├── ppo_nash_trap/
-│       ├── scale_n100/
-│       ├── dnn_ablation/
-│       ├── kpg_experiment/
-│       ├── meta_learn_g/
-│       ├── partial_obs/
-│       └── round2/
-└── README.md                       # This file
-```
+- **Nash Trap**: All 7 paradigms (REINFORCE ×3, PPO, MAPPO, IQL, QMIX, LOLA) converge to suboptimal λ ≈ 0.37–0.58, yielding only 26–72% survival
+- **Commitment Floor**: Only unconditional commitment (φ₁=1.0) achieves 100% survival
+- **Phase Transition**: Clear boundary in φ₁ × β space (Theorem 1)
+- **Cross-Environment**: CPR environment confirms the Moral Commitment Spectrum
 
 ---
 
 ## Quick Start
 
 ```bash
-# Install dependencies
 cd code
+
+# Install dependencies
 pip install -r requirements.txt
 
-# Quick smoke test (~12 seconds)
-python reproduce_quick.py --fast
+# Quick smoke test (~30 seconds)
+ETHICAAI_FAST=1 python scripts/reproduce_all.py
 
-# Full reproduction (~15 minutes, CPU)
-python reproduce_quick.py
+# Full reproduction (~4 hours, 20 seeds, all 7 experiments)
+python scripts/reproduce_all.py
+```
+
+### Docker
+
+```bash
+cd code
+docker build -t ethicaai .
+docker run ethicaai
 ```
 
 ---
 
-## Reproducing Key Results
+## Repository Structure
 
-| Table/Figure | Script | Output |
-|:---|:---|:---|
-| Table 3 (Nash Trap) | `ppo_nash_trap.py`, `cleanrl_mappo_pgg.py`, `cleanrl_qmix_pgg.py` | `outputs/ppo_nash_trap/`, `outputs/cleanrl_baselines/` |
-| Table 4 (Scale N=100) | `scale_test_n100.py` | `outputs/scale_n100/` |
-| Table 5 (φ₁ Sweep) | `phi1_ablation.py` | `outputs/phi1_ablation/phi1_results.json` |
-| Table 6 (Meta-Learn) | `meta_learn_g.py` | `outputs/meta_learn_g/` |
-| HP Sweep (Appendix) | `hp_sweep_ippo.py` | `outputs/cleanrl_baselines/hp_sweep_results.json` |
-| DNN Ablation | `dnn_ablation.py` | `outputs/dnn_ablation/` |
-| KPG Experiment | `kpg_experiment.py` | `outputs/kpg_experiment/` |
-| Robustness (CVaR, PO, Adv) | `robustness_experiments.py` | `outputs/round2/` |
+```
+EthicaAI-NeurIPS2026/
+├── paper/                              # LaTeX source + compiled PDF
+│   ├── unified_paper.tex
+│   ├── unified_paper.pdf
+│   └── unified_references.bib
+├── code/                               # All experiment code
+│   ├── scripts/                        # Experiment scripts
+│   │   ├── envs/nonlinear_pgg_env.py   # Gymnasium-style PGG environment
+│   │   ├── cleanrl_mappo_pgg.py        # IPPO/MAPPO baselines
+│   │   ├── cleanrl_qmix_real.py        # QMIX (real mixing network)
+│   │   ├── lola_experiment.py          # LOLA (opponent-shaping)
+│   │   ├── ppo_nash_trap.py            # Ind. REINFORCE (3 architectures)
+│   │   ├── phi1_with_learning.py       # φ₁ commitment floor + learning
+│   │   ├── phase_diagram.py            # Phase diagram (φ₁ × β)
+│   │   ├── cpr_experiment.py           # CPR cross-environment
+│   │   └── reproduce_all.py           # One-click reproduction
+│   ├── outputs/                        # Experiment results (JSON)
+│   ├── requirements.txt
+│   └── Dockerfile
+└── README.md
+```
+
+---
+
+## Experiments (7 Paradigms)
+
+All experiments: N=20 agents, E=20.0, 30% Byzantine, 20 seeds.
+
+| Experiment | Script | Paper Ref | Key Result |
+|:---|:---|:---|:---|
+| REINFORCE (3 arch.) | `ppo_nash_trap.py` | Table 3 | λ=0.37–0.49, 26–53% surv |
+| IPPO / MAPPO | `cleanrl_mappo_pgg.py` | Table 3 | λ=0.39–0.41, 37–39% surv |
+| IQL | `cleanrl_qmix_pgg.py` | Table 3 | λ=0.58, 72% surv |
+| QMIX | `cleanrl_qmix_real.py` | Table 3, App. F | λ=0.52, 67% surv |
+| LOLA | `lola_experiment.py` | Table 3, App. F | λ=0.49, 51% surv |
+| φ₁ Floor | `phi1_with_learning.py` | Table 5 | 39%→100% (monotonic) |
+| Phase Diagram | `phase_diagram.py` | App. G | 11×11 heatmap |
+| CPR Validation | `cpr_experiment.py` | App. H | Same pattern confirmed |
 
 ---
 
 ## License
 
-MIT License — see `code/LICENSE` for details.
+MIT License — see [code/LICENSE](code/LICENSE) for details.
