@@ -51,7 +51,7 @@ Moderate environments permit flexible morality; catastrophic environments with i
 
 Rational Choice Theory defines human behavior as utility maximization under constraints.
 \citet{sen1977rational} critiqued this as the ``Rational Fool,'' arguing that genuine moral behavior requires \textit{commitment}---acting against immediate self-interest---mediated through \textit{meta-rankings}: preferences over preference orderings.
-This philosophical insight gains urgent practical relevance as multi-agent reinforcement learning (MARL) systems are increasingly deployed in domains exhibiting \textbf{non-linear dynamics and tipping points}---climate systems, financial markets, and ecological networks~\citep{lenton2008tipping}---where the failure to cooperate can trigger irreversible collapse.
+This philosophical insight gains practical relevance as multi-agent reinforcement learning (MARL) systems are increasingly applied to domains that may exhibit \textbf{non-linear dynamics and tipping points}~\citep{lenton2008tipping}, where failure to cooperate can trigger irreversible collapse.
 
 Can self-interested agents discover cooperative strategies through reward maximization alone, or must cooperation be architecturally encoded?
 And if moral commitment is necessary, \emph{how much} commitment does the environment demand?
@@ -61,10 +61,10 @@ We address these questions through a systematic investigation spanning environme
     \item[(C1)] \textbf{Computational Instantiation of Sen's Meta-Ranking}: We formalize commitment as a dynamic parameter $\lambda_t \in [0,1]$ that adapts to resource state $R_t$ and Social Value Orientation $\theta_i$, enabling agents to balance self-interest and prosocial behavior (Section~\ref{sec:method}).
     \item[(C2)] \textbf{Situational Commitment Works in Linear Environments}: In standard PGG with moderate recovery dynamics, resource-conditioned commitment achieves group-level ESS ($\bar{x}=0.987$), outperforming 8 baselines including M-FOS and POLA (Section~\ref{sec:linear}).
     \item[(C3)] \textbf{Consistent Cooperation Failure Across Evaluated Architectures}: When tipping points introduce irreversible collapse, independent policy-gradient (REINFORCE) agents fail across all three tested architectures (Linear, MLP, Actor-Critic)---converging to suboptimal equilibria ($\lambda \approx 0.05$--$0.5$) with $\leq$54\% survival even for the best-case architecture (Section~\ref{sec:nash_trap}).
-    \item[(C4)] \textbf{Unconditional Commitment as Design Requirement}: In the tested environments, only maximal crisis commitment ($\phi_1^* = 1.0$) reliably prevents collapse. Meta-learning independently recovers this optimum, suggesting it is a structural property of the non-linear PGG (Section~\ref{sec:unconditional}).
+    \item[(C4)] \textbf{Unconditional Commitment in Non-linear PGG}: In our tested environment class, only maximal crisis commitment ($\phi_1^* = 1.0$) reliably prevents collapse. Meta-learning independently recovers this optimum, providing convergent evidence within this setting (Section~\ref{sec:unconditional}).
 \end{enumerate}
 
-Together, these results establish a \textbf{Moral Commitment Spectrum}: the severity of environmental non-linearity determines the minimum commitment required for collective survival.
+Together, these results provide evidence for a \textbf{Moral Commitment Spectrum} within our tested PGG family: the severity of environmental non-linearity determines the minimum commitment required for collective survival in this class of social dilemmas.
 
 % ================================================================
 % SECTION 2: RELATED WORK
@@ -291,21 +291,22 @@ LOLA~\citep{foerster2018learning} & 5 & 0.490 $\pm$ 0.006 & 50.8 & 21.2 \\
 Fixed $\lambda=0.0$ & --- & 0.000 & 0.0 & 20.0 \\
 Fixed $\lambda=1.0$ (oracle) & --- & 1.000 & \textbf{100.0} & \textbf{32.0} \\
 \bottomrule
-\multicolumn{5}{l}{\small CleanRL-style: single-file NumPy reimplementations following CleanRL~\citep{huang2022cleanrl} conventions.} \\
-\multicolumn{5}{l}{\small HP sweep (20 combos $\times$ 10 seeds = 200 runs) in Appendix~\ref{app:hp_sweep}.} \\
+\multicolumn{5}{l}{\small CleanRL-style: single-file NumPy implementations following CleanRL~\citep{huang2022cleanrl} conventions.} \\
+\multicolumn{5}{l}{\small \textbf{Caveat}: These are faithful but simplified reimplementations; fully optimized canonical} \\
+\multicolumn{5}{l}{\small baselines may achieve higher $\lambda$. HP sweep (20 combos $\times$ 10 seeds) in Appendix~\ref{app:hp_sweep}.} \\
 \multicolumn{5}{l}{\small $^\dagger$Plus shared critic. $^\ddagger$IQL = no mixing network. $^\S$With monotonic mixing network. $^\|$Per-agent Q + mixing net.} \\
 \end{tabular}}
 \footnotetext{All experiments use $E{=}20$ (endowment). All algorithms significantly below oracle ($p < 0.001$, Mann-Whitney $U$, 20 seeds). 95\% CIs: IPPO $\lambda$ [0.376, 0.447]; MAPPO $\lambda$ [0.362, 0.424]; IQL $\lambda$ [0.575, 0.593]. Wall-clock: 18--45s/seed (CPU).}
 \end{table}
 
-\textbf{Result}: The Nash Trap is a robust structural barrier across \textbf{seven evaluated paradigms} (Table~\ref{tab:emergence}).
+\textbf{Result}: Across \textbf{seven evaluated paradigms} (Table~\ref{tab:emergence}), all tested algorithms converge to suboptimal cooperation levels in our non-linear PGG.
 Among the independent REINFORCE variants, linear agents converge to $\lambda \approx 0.49$ with 54\% survival, while MLP agents converge to $\lambda \approx 0.37$ (31\% survival)---still substantially below the survival threshold.
 Standard MARL implementations spanning five paradigms---independent policy gradient (IPPO), centralized critic (MAPPO), independent Q-learning (IQL), value decomposition with monotonic mixing (QMIX~\citep{rashid2018qmix}), and opponent-shaping (LOLA~\citep{foerster2018learning})---all converge to suboptimal equilibria.
-Crucially, this is not a failure of learning per se: the algorithms \emph{successfully} converge to a local optimum of their reward landscape. The Nash Trap is a \textbf{structural outcome} of individually-rational optimization in a game where the collective benefit of cooperation is not captured by individual payoffs.
+Crucially, this is not a failure of learning per se: the algorithms \emph{successfully} converge to a local optimum of their individual reward landscapes. We interpret this as a \textbf{consistent pattern} of individually-rational optimization in a game where the collective benefit of cooperation is not captured by individual payoffs.
 IPPO converges to $\lambda = 0.412 \pm 0.080$ (38.7\% survival, 20 seeds), MAPPO to $\lambda = 0.392 \pm 0.070$ (37.0\%), and IQL achieves the highest $\lambda = 0.584 \pm 0.021$ (71.8\% survival) due to its discrete action space and $\varepsilon$-greedy exploration.
 Notably, \textbf{QMIX with a monotonic mixing network} ($\lambda = 0.524 \pm 0.201$, 66.5\% survival) does not outperform IQL, indicating that value decomposition does not help escape the Nash Trap.
 Similarly, \textbf{LOLA} ($\lambda = 0.490 \pm 0.006$, 50.8\% survival) shows that anticipating opponent learning steps is insufficient when the underlying game structure traps all agents in a local equilibrium.
-All seven paradigms fall substantially short of the oracle ($\lambda = 1.0$, 100\% survival), confirming that the Nash Trap is a fundamental property of the non-linear PGG, not an algorithmic deficiency.
+All seven paradigms fall substantially short of the oracle ($\lambda = 1.0$, 100\% survival). While we do not claim this constitutes an impossibility result for all possible algorithms, the consistency across diverse paradigms---including value decomposition and opponent-shaping---suggests a robust pattern in this environment class.
 This result holds at $N=100$ (Table~\ref{tab:scale}), under K-level opponent anticipation ablations (Appendix~\ref{app:kpg}), across a hyperparameter sweep (Table~\ref{tab:hp_sweep}, 20 combinations $\times$ 10 seeds = 200 runs, Appendix~\ref{app:hp_sweep}), commitment function ablations (Table~\ref{tab:ablation}), CVaR risk-sensitive objectives (Table~\ref{tab:cvar}), partial observability (Table~\ref{tab:partial_obs}), adaptive adversaries (Table~\ref{tab:adaptive_adv}), and cross-environment CPR validation (Table~\ref{tab:cpr}; Appendix~\ref{app:cpr_detail}). Training dynamics and the Nash Trap cost landscape are visualized in Figures~\ref{fig:training_curves} and~\ref{fig:nash_trap}; multi-axis normalized comparison appears in Table~\ref{tab:melting_pot} and Figure~\ref{fig:melting_pot} (see Appendix~\ref{app:robustness}).
 
 \noindent\textit{Clarification}: We note that the one-shot PGG Nash equilibrium is $\lambda=0$ (full defection, since $M/N = 0.08 < 1$).
@@ -490,12 +491,12 @@ The contribution is the systematic demonstration of \emph{when}, \emph{why}, and
 Our Spectrum implies a concrete design principle for AI safety: for autonomous systems operating near irreversible environmental tipping points, cooperative constraints must be structurally unconditional ($\phi_1=1.0$), as adaptive or situational moral priors will systematically collapse under selfish gradient pressure.
 The commitment function $g(\theta, R)$ encodes value judgments; determining \emph{whose} values requires interdisciplinary collaboration. We provide \textit{descriptive} insight, not \textit{normative} prescription.
 
-\paragraph{Policy Implications: From PGG to Climate Governance.}
-Our framework admits a direct mapping to real-world common-pool resource problems.
-The tipping point $R_{\text{crit}} = 0.15$ corresponds structurally to planetary boundaries (e.g., the 1.5\textdegree{}C warming threshold~\citep{ipcc2018}): once crossed, recovery dynamics slow catastrophically ($f(R) \to 0.01$), mirroring the irreversibility of permafrost methane release or ice-sheet disintegration.
-The commitment floor $\phi_1$ maps to \textbf{mandatory minimum cooperation levels}---analogous to the Paris Agreement's Nationally Determined Contributions (NDCs), which set binding emission reduction floors regardless of short-term economic incentives.
-A full ablation is in Appendix~\ref{app:ablation}. Theorem~\ref{thm:critical} provides the engineering specification: in our model, $\phi_1^* \geq 1.64$ (truncated to 1.0), meaning \textbf{partial commitment is provably insufficient} when the recovery rate at the tipping point is small.
-For AI governance, this suggests that \textbf{high-risk autonomous systems managing shared resources} (e.g., autonomous fishing fleets, energy grid agents, carbon credit markets) should be designed with hard-coded cooperation floors rather than relying on learned cooperation, which our seven-paradigm analysis shows consistently fails.
+\paragraph{Potential Policy Analogies.}
+While our results are demonstrated in a stylized PGG environment, we note structural similarities to real-world common-pool resource problems.
+The tipping point $R_{\text{crit}}$ shares qualitative features with planetary boundaries~\citep{ipcc2018}, where recovery dynamics slow near critical thresholds.
+The commitment floor $\phi_1$ is conceptually analogous to mandatory minimum cooperation levels such as the Paris Agreement's NDCs.
+A full ablation is in Appendix~\ref{app:ablation}. Theorem~\ref{thm:critical} provides a specification within our model: $\phi_1^* \geq 1.64$ (truncated to 1.0), indicating that partial commitment is insufficient when recovery rates are small.
+\textbf{Caveat}: These analogies are suggestive, not prescriptive. Bridging from our stylized PGG to real-world systems requires additional validation with domain-specific dynamics, heterogeneous agents, and institutional constraints.
 
 \paragraph{When to Apply (and When Not To).}
 Our commitment framework is designed for \textbf{common-pool resource problems with irreversible tipping points}---environments where collective under-cooperation triggers catastrophic, unrecoverable collapse.
@@ -829,7 +830,7 @@ Social Influence & 0.0\% & 0.0\% & 21.5 & 21.5 \\
 \end{tabular}
 \end{table}
 
-To ensure reproducibility and avoid the ``paper-specific reimplementation'' critique, we report results from two categories of baselines.
+To ensure reproducibility, we report results from two categories of baselines. We acknowledge that these are faithful but simplified reimplementations; fully optimized domain-specific baselines may achieve different performance. We mitigate this concern through a comprehensive hyperparameter sweep (200 configurations, Appendix~\ref{app:hp_sweep}).
 
 \paragraph{Independent REINFORCE Variants.}
 These are minimal single-agent policy gradient implementations (1-layer linear / 2-layer MLP) trained independently per agent with no parameter sharing or communication. Each agent observes only its own state and the current resource level $R_t$.
