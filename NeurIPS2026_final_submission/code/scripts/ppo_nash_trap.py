@@ -259,27 +259,55 @@ def train_independent(agent_class, label, n_ep=N_EPISODES, n_seeds=N_SEEDS):
                 if isinstance(agents[i], LinearAgent):
                     agents[i].update_reinforce(agent_obs[i], agent_acts[i], returns)
                 elif isinstance(agents[i], (MLPAgent, MLPCriticAgent)):
-                    # ES-style update for MLP (per-agent)
-                    theta = agents[i].param_vec()
-                    fitness_base = np.mean(rew)
-
-                    # Simple ES: try perturbation, keep if better
-                    best_theta = theta.copy()
-                    best_fitness = fitness_base
-
-                    for _ in range(5):  # 5 perturbation tries
-                        noise = rng.randn(len(theta)) * 0.01
-                        agents[i].set_param_vec(theta + noise)
-                        # Quick eval with current obs
-                        test_lam = agents[i].act(agent_obs[i][-1], rng, 0.0)
-                        # Individual payoff estimate
-                        est_payoff = (ENDOWMENT * (1 - test_lam) +
-                                     MULTIPLIER * ENDOWMENT * 0.5)  # assume others ~0.5
-                        if est_payoff > best_fitness:
-                            best_fitness = est_payoff
-                            best_theta = (theta + noise).copy()
-
-                    agents[i].set_param_vec(best_theta)
+                    # Gaussian REINFORCE for MLP: ∇θ log N(a|μ(s),σ) · G_t
+                    # μ = sigmoid(MLP(obs)), σ fixed = 0.15
+                    sigma = 0.15
+                    lr = agents[i].lr
+                    
+                    for t_idx in range(len(returns)):
+                        obs_t = agent_obs[i][t_idx]
+                        act_t = agent_acts[i][t_idx]
+                        G_t = returns[t_idx]
+                        
+                        # Compute advantage for critic variant
+                        if isinstance(agents[i], MLPCriticAgent):
+                            v_t = agents[i].value(obs_t)
+                            advantage = G_t - v_t
+                            # Update critic: V ← V + lr_v · (G - V) · ∇V
+                            h_v = np.tanh(obs_t @ agents[i].V_W1 + agents[i].V_b1)
+                            v_pred = (h_v @ agents[i].V_W2 + agents[i].V_b2).item()
+                            delta_v = agents[i].lr_v * (G_t - v_pred)
+                            agents[i].V_W2 += np.outer(h_v, [delta_v])
+                            agents[i].V_b2 += delta_v
+                            dh_v = delta_v * agents[i].V_W2.flatten() * (1 - h_v**2)
+                            agents[i].V_W1 += lr * np.outer(obs_t, dh_v)
+                            agents[i].V_b1 += lr * dh_v
+                        else:
+                            advantage = G_t
+                        
+                        # Forward: μ = sigmoid(W2 · tanh(W1·obs + b1) + b2)
+                        h = np.tanh(obs_t @ agents[i].W1 + agents[i].b1)
+                        logit = float((h @ agents[i].W2 + agents[i].b2).item())
+                        mu = sigmoid(logit)
+                        
+                        # ∂log N(a|μ,σ) / ∂μ = (a - μ) / σ²
+                        d_logp_d_mu = (act_t - mu) / (sigma**2)
+                        
+                        # ∂μ/∂logit = μ(1-μ) (sigmoid derivative)
+                        d_mu_d_logit = mu * (1 - mu)
+                        
+                        # Signal to backprop
+                        delta = advantage * d_logp_d_mu * d_mu_d_logit
+                        
+                        # ∂logit/∂W2 = h, ∂logit/∂b2 = 1
+                        agents[i].W2 += lr * delta * h.reshape(-1, 1)
+                        agents[i].b2 += lr * delta
+                        
+                        # ∂logit/∂h = W2.flatten()
+                        # ∂h/∂z1 = 1 - tanh²(z1) (tanh derivative)
+                        d_h = delta * agents[i].W2.flatten() * (1 - h**2)
+                        agents[i].W1 += lr * np.outer(obs_t, d_h)
+                        agents[i].b1 += lr * d_h
 
             ep_data["welfare"].append(total_welfare / max(steps, 1))
             ep_data["mean_lam"].append(lam_sum / max(steps, 1))
