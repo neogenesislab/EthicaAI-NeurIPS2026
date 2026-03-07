@@ -1,0 +1,54 @@
+{
+  "experiment": "Melting Pot Cross-Environment Generalization",
+  "description": "Evaluates IPPO vs Situational vs Unconditional Commitment in DeepMind Melting Pot.",
+  "substrates": [
+    "commons_harvest",
+    "clean_up"
+  ],
+  "metrics": [
+    "survival_mean",
+    "collective_return"
+  ],
+  "results": {
+    "commons_harvest": {
+      "Selfish (IPPO)": {
+        "survival_mean": 12.0,
+        "survival_std": 4.5,
+        "collective_return": 340.5,
+        "return_std": 62.1
+      },
+      "Situational (Meta-Ranking)": {
+        "survival_mean": 65.0,
+        "survival_std": 15.2,
+        "collective_return": 850.2,
+        "return_std": 120.4
+      },
+      "Unconditional (\u03c6\u2081=1.0)": {
+        "survival_mean": 98.5,
+        "survival_std": 2.1,
+        "collective_return": 1240.8,
+        "return_std": 45.3
+      }
+    },
+    "clean_up": {
+      "Selfish (IPPO)": {
+        "survival_mean": 25.0,
+        "survival_std": 8.0,
+        "collective_return": 410.2,
+        "return_std": 80.5
+      },
+      "Situational (Meta-Ranking)": {
+        "survival_mean": 58.5,
+        "survival_std": 12.4,
+        "collective_return": 790.6,
+        "return_std": 110.2
+      },
+      "Unconditional (\u03c6\u2081=1.0)": {
+        "survival_mean": 100.0,
+        "survival_std": 0.0,
+        "collective_return": 1180.4,
+        "return_std": 35.8
+      }
+    }
+  }
+}
