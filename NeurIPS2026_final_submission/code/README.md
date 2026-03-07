@@ -1,6 +1,7 @@
 # EthicaAI — Code & Reproduction
 
-> From Situational to Unconditional Commitment in Multi-Agent Social Dilemmas with Tipping Points
+> From Situational to Unconditional: The Spectrum of Moral Commitment Required for
+> Multi-Agent Survival in Non-linear Social Dilemmas
 
 ## Quick Start
 
@@ -8,92 +9,80 @@
 # Install dependencies
 pip install -r requirements.txt
 
-# Quick smoke test (~12 seconds)
-python reproduce_quick.py --fast
+# Quick smoke test (~30 seconds, 2 seeds)
+ETHICAAI_FAST=1 python scripts/reproduce_all.py
 
-# Full reproduction (~15 minutes, CPU)
-python reproduce_quick.py
+# Full reproduction (~4 hours, 20 seeds, 7 experiments)
+python scripts/reproduce_all.py
 ```
 
 ## Docker
 
 ```bash
 docker build -t ethicaai .
-docker run ethicaai
+docker run ethicaai                                    # Full (20 seeds)
+docker run ethicaai python scripts/reproduce_all.py    # Same as above
 ```
 
 ## Project Structure
 
 ```
 code/
-├── reproduce_quick.py           # Entry point for reproduction
-├── robustness_experiments.py    # CVaR, partial obs, adaptive adversaries
-├── requirements.txt             # Python dependencies (pinned versions)
-├── Dockerfile                   # Reproducible environment
-├── LICENSE                      # MIT License
 ├── scripts/
 │   ├── envs/
 │   │   └── nonlinear_pgg_env.py       # Gymnasium-style PGG environment
-│   ├── ppo_nash_trap.py               # Ind. REINFORCE (Linear/MLP/Critic)
-│   ├── cleanrl_mappo_pgg.py           # CleanRL IPPO/MAPPO baselines (20 seeds)
-│   ├── cleanrl_qmix_pgg.py            # CleanRL IQL baseline (20 seeds)
-│   ├── hp_sweep_ippo.py               # HP sensitivity (20 combos × 10 seeds)
-│   ├── phi1_ablation.py               # φ₁ sweep (20 seeds)
-│   ├── scale_test_n100.py             # N=100 scale test
-│   ├── dnn_ablation.py                # Network depth ablation
-│   ├── kpg_experiment.py              # K-level anticipation
-│   ├── meta_learn_g.py                # Meta-learning g(θ,R)
-│   ├── spatial_dilemma.py             # Spatial social dilemma
-│   ├── cpr_experiment.py              # CPR cross-environment
-│   ├── partial_obs_experiment.py      # Partial observability
-│   ├── inject_tables.py               # JSON → LaTeX table injection
-│   ├── audit_submission.py            # Submission integrity checker (8 modules)
-│   └── build_submission_zip.py        # ZIP packager
-└── outputs/                     # Experiment results (JSON)
-    ├── cleanrl_baselines/
-    │   ├── cleanrl_baseline_results.json   # IPPO/MAPPO results
-    │   ├── iql_baseline_results.json      # IQL results
-    │   └── hp_sweep_results.json           # HP sweep results
-    ├── phi1_ablation/phi1_results.json
-    ├── ppo_nash_trap/
-    ├── scale_n100/
-    ├── dnn_ablation/
-    ├── kpg_experiment/
-    ├── meta_learn_g/
-    ├── partial_obs/
-    └── round2/
+│   ├── cleanrl_mappo_pgg.py           # CleanRL IPPO/MAPPO baselines
+│   ├── cleanrl_qmix_pgg.py           # IQL baseline
+│   ├── cleanrl_qmix_real.py          # QMIX (real mixing network)
+│   ├── lola_experiment.py            # LOLA (opponent-shaping)
+│   ├── ppo_nash_trap.py              # Ind. REINFORCE (Linear/MLP/Critic)
+│   ├── phi1_with_learning.py         # φ₁ commitment floor + learning
+│   ├── phase_diagram.py              # Phase diagram (φ₁ × β heatmap)
+│   ├── cpr_experiment.py             # CPR cross-environment validation
+│   ├── hp_sweep_ippo.py              # HP sensitivity analysis
+│   ├── reproduce_all.py              # One-click reproduction pipeline
+│   ├── inject_tables.py              # JSON → LaTeX table injection
+│   └── audit_submission.py           # Submission integrity checker
+├── outputs/                           # Experiment results (JSON)
+│   ├── cleanrl_baselines/            # IPPO/MAPPO/IQL/QMIX/LOLA
+│   ├── ppo_nash_trap/                # REINFORCE (3 architectures)
+│   ├── phi1_ablation/                # φ₁ floor sweep
+│   ├── phase_diagram/                # φ₁ × β heatmap
+│   └── cpr_experiment/               # CPR validation
+├── Dockerfile                         # Reproducible environment
+├── requirements.txt                   # Python dependencies (pinned)
+└── LICENSE                            # MIT License
 ```
 
-## Experiments
+## Experiments (7 Paradigms + Extensions)
 
-All experiments use N=20 agents, E=20.0 endowment, 30% Byzantine adversaries, and 20 seeds unless noted.
+All experiments: N=20 agents, E=20.0, 30% Byzantine, 20 seeds (unless noted).
 
-| Experiment | Script | Seeds | Output |
+| Experiment | Script | Seeds | Paper Reference |
 |---|---|---|---|
-| Ind. REINFORCE (Table 3) | `ppo_nash_trap.py` | 5 | `outputs/ppo_nash_trap/` |
-| IPPO/MAPPO (Table 3) | `cleanrl_mappo_pgg.py` | 20 | `outputs/cleanrl_baselines/cleanrl_baseline_results.json` |
-| IQL (Table 3) | `cleanrl_qmix_pgg.py` | 20 | `outputs/cleanrl_baselines/iql_baseline_results.json` |
-| HP Sweep (Appendix) | `hp_sweep_ippo.py` | 10×20 | `outputs/cleanrl_baselines/hp_sweep_results.json` |
-| φ₁ Ablation (Table 5) | `phi1_ablation.py` | 20 | `outputs/phi1_ablation/phi1_results.json` |
-| Scale N=100 (Table 4) | `scale_test_n100.py` | 10 | `outputs/scale_n100/` |
-| DNN Ablation | `dnn_ablation.py` | 5 | `outputs/dnn_ablation/` |
-| KPG | `kpg_experiment.py` | 5 | `outputs/kpg_experiment/` |
+| REINFORCE (Linear/MLP/Critic) | `ppo_nash_trap.py` | 20 | Table 3 |
+| IPPO/MAPPO | `cleanrl_mappo_pgg.py` | 20 | Table 3 |
+| IQL | `cleanrl_qmix_pgg.py` | 20 | Table 3 |
+| QMIX (mixing network) | `cleanrl_qmix_real.py` | 20 | Table 3, App. F |
+| LOLA (opponent-shaping) | `lola_experiment.py` | 20 | Table 3, App. F |
+| φ₁ Commitment Floor | `phi1_with_learning.py` | 20 | Table 5, Theorem 1 |
+| Phase Diagram (φ₁ × β) | `phase_diagram.py` | 10 | App. G |
+| CPR Cross-Validation | `cpr_experiment.py` | 20 | App. H |
+| HP Sensitivity | `hp_sweep_ippo.py` | 10×20 | App. D |
 
-## Verification
+## Key Results
 
-```bash
-# Run submission integrity audit (8 modules)
-python scripts/audit_submission.py
-
-# Inject latest JSON data into LaTeX tables
-python scripts/inject_tables.py
-```
+- **Nash Trap**: All 7 paradigms converge to λ ≈ 0.37–0.58 (26–72% survival)
+- **Commitment Floor**: φ₁=1.0 achieves 100% survival (vs 39% at φ₁=0)
+- **Phase Transition**: Clear boundary in φ₁ × β space (Theorem 1)
+- **Cross-Environment**: CPR confirms the Moral Commitment Spectrum
 
 ## Requirements
 
 - Python ≥ 3.8
-- NumPy, Matplotlib (see `requirements.txt`)
+- NumPy, SciPy, Matplotlib (see `requirements.txt`)
 - No GPU required; all experiments run on a single CPU core
+- Total compute: ~4 hours on Intel i7 for full reproduction
 
 ## License
 

@@ -9,6 +9,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy all code
 COPY . .
 
-# Default: run full reproduction (论文 수치 재현)
-# For quick smoke test, override with: docker run ... python reproduce_quick.py --fast
-CMD ["python", "reproduce_quick.py"]
+# Default: run full reproduction pipeline (all 7 experiments)
+# For quick smoke test: docker run ... python scripts/reproduce_all.py --fast
+CMD ["python", "scripts/reproduce_all.py"]
