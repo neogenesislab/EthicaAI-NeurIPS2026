@@ -78,7 +78,11 @@ build/
 # These MUST NOT be pushed to anonymous repository
 submission_arxiv/
 submission_neurips/
+submission_neurips2026/
 submission_package/
+submission_ready/
+NeurIPS2026_EthicaAI_StrongAccept/
+NeurIPS2026_EthicaAI_submission/
 paper/drafts/
 paper/submission/
 paper/zenodo_main.tex
@@ -86,6 +90,11 @@ paper/aies2026_extended.tex
 paper/icsd2026_short.tex
 original/
 dashboard/
+
+# ===== Legacy/Archive (NOT the submission source) =====
+# Root paper/ is the OLD version — DO NOT USE
+# Single source of truth: NeurIPS2026_final_submission/
+paper/
 scripts/zenodo_upload.py
 scripts/demo.py
 scripts/prepare_arxiv.py
@@ -93,3 +102,9 @@ scripts/_publish_draft.py
 scripts/_remove_neurips_note.py
 scripts/_update_v4_metadata.py
 _check_data.py
+
+# ===== Audit artifacts =====
+**/audit_clean.txt
+**/audit_report.txt
+**/deep_audit_report.txt
+
