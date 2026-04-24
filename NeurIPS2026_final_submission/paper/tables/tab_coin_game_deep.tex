@@ -1,0 +1,23 @@
+% Table: External Benchmark Validation (Tipping-Point Coin Game, PyTorch)
+\begin{table}[h]
+\centering
+\caption{%
+  \textbf{Adapted external benchmark validation: Tipping-Point Coin Game (160 seeds across 4 independent shards).}
+  We adapt the standard Coin Game~\citep{lerer2017maintaining} ($3{\times}3$ grid, 100 steps)
+  by imposing TPSD-like resource collapse ($\rho_{\text{drain}}{=}-0.35$).
+  When translated to a discrete spatial task, the Nash Trap manifests in the selfish PPO baseline.
+  Conversely, MACCL's learned probability floor (distributing mass to the ``stay'' action) 
+  significantly improves survival rates. Bootstrap 95\% CI reported.
+}
+\label{tab:coin_game_deep}
+\small
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Method} & \textbf{Surv. (\%)} & \textbf{Welfare} \\
+\midrule
+Selfish PPO & $22.1$ \tiny{[20.9, 23.3]} & $-3.54$ \\
+\midrule
+\textbf{MACCL (Ours)} & $\mathbf{78.1}$ \tiny{[76.9, 79.3]} & $\mathbf{-0.96}$ \\
+\bottomrule
+\end{tabular}
+\end{table}

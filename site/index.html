@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ME6PDCNP8B"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-ME6PDCNP8B');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EthicaAI ??Beyond Homo Economicus</title>
+    <meta name="description"
+        content="Computational Verification of Sen's Meta-Ranking Theory via Multi-Agent Reinforcement Learning">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a1a;
+            --surface: #12122a;
+            --surface2: #1a1a3e;
+            --accent: #4fc3f7;
+            --accent2: #ce93d8;
+            --text: #e8e8ff;
+            --dim: #7777aa;
+            --success: #66bb6a;
+            --warning: #ffa726;
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* === ?더 === */
+        .hero {
+            background: linear-gradient(135deg, #0d0d2b 0%, #1a0a3e 40%, #0a2040 100%);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(79, 195, 247, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(206, 147, 216, 0.06) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1)
+            }
+
+            to {
+                transform: scale(1.05)
+            }
+        }
+
+        .hero>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .emoji {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            from {
+                background-position: 200%
+            }
+
+            to {
+                background-position: -200%
+            }
+        }
+
+        .hero .subtitle {
+            color: var(--dim);
+            font-size: 1.05rem;
+            margin-top: 0.5rem;
+            max-width: 700px;
+            margin-inline: auto;
+        }
+
+        .hero .badges {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* === ???비게이??=== */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            background: var(--surface);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            color: var(--dim);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            font-family: inherit;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+            letter-spacing: 0.3px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* === ?탯 ?=== */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding: 1.5rem;
+            background: var(--surface);
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat .val {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat .lbl {
+            font-size: 0.75rem;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* === Figure 갤러?=== */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.4rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.2rem;
+            padding: 1.5rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--surface2);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(79, 195, 247, 0.15);
+        }
+
+        .card img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: contain;
+            background: #0f0f25;
+            padding: 0.8rem;
+            cursor: pointer;
+        }
+
+        .card-info {
+            padding: 0.8rem 1rem;
+        }
+
+        .card-info h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .card-info p {
+            color: var(--dim);
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+        }
+
+        .phase-tag {
+            display: inline-block;
+            padding: 0.1rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 0.4rem;
+        }
+
+        .t-core {
+            background: #1b5e20;
+            color: #a5d6a7;
+        }
+
+        .t-scale {
+            background: #e65100;
+            color: #ffcc80;
+        }
+
+        .t-robust {
+            background: #4a148c;
+            color: #ce93d8;
+        }
+
+        .t-ext {
+            background: #01579b;
+            color: #81d4fa;
+        }
+
+        /* === ?터?티??모 === */
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        .demo-panel {
+            background: var(--surface2);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .demo-panel h3 {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ctrl-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .ctrl-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--dim);
+            margin-bottom: 0.3rem;
+        }
+
+        .ctrl-group select,
+        .ctrl-group input[type=range],
+        .ctrl-group input[type=number] {
+            width: 100%;
+            padding: 0.4rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: var(--surface);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .ctrl-group input[type=range] {
+            accent-color: var(--accent);
+            padding: 0;
+            height: 6px;
+        }
+
+        .ctrl-val {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .toggle {
+            width: 44px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+
+        .toggle.on {
+            background: var(--accent);
+        }
+
+        .toggle::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .toggle.on::after {
+            transform: translateX(20px);
+        }
+
+        .btn-run {
+            width: 100%;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: var(--bg);
+            font-weight: 700;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: opacity 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-run:hover {
+            opacity: 0.85;
+        }
+
+        .chart-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .chart-box {
+            background: var(--surface2);
+            border-radius: var(--radius);
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .chart-box h4 {
+            font-size: 0.85rem;
+            color: var(--dim);
+            margin-bottom: 0.5rem;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 250px !important;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .metric-card {
+            background: var(--surface2);
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .metric-card .mv {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .metric-card .ml {
+            font-size: 0.75rem;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-card .md {
+            font-size: 0.8rem;
+            color: var(--success);
+            margin-top: 0.2rem;
+        }
+
+        /* === ?문 ?약 ??=== */
+        .paper-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .paper-container h2 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            color: var(--accent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.5rem;
+        }
+
+        .paper-container h3 {
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        .paper-container p {
+            color: var(--dim);
+            margin-bottom: 1rem;
+        }
+
+        .paper-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .paper-container th,
+        .paper-container td {
+            padding: 0.6rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .paper-container th {
+            color: var(--accent);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .paper-container .eq {
+            background: var(--surface2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: monospace;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .paper-container a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .paper-container a:hover {
+            text-decoration: underline;
+        }
+
+        /* === ?이?박??=== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 92vw;
+            max-height: 92vh;
+            border-radius: 8px;
+            box-shadow: 0 0 60px rgba(79, 195, 247, 0.2);
+        }
+
+        /* === ?터 === */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--dim);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        @media (max-width:768px) {
+            .gallery {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-area {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .stats {
+                gap: 1.5rem;
+            }
+        }
+    </style>
+
+    <!-- PostHog Analytics (auto-injected) -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_158CbBeWD8X1eNyD4xpi8VklVxsNZtx5yclocxfpgiO', {api_host:'https://us.i.posthog.com', person_profiles: 'identified_only'});
+    </script>
+
+</head>
+
+<body>
+    <!-- ?어?-->
+    <div class="hero">
+        <div class="emoji">?</div>
+        <h1>EthicaAI</h1>
+        <p class="subtitle">Beyond Homo Economicus: Computational Verification of Sen's Meta-Ranking Theory via
+            Multi-Agent Reinforcement Learning</p>
+        <div class="badges">
+            <span class="badge">? Preprint 2026</span>
+            <span class="badge">? 7 SVO Conditions</span>
+            <span class="badge">? 4 Environments</span>
+            <span class="badge">? 1000 Agents</span>
+        </div>
+    </div>
+
+    <!-- ???비게이??-->
+    <nav class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('dashboard')">? Dashboard</button>
+        <button class="tab-btn" onclick="switchTab('demo')">? Interactive Demo</button>
+        <button class="tab-btn" onclick="switchTab('paper')">? Paper</button>
+    </nav>
+
+    <!-- ========== ??1: ??보??========== -->
+    <div id="tab-dashboard" class="tab-content active">
+        <div class="stats">
+            <div class="stat">
+                <div class="val">30</div>
+                <div class="lbl">Figures</div>
+            </div>
+            <div class="stat">
+                <div class="val">5</div>
+                <div class="lbl">Key Findings</div>
+            </div>
+            <div class="stat">
+                <div class="val">33</div>
+                <div class="lbl">References</div>
+            </div>
+            <div class="stat">
+                <div class="val">87%</div>
+                <div class="lbl">Convergence</div>
+            </div>
+            <div class="stat">
+                <div class="val">12%</div>
+                <div class="lbl">ESS</div>
+            </div>
+        </div>
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterFigs('all')">All (30)</button>
+            <button class="filter-btn" onclick="filterFigs('core')">Core (9)</button>
+            <button class="filter-btn" onclick="filterFigs('scale')">Scale (3)</button>
+            <button class="filter-btn" onclick="filterFigs('robust')">Robustness (3)</button>
+            <button class="filter-btn" onclick="filterFigs('ext')">Extended (4)</button>
+            <button class="filter-btn" onclick="filterFigs('deep')">Deep Research (4)</button>
+        </div>
+        <div class="gallery" id="gallery"></div>
+    </div>
+
+    <!-- ========== ??2: ?터?티??모 ========== -->
+    <div id="tab-demo" class="tab-content">
+        <div class="demo-container">
+            <div class="demo-grid">
+                <div class="demo-panel">
+                    <h3>?️ Settings</h3>
+                    <div class="ctrl-group">
+                        <label>Environment</label>
+                        <select id="env-select">
+                            <option value="pgg">Public Goods Game (PGG)</option>
+                            <option value="ipd">Iterated Prisoner's Dilemma</option>
+                        </select>
+                    </div>
+                    <div class="ctrl-group">
+                        <label>SVO (Social Value Orientation)</label>
+                        <input type="range" id="svo-slider" min="0" max="90" value="45" step="15">
+                        <div class="ctrl-val" id="svo-label">Prosocial (45°)</div>
+                    </div>
+                    <div class="ctrl-group">
+                        <div class="toggle-row">
+                            <div class="toggle on" id="meta-toggle" onclick="this.classList.toggle('on')"></div>
+                            <label>Meta-Ranking (Dynamic λ)</label>
+                        </div>
+                    </div>
+                    <div class="ctrl-group">
+                        <label>Random Seed</label>
+                        <input type="number" id="seed-input" value="42" min="0" max="999">
+                    </div>
+                    <div class="ctrl-group" id="rounds-group">
+                        <label>Rounds</label>
+                        <input type="range" id="rounds-slider" min="5" max="30" value="10">
+                        <div class="ctrl-val" id="rounds-label">10</div>
+                    </div>
+                    <div
+                        style="margin-top:0.5rem; padding:0.8rem; background:var(--surface); border-radius:8px; font-size:0.8rem;">
+                        <div>λ_base = sin(<span id="angle-val">45°</span>) = <strong id="lambda-val">0.707</strong>
+                        </div>
+                        <div>Mode: <strong id="mode-val">Dynamic</strong></div>
+                    </div>
+                    <button class="btn-run" onclick="runSimulation()">??Run Simulation</button>
+                </div>
+                <div>
+                    <div class="chart-area">
+                        <div class="chart-box">
+                            <h4 id="chart1-title">? Contribution Rate</h4>
+                            <canvas id="chart1"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h4 id="chart2-title">? Mean Payoff</h4>
+                            <canvas id="chart2"></canvas>
+                        </div>
+                    </div>
+                    <div class="metrics">
+                        <div class="metric-card">
+                            <div class="mv" id="m1-val">??/div>
+                            <div class="ml" id="m1-lbl">Metric 1</div>
+                            <div class="md" id="m1-delta"></div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="mv" id="m2-val">??/div>
+                            <div class="ml" id="m2-lbl">Metric 2</div>
+                            <div class="md" id="m2-delta"></div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="mv" id="m3-val">??/div>
+                            <div class="ml" id="m3-lbl">Metric 3</div>
+                            <div class="md" id="m3-delta"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== ??3: ?문 ?약 ========== -->
+    <div id="tab-paper" class="tab-content">
+        <div class="paper-container">
+            <h2>Abstract</h2>
+            <p>This study formalizes Amartya Sen's theory of <strong>"Meta-Ranking"</strong>?preferences over
+                preferences?within a Multi-Agent Reinforcement Learning (MARL) framework. We simulated agents with seven
+                Social Value Orientations (SVO) across three environments (Cleanup, IPD, PGG) at scales up to 100
+                agents.</p>
+
+            <h2>Key Equation</h2>
+            <div class="eq">R_total = (1 ??λ_t) · U_self + λ_t · [U_meta ???]</div>
+            <p>where λ_t dynamically modulates between self-interest and social commitment based on resource levels,
+                implementing Sen's insight that commitment is impossible under extreme deprivation.</p>
+
+            <h2>Five Key Findings</h2>
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Finding</th>
+                    <th>Evidence</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Dynamic meta-ranking enhances collective welfare</td>
+                    <td>p=0.0003</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Emergent role specialization (Cleaners vs Eaters)</td>
+                    <td>p<0.0001 at 100 agents</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>"Situational Commitment" ??ESS at ~12%</td>
+                    <td>Replicator dynamics</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Individualist SVO (15°) best matches humans</td>
+                    <td>WD=0.053</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>SVO rotation = 86% of mechanism</td>
+                    <td>Full factorial</td>
+                </tr>
+            </table>
+
+            <h2>Three Implications</h2>
+            <table>
+                <tr>
+                    <th>Domain</th>
+                    <th>Implication</th>
+                </tr>
+                <tr>
+                    <td>? AI Alignment</td>
+                    <td>Systems should learn <em>when</em> to be moral, not encode static values</td>
+                </tr>
+                <tr>
+                    <td>? Behavioral Economics</td>
+                    <td>Bounded self-interest (θ=15°), not pure altruism, best replicates humans</td>
+                </tr>
+                <tr>
+                    <td>? Evolutionary Theory</td>
+                    <td>A "Moral Minority" of ~12% suffices as an ESS</td>
+                </tr>
+            </table>
+
+            <h2>Links</h2>
+            <p>
+                ? Anonymous code repository withheld for review<br>
+                ? <a href="https://doi.org/10.5281/zenodo.18637742" target="_blank">Zenodo DOI</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- ?이?박??-->
+    <div class="lightbox" id="lightbox" onclick="closeLB()"><img id="lb-img" src=""></div>
+
+    <!-- ?터 -->
+    <div class="footer">
+        <p>EthicaAI © 2026 Anonymous Authors · Anonymous code repository withheld for review</p>
+    </div>
+
+    <script>
+        /* ===== ???환 ===== */
+        function switchTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + id).classList.add('active');
+            event.target.classList.add('active');
+            if (id === 'demo' && !window._chartInit) initCharts();
+        }
+
+        /* ===== Figure ?이??===== */
+        const figs = [
+            { id: 1, file: "fig1_learning_curves.png", title: "Learning Curves", desc: "Reward & cooperation convergence", ph: "core" },
+            { id: 2, file: "fig2_cooperation_rate.png", title: "Cooperation Rate", desc: "Per-SVO distribution with ceiling effect", ph: "core" },
+            { id: 3, file: "fig3_threshold_evolution.png", title: "Threshold Evolution", desc: "Cleaner/harvester differentiation", ph: "core" },
+            { id: 4, file: "fig4_mechanism.png", title: "SVO Heatmap", desc: "SVO angle vs metrics", ph: "core" },
+            { id: 5, file: "fig5_gini_comparison.png", title: "Gini Coefficient", desc: "Inequality across conditions", ph: "core" },
+            { id: 6, file: "fig6_causal_forest.png", title: "Causal Forest Plot", desc: "ATE with 95% CI", ph: "core" },
+            { id: 7, file: "fig7_svo_vs_welfare.png", title: "SVO vs Welfare", desc: "Baseline vs Full Model", ph: "core" },
+            { id: 8, file: "fig8_summary_heatmap.png", title: "Summary Heatmap", desc: "All conditions normalized", ph: "core" },
+            { id: 9, file: "fig9_role_specialization.png", title: "Role Specialization", desc: "Emergent cleaner/eater dynamics", ph: "core" },
+            { id: 10, file: "fig10_scale_comparison.png", title: "Scale Comparison", desc: "20 vs 100 agents", ph: "scale" },
+            { id: 11, file: "fig11_baseline.png", title: "Baseline Comparison", desc: "100-agent Full vs Baseline", ph: "scale" },
+            { id: 12, file: "fig12_human_ai.png", title: "Human-AI Alignment", desc: "Agent vs Human PGG overlap", ph: "scale" },
+            { id: 13, file: "fig13_convergence.png", title: "Convergence Proof", desc: "ADF stationarity (87% converged)", ph: "robust" },
+            { id: 14, file: "fig14_risk_analysis.png", title: "Risk Analysis", desc: "Dynamic vs Static λ variance", ph: "robust" },
+            { id: 15, file: "fig15_sensitivity.png", title: "Sensitivity Analysis", desc: "Cohen's d across parameters", ph: "robust" },
+            { id: 16, file: "fig16_cross_env.png", title: "Cross-Env (IPD)", desc: "Meta-ranking in PD (+17.8%)", ph: "ext" },
+            { id: 17, file: "fig17_pgg.png", title: "PGG Alignment", desc: "Individualist ??Human (WD=0.053)", ph: "ext" },
+            { id: 18, file: "fig18_evolution.png", title: "Evolutionary ESS", desc: "Replicator ??12% convergence", ph: "ext" },
+            { id: 19, file: "fig19_mechanism.png", title: "Mechanism Decomp.", desc: "SVO=86%, λ=13%, ?=1%", ph: "ext" },
+            { id: 20, file: "fig20_harvest.png", title: "Harvest Cross-Val", desc: "4th env: cooperative ?=+0.504", ph: "deep" },
+            { id: 21, file: "fig21_scale_1000.png", title: "1000-Agent Scale", desc: "Meta 0.25 vs Base 0.10", ph: "deep" },
+            { id: 22, file: "fig22_melting_pot.png", title: "Benchmark Radar", desc: "5-axis: 4/5 axes #1", ph: "deep" },
+            { id: 23, file: "fig23_constitutional.png", title: "Constitutional AI", desc: "5-layer reasoning engine", ph: "deep" },
+            { id: 24, file: "fig24_full_sweep.png", title: "Full Sweep Heatmap", desc: "4env×7SVO ATE map", ph: "deep" },
+            { id: 25, file: "fig25_mixed_svo.png", title: "Mixed-SVO Population", desc: "Tipping point analysis", ph: "deep" },
+            { id: 26, file: "fig26_mixed_ate.png", title: "Mixed-SVO ATE", desc: "Treatment effect by ratio", ph: "deep" },
+            { id: 27, file: "fig27_communication.png", title: "Communication Effect", desc: "Cooperation by Comm channel", ph: "deep" },
+            { id: 28, file: "fig28_truthfulness.png", title: "Message Truthfulness", desc: "Truthfulness learning curve", ph: "deep" },
+            { id: 29, file: "fig29_continuous_dist.png", title: "Contribution Distribution", desc: "Discrete vs Continuous PGG", ph: "deep" },
+            { id: 30, file: "fig30_continuous_lambda.png", title: "Continuous Lambda", desc: "Lambda dynamics in cont. PGG", ph: "deep" },
+        ];
+        const phC = { core: { c: "t-core", l: "Core" }, scale: { c: "t-scale", l: "Scale" }, robust: { c: "t-robust", l: "Robust" }, ext: { c: "t-ext", l: "Extended" }, deep: { c: "t-ext", l: "Deep" } };
+
+        function renderGallery(items) {
+            document.getElementById('gallery').innerHTML = items.map(f => `
+            <div class="card"><img src="figures/${f.file}" alt="Fig ${f.id}" onerror="this.parentElement.style.display='none'" onclick="openLB(this.src)">
+            <div class="card-info"><span class="phase-tag ${phC[f.ph].c}">${phC[f.ph].l}</span><h3>Fig ${f.id}. ${f.title}</h3><p>${f.desc}</p></div></div>`).join('');
+        }
+        function filterFigs(p) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderGallery(p === 'all' ? figs : figs.filter(f => f.ph === p));
+        }
+        function openLB(s) { document.getElementById('lb-img').src = s; document.getElementById('lightbox').classList.add('active'); }
+        function closeLB() { document.getElementById('lightbox').classList.remove('active'); }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+        renderGallery(figs);
+
+        /* ===== SVO ?라?더 ===== */
+        const svoNames = { 0: 'Selfish', 15: 'Individualist', 30: 'Competitive', 45: 'Prosocial', 60: 'Cooperative', 75: 'Altruistic', 90: 'Full Altruist' };
+        const svoSlider = document.getElementById('svo-slider');
+        const roundsSlider = document.getElementById('rounds-slider');
+        svoSlider.oninput = () => {
+            const v = +svoSlider.value;
+            document.getElementById('svo-label').textContent = `${svoNames[v]} (${v}°)`;
+            document.getElementById('angle-val').textContent = v + '°';
+            document.getElementById('lambda-val').textContent = Math.sin(v * Math.PI / 180).toFixed(3);
+        };
+        roundsSlider.oninput = () => document.getElementById('rounds-label').textContent = roundsSlider.value;
+        document.getElementById('meta-toggle').addEventListener('click', () => {
+            document.getElementById('mode-val').textContent = document.getElementById('meta-toggle').classList.contains('on') ? 'Dynamic' : 'Static';
+        });
+
+        /* ===== ???이???진 (JS ?팅) ===== */
+        class SeededRNG {
+            constructor(s) { this.s = s % 2147483647; if (this.s <= 0) this.s += 2147483646; }
+            next() { this.s = this.s * 16807 % 2147483647; return (this.s - 1) / 2147483646; }
+            normal(m = 0, s = 1) { const u = this.next(), v = this.next(); return m + s * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+        }
+
+        function computeLambda(theta, wealth, useMeta) {
+            const lb = Math.sin(theta * Math.PI / 180);
+            if (!useMeta) return lb;
+            if (wealth < -5) return 0;
+            if (wealth > 5) return Math.min(1, 1.5 * lb);
+            return lb;
+        }
+
+        function simPGG(theta, meta, nR, seed) {
+            const rng = new SeededRNG(seed), N = 4, E = 20, M = 1.6;
+            let wealth = new Float64Array(N), rates = [], payoffs = [];
+            let prevAvg = null;
+            for (let t = 0; t < nR; t++) {
+                let contribs = [];
+                for (let i = 0; i < N; i++) {
+                    let lam = computeLambda(theta, wealth[i], meta);
+                    let c = lam * E;
+                    if (prevAvg !== null && meta) c += 0.3 * (prevAvg - c);
+                    c = Math.max(0, Math.min(E, c + rng.normal(0, E * 0.05)));
+                    contribs.push(c);
+                }
+                const tot = contribs.reduce((a, b) => a + b, 0);
+                const pg = tot * M / N;
+                const pays = contribs.map(c => (E - c) + pg);
+                pays.forEach((p, i) => wealth[i] += p - E);
+                rates.push(contribs.reduce((a, b) => a + b, 0) / (N * E));
+                payoffs.push(pays.reduce((a, b) => a + b, 0) / N);
+                prevAvg = contribs.reduce((a, b) => a + b, 0) / N;
+            }
+            return { rates, payoffs };
+        }
+
+        function simIPD(theta, meta, nR, seed) {
+            const rng = new SeededRNG(seed);
+            const T = 5, R = 3, P = 1, S = 0;
+            let wealth = [0, 0], cc = [0, 0], dc = [0, 0], history = [];
+            for (let t = 0; t < nR; t++) {
+                let acts = [];
+                for (let i = 0; i < 2; i++) {
+                    const j = 1 - i, tot = cc[j] + dc[j], pcr = tot > 0 ? cc[j] / tot : 0.5;
+                    const rcs = pcr * R + (1 - pcr) * S, rds = pcr * T + (1 - pcr) * P;
+                    const rco = pcr * R + (1 - pcr) * T, rdo = pcr * S + (1 - pcr) * P;
+                    const lam = computeLambda(theta, wealth[i], meta), beta = 0.1;
+                    const vc = (1 - lam) * rcs + lam * (rco - beta * Math.abs(rcs - rco));
+                    const vd = (1 - lam) * rds + lam * (rdo - beta * Math.abs(rds - rdo));
+                    const pc = 1 / (1 + Math.exp(-(vc - vd)));
+                    acts.push(rng.next() < pc ? 0 : 1);
+                }
+                const pm = [[R, S], [T, P]];
+                wealth[0] += pm[acts[0]][acts[1]];
+                wealth[1] += pm[acts[1]][acts[0]];
+                acts.forEach((a, i) => a === 0 ? cc[i]++ : dc[i]++);
+                history.push((2 - acts[0] - acts[1]) / 2);
+            }
+            // ?동 ?균
+            const w = 10, sm = [];
+            for (let i = 0; i < history.length; i++) { const s = Math.max(0, i - w); sm.push(history.slice(s, i + 1).reduce((a, b) => a + b, 0) / (i - s + 1)); }
+            return sm;
+        }
+
+        /* ===== 차트 (Canvas 기반, ?존???음) ===== */
+        function drawChart(canvasId, datasets, opts = {}) {
+            const c = document.getElementById(canvasId), ctx = c.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            c.width = c.offsetWidth * dpr; c.height = c.offsetHeight * dpr;
+            ctx.scale(dpr, dpr);
+            const W = c.offsetWidth, H = c.offsetHeight, pad = { t: 20, r: 20, b: 35, l: 50 };
+            const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+
+            // 범위 계산
+            let allY = [];
+            datasets.forEach(d => allY.push(...d.data));
+            let yMin = opts.yMin ?? Math.min(...allY) * 0.95, yMax = opts.yMax ?? Math.max(...allY) * 1.05;
+            if (yMin === yMax) { yMin -= 0.5; yMax += 0.5; }
+            const xLen = Math.max(...datasets.map(d => d.data.length));
+
+            ctx.clearRect(0, 0, W, H);
+
+            // 그리??
+            ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
+            for (let i = 0; i <= 4; i++) {
+                const y = pad.t + ph * (1 - i / 4);
+                ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+                ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '11px Inter'; ctx.textAlign = 'right';
+                ctx.fillText((yMin + (yMax - yMin) * i / 4).toFixed(2), pad.l - 8, y + 4);
+            }
+
+            // ?이??
+            datasets.forEach(ds => {
+                ctx.strokeStyle = ds.color; ctx.lineWidth = ds.width || 2; ctx.setLineDash(ds.dash || []);
+                ctx.beginPath();
+                ds.data.forEach((v, i) => {
+                    const x = pad.l + (i / (xLen - 1)) * pw, y = pad.t + ph * (1 - (v - yMin) / (yMax - yMin));
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                });
+                ctx.stroke(); ctx.setLineDash([]);
+                // 마커
+                if (ds.data.length <= 30) {
+                    ds.data.forEach((v, i) => {
+                        const x = pad.l + (i / (xLen - 1)) * pw, y = pad.t + ph * (1 - (v - yMin) / (yMax - yMin));
+                        ctx.fillStyle = ds.color; ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+                    });
+                }
+            });
+
+            // 범?
+            let lx = pad.l + 10;
+            ctx.font = '11px Inter';
+            datasets.forEach(ds => {
+                ctx.fillStyle = ds.color; ctx.fillRect(lx, pad.t + 2, 14, 3);
+                ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.textAlign = 'left';
+                ctx.fillText(ds.label, lx + 18, pad.t + 7);
+                lx += ctx.measureText(ds.label).width + 40;
+            });
+
+            // X??벨
+            ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '11px Inter'; ctx.textAlign = 'center';
+            const xStep = Math.max(1, Math.floor(xLen / 6));
+            for (let i = 0; i < xLen; i += xStep) {
+                ctx.fillText(i + 1, pad.l + (i / (xLen - 1)) * pw, H - pad.b + 18);
+            }
+            ctx.fillText(opts.xLabel || 'Round', W / 2, H - 5);
+        }
+
+        let _chartInit = false;
+        function initCharts() { _chartInit = true; runSimulation(); }
+
+        function runSimulation() {
+            const theta = +document.getElementById('svo-slider').value;
+            const meta = document.getElementById('meta-toggle').classList.contains('on');
+            const seed = +document.getElementById('seed-input').value;
+            const env = document.getElementById('env-select').value;
+            const nR = +document.getElementById('rounds-slider').value;
+
+            if (env === 'pgg') {
+                document.getElementById('chart1-title').textContent = '? Contribution Rate';
+                document.getElementById('chart2-title').textContent = '? Mean Payoff';
+                document.getElementById('rounds-group').style.display = '';
+
+                const rm = simPGG(theta, true, nR, seed), rb = simPGG(theta, false, nR, seed);
+                const human = Array.from({ length: nR }, (_, i) => 0.54 - 0.035 * i);
+
+                drawChart('chart1', [
+                    { data: rm.rates, color: '#4fc3f7', label: 'Meta-Ranking', width: 2 },
+                    { data: rb.rates, color: '#888', label: 'Baseline', width: 2, dash: [5, 5] },
+                    { data: human, color: 'rgba(255,255,255,0.3)', label: 'Human', width: 2, dash: [2, 4] },
+                ], { yMin: 0, yMax: 1.1 });
+                drawChart('chart2', [
+                    { data: rm.payoffs, color: '#66bb6a', label: 'Meta-Ranking', width: 2 },
+                    { data: rb.payoffs, color: '#888', label: 'Baseline', width: 2, dash: [5, 5] },
+                ]);
+
+                // WD 근사
+                const wdM = rm.rates.reduce((s, v, i) => s + Math.abs(v - human[i]), 0) / nR;
+                const wdB = rb.rates.reduce((s, v, i) => s + Math.abs(v - human[i]), 0) / nR;
+                document.getElementById('m1-val').textContent = wdM.toFixed(4);
+                document.getElementById('m1-lbl').textContent = 'Wasserstein Distance';
+                document.getElementById('m1-delta').textContent = `${(wdB - wdM) > 0 ? '?? : '??} ${Math.abs(wdB - wdM).toFixed(4)} vs Baseline`;
+                document.getElementById('m2-val').textContent = (rm.rates.reduce((a, b) => a + b, 0) / nR).toFixed(3);
+                document.getElementById('m2-lbl').textContent = 'Avg Contribution';
+                document.getElementById('m2-delta').textContent = '';
+                document.getElementById('m3-val').textContent = computeLambda(theta, 0, meta).toFixed(3);
+                document.getElementById('m3-lbl').textContent = 'Final λ_t';
+                document.getElementById('m3-delta').textContent = '';
+            } else {
+                document.getElementById('chart1-title').textContent = '? Cooperation Rate (10-round MA)';
+                document.getElementById('chart2-title').textContent = '? Cumulative';
+                document.getElementById('rounds-group').style.display = '';
+                const nR2 = Math.max(50, nR * 20);
+                const cm = simIPD(theta, true, nR2, seed), cb = simIPD(theta, false, nR2, seed);
+                drawChart('chart1', [
+                    { data: cm, color: '#4fc3f7', label: 'Meta-Ranking', width: 1.5 },
+                    { data: cb, color: '#888', label: 'Baseline', width: 1.5, dash: [5, 5] },
+                ], { yMin: 0, yMax: 1.1, xLabel: 'Round' });
+                // ?적
+                let cumM = [], cumB = [], sM = 0, sB = 0;
+                cm.forEach((v, i) => { sM += v; cumM.push(sM / (i + 1)); });
+                cb.forEach((v, i) => { sB += v; cumB.push(sB / (i + 1)); });
+                drawChart('chart2', [
+                    { data: cumM, color: '#66bb6a', label: 'Meta (Cumul)', width: 1.5 },
+                    { data: cumB, color: '#888', label: 'Base (Cumul)', width: 1.5, dash: [5, 5] },
+                ], { yMin: 0, yMax: 1.1 });
+
+                const fM = cm.slice(-20).reduce((a, b) => a + b, 0) / 20;
+                const fB = cb.slice(-20).reduce((a, b) => a + b, 0) / 20;
+                document.getElementById('m1-val').textContent = fM.toFixed(3);
+                document.getElementById('m1-lbl').textContent = 'Final Coop (Meta)';
+                document.getElementById('m1-delta').textContent = `+${((fM - fB) * 100).toFixed(1)}% vs Baseline`;
+                document.getElementById('m2-val').textContent = fB.toFixed(3);
+                document.getElementById('m2-lbl').textContent = 'Final Coop (Base)';
+                document.getElementById('m2-delta').textContent = '';
+                document.getElementById('m3-val').textContent = computeLambda(theta, 0, meta).toFixed(3);
+                document.getElementById('m3-lbl').textContent = 'λ_t';
+                document.getElementById('m3-delta').textContent = '';
+            }
+        }
+    </script>
+</body>
+
+</html>

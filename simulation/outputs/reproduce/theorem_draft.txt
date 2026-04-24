@@ -1,0 +1,47 @@
+
+=== Theorem 1 (λ_t Convergence — 추측) ===
+
+Let λ_t ∈ [0,1] be the dynamic commitment level of an agent with 
+SVO parameter θ ∈ [0°, 90°] and resource level R_t ∈ ℝ+.
+
+Define the update rule:
+    λ_{t+1} = λ_t + α(λ*(R_t, θ) - λ_t)
+
+where λ*(R, θ) is the target:
+    λ*(R, θ) = { 0                          if R < τ_survival
+               { sin(θ)                     if τ_survival ≤ R ≤ τ_abundant
+               { min(1, 1.5·sin(θ))         if R > τ_abundant
+
+And V(λ) = (λ - λ*)² is the Lyapunov candidate function.
+
+Then for any fixed resource regime (R = const):
+    (a) V(λ) ≥ 0 for all λ (positive definite)
+    (b) ΔV = V(λ_{t+1}) - V(λ_t) = -2α(1-α)(λ_t - λ*)² < 0 for λ_t ≠ λ*
+    (c) Therefore λ_t → λ* as t → ∞ (asymptotic stability)
+
+Proof sketch:
+    ΔV = (λ_{t+1} - λ*)² - (λ_t - λ*)²
+        = ((1-α)λ_t + αλ* - λ*)² - (λ_t - λ*)²
+        = (1-α)²(λ_t - λ*)² - (λ_t - λ*)²
+        = [(1-α)² - 1](λ_t - λ*)²
+        = -α(2-α)(λ_t - λ*)²  < 0  for 0 < α < 2  ∎
+
+Convergence rate: geometric with ratio (1-α)²
+    For α = 0.1: |λ_t - λ*| ≤ (0.9)^t · |λ_0 - λ*| → 0
+
+=== Empirical Verification ===
+
+selfish:
+  scarce: λ*=0.000, Conv=100%, Steps=55
+  normal: λ*=0.000, Conv=100%, Steps=55
+  abundant: λ*=0.000, Conv=100%, Steps=55
+
+prosocial:
+  scarce: λ*=0.000, Conv=100%, Steps=55
+  normal: λ*=0.707, Conv=100%, Steps=50
+  abundant: λ*=1.000, Conv=100%, Steps=55
+
+altruistic:
+  scarce: λ*=0.000, Conv=100%, Steps=55
+  normal: λ*=1.000, Conv=100%, Steps=55
+  abundant: λ*=1.000, Conv=100%, Steps=55

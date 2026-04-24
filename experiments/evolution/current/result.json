@@ -1,0 +1,28 @@
+{
+    "Prosocial": {
+        "cooperation_rate": 0.11698263386885326,
+        "cooperation_std": 0.015300994740382148,
+        "cooperation_per_seed": [
+            0.13388916850090027,
+            0.12022583931684494,
+            0.09683289378881454
+        ],
+        "reward_mean": -0.14425446341435114,
+        "gini": -0.03169715404510498,
+        "num_seeds": 3,
+        "platform": "gpu"
+    },
+    "Individualist": {
+        "cooperation_rate": 0.1226320390899976,
+        "cooperation_std": 0.00937352342244247,
+        "cooperation_per_seed": [
+            0.13541503250598907,
+            0.11928039789199829,
+            0.11320068687200546
+        ],
+        "reward_mean": -0.15488947927951813,
+        "gini": -0.03641317660609881,
+        "num_seeds": 3,
+        "platform": "gpu"
+    }
+}

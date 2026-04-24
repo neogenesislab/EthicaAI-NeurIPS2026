@@ -1,0 +1,31 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+
+# IDE
+.vscode
+.idea
+*.swp
+
+# OS
+Thumbs.db
+.DS_Store
+
+# 대용량/불필요
+node_modules
+.agent
+*.egg-info
+dist
+build
+
+# 기존 출력 (Docker 내부에서 새로 생성)
+simulation/outputs/reproduce/*.png
+simulation/outputs/reproduce/*.json
+site/figures/*.png

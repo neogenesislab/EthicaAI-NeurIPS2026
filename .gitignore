@@ -1,0 +1,114 @@
+# ===== 🔒 보안 (최우선) =====
+# 환경 변수 / 시크릿 — 어떤 경우에도 커밋 금지
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+secrets/
+credentials/
+**/api_key*
+**/secret*
+**/*credentials*
+**/*token*
+
+# ===== 의존성 =====
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.next/
+out/
+*.egg-info/
+venv/
+ethica_env/
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== 시뮬레이션 (대용량) =====
+simulation/logs/
+simulation/checkpoints/
+simulation/outputs/
+!simulation/logs/.gitkeep
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+
+# ===== 빌드 =====
+dist/
+build/
+*.egg
+
+# ===== 로그 =====
+*.log
+
+# ===== 아카이브 =====
+*.tar.gz
+*.zip
+
+# ===== 런타임 =====
+.venv/
+
+# ===== LaTeX 컴파일 부산물 =====
+*.aux
+*.bbl
+*.blg
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+
+# ===== Double-Blind Protection =====
+# Legacy folders containing author-identifying information
+# These MUST NOT be pushed to anonymous repository
+submission_arxiv/
+submission_neurips/
+submission_neurips2026/
+submission_package/
+submission_ready/
+NeurIPS2026_EthicaAI_StrongAccept/
+NeurIPS2026_EthicaAI_submission/
+paper/drafts/
+paper/submission/
+paper/zenodo_main.tex
+paper/aies2026_extended.tex
+paper/icsd2026_short.tex
+original/
+dashboard/
+
+# ===== Legacy/Archive (NOT the submission source) =====
+# Root paper/ is the OLD version — DO NOT USE
+# Single source of truth: NeurIPS2026_final_submission/
+/paper/
+scripts/zenodo_upload.py
+scripts/demo.py
+scripts/prepare_arxiv.py
+scripts/_publish_draft.py
+scripts/_remove_neurips_note.py
+scripts/_update_v4_metadata.py
+_check_data.py
+
+# ===== Audit artifacts =====
+**/audit_clean.txt
+**/audit_report.txt
+**/deep_audit_report.txt
+
+.vercel
+
+# ===== FAST smoke-test outputs (not paper data) =====
+NeurIPS2026_final_submission/code/outputs_fast/

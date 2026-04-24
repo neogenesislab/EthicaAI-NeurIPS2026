@@ -1,0 +1,25 @@
+INFO:2026-02-16 09:10:25,129:jax._src.xla_bridge:834: Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+09:10:25 [INFO] Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+09:10:25 [INFO] JAX backend: gpu, Devices: [CudaDevice(id=0)]
+09:10:25 [INFO] 나머지 2개 실험 시작: 09:10:25
+09:10:25 [INFO] ============================================================
+09:10:25 [INFO] 실험: 06_inequity_aversion
+09:10:25 [INFO] 설명: MAPPO + Inequity Aversion (SA-PPO)
+09:10:25 [INFO] ============================================================
+09:10:25 [INFO] JAX 그래프 컴파일 중...
+09:10:49 [INFO] 컴파일 완료: 23.9초
+09:10:49 [INFO]   조건: Prosocial (θ=0.7854)
+09:10:49 [INFO]     시드: 42...
+09:28:25 [INFO]     ✅ Seed 42: Coop=0.1256, Reward=-0.0178, Gini=-0.0384 (1055초)
+09:28:25 [INFO]     시드: 123...
+09:46:10 [INFO]     ✅ Seed 123: Coop=0.1210, Reward=-0.0171, Gini=-0.0387 (1065초)
+09:46:10 [INFO]     시드: 7...
+10:01:51 [INFO]     ✅ Seed 7: Coop=0.0902, Reward=-0.0128, Gini=-0.0459 (941초)
+10:01:51 [INFO]   조건: Individualist (θ=0.0000)
+10:01:51 [INFO]     시드: 42...
+10:16:46 [INFO]     ✅ Seed 42: Coop=0.1300, Reward=-0.0130, Gini=-0.0684 (894초)
+10:16:46 [INFO]     시드: 123...
+10:31:58 [INFO]     ✅ Seed 123: Coop=0.1219, Reward=-0.0122, Gini=-0.0679 (912초)
+10:31:58 [INFO]     시드: 7...
+10:46:56 [INFO]     ✅ Seed 7: Coop=0.1097, Reward=-0.0110, Gini=-0.0733 (898초)
+10:46:56 [INFO] 💾 저장: /mnt/d/00.test/PAPER/EthicaAI_anon2/experiments/full_sweep_results/06_inequity_aversion.json

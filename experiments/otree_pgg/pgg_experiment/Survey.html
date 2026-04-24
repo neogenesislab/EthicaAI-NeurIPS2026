@@ -1,0 +1,15 @@
+{{ block title }}사후 설문{{ endblock }}
+
+{{ block content }}
+<div class="card mb-3">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0">실험이 종료되었습니다</h5>
+    </div>
+    <div class="card-body">
+        <p>마지막으로 몇 가지 질문에 답해주세요.</p>
+        {{ formfields }}
+    </div>
+</div>
+
+{{ next_button }}
+{{ endblock }}

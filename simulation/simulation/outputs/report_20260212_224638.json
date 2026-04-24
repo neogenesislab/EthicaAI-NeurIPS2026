@@ -1,0 +1,25 @@
+{
+    "timestamp": "20260212_224638",
+    "config": {
+        "name": "ethica_ai_v1",
+        "rounds": 100000,
+        "agents": 2
+    },
+    "metrics": {
+        "avg_reward_optimal": 0.0,
+        "avg_reward_selfish": 500000.0,
+        "cooperation_rate": 0.49999750001249993
+    },
+    "hypothesis_test": {
+        "method": "Welch's t-test",
+        "t_statistic": 0.0,
+        "p_value": 1.0,
+        "significant": false
+    },
+    "causal_analysis": {
+        "ate_estimate": -2000000.0,
+        "correlation": -1.0,
+        "sample_size": 2,
+        "status": "estimated_simple_regression"
+    }
+}

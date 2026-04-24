@@ -1,0 +1,31 @@
+{{ block title }}최종 결과{{ endblock }}
+
+{{ block content }}
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <h4 class="mb-0">🎉 실험이 완료되었습니다!</h4>
+    </div>
+    <div class="card-body">
+        <h5>최종 결과</h5>
+        <table class="table table-bordered">
+            <tr>
+                <th>총 라운드</th>
+                <td>{{ total_rounds }}라운드</td>
+            </tr>
+            <tr>
+                <th>총 누적 보수</th>
+                <td><strong>{{ total_payoff }} 포인트</strong></td>
+            </tr>
+            <tr>
+                <th>실제 보상</th>
+                <td><strong>₩{{ real_money }}</strong></td>
+            </tr>
+        </table>
+
+        <div class="alert alert-success">
+            <strong>감사합니다!</strong> 실험에 참여해 주셔서 감사합니다.
+            연구 결과는 AI-인간 협력 패턴 분석에 활용됩니다.
+        </div>
+    </div>
+</div>
+{{ endblock }}

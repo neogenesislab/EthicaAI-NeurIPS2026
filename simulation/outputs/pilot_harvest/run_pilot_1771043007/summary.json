@@ -1,0 +1,102 @@
+{
+  "timestamp": 1771043007,
+  "scale": "pilot",
+  "config_override": {
+    "ENV_NAME": "harvest"
+  },
+  "svo_conditions": 2,
+  "seeds": [
+    42
+  ],
+  "total_runs": 2,
+  "eval_summary": {
+    "selfish": {
+      "reward": {
+        "mean": -0.148453027009964,
+        "std": 0.0
+      },
+      "cooperation": {
+        "mean": 0.140625,
+        "std": 0.0
+      },
+      "gini": {
+        "mean": -0.26085007190704346,
+        "std": 0.0
+      }
+    },
+    "altruistic": {
+      "reward": {
+        "mean": -0.1645592898130417,
+        "std": 0.0
+      },
+      "cooperation": {
+        "mean": 0.13437500596046448,
+        "std": 0.0
+      },
+      "gini": {
+        "mean": -0.07952189445495605,
+        "std": 0.0
+      }
+    }
+  },
+  "causal_summary": {
+    "H1_svo_reward": {
+      "ate": 0.0,
+      "p_value": 1.0,
+      "significant": null,
+      "cohens_f2": 0.0,
+      "effect_label": "small"
+    },
+    "H2_svo_cooperation": {
+      "ate": 0.0,
+      "p_value": 1.0,
+      "significant": null,
+      "cohens_f2": null,
+      "effect_label": null
+    },
+    "H3_svo_gini": {
+      "ate": 0.0,
+      "p_value": 1.0,
+      "significant": null,
+      "cohens_f2": 0.0,
+      "effect_label": "small"
+    }
+  },
+  "monotonicity": {
+    "spearman_reward": {
+      "rho": -0.9999999999999999,
+      "p": NaN,
+      "significant": false,
+      "direction": "negative"
+    },
+    "spearman_gini": {
+      "rho": 0.9999999999999999,
+      "p": NaN,
+      "significant": false,
+      "direction": "positive"
+    },
+    "spearman_coop": {
+      "rho": -0.9999999999999999,
+      "p": NaN,
+      "significant": false,
+      "direction": "negative"
+    },
+    "kruskal_reward": {
+      "H": 1.0,
+      "p": 0.31731050786291115,
+      "significant": false
+    },
+    "kruskal_gini": {
+      "H": 1.0,
+      "p": 0.31731050786291115,
+      "significant": false
+    }
+  },
+  "figures": {
+    "fig1": "simulation/outputs/pilot_harvest/run_pilot_1771043007/figures/fig1_learning_curves.png",
+    "fig2": "simulation/outputs/pilot_harvest/run_pilot_1771043007/figures/fig2_cooperation_rate.png",
+    "fig3": "simulation/outputs/pilot_harvest/run_pilot_1771043007/figures/fig3_threshold_evolution.png",
+    "fig5": "simulation/outputs/pilot_harvest/run_pilot_1771043007/figures/fig5_gini_comparison.png",
+    "fig7": "simulation/outputs/pilot_harvest/run_pilot_1771043007/figures/fig7_svo_vs_welfare.png"
+  }
+}

@@ -1,0 +1,11 @@
+# EthicaAI — Reproducibility Dependencies (pinned versions)
+# NeurIPS 2026 Submission
+# Install: pip install -r requirements.txt
+
+# Core (required for all experiments)
+numpy==1.26.4
+gymnasium==0.29.1
+matplotlib==3.8.5
+
+# Statistical analysis
+scipy==1.13.1

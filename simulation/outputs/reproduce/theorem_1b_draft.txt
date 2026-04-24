@@ -1,0 +1,30 @@
+
+=== Theorem 1B (λ_t Tracking — 시변 자원 확장) ===
+
+Given:
+  - Time-varying resource R_t with bounded variation
+  - Target λ*(R_t, θ) piecewise constant in R_t
+  - Update rule: λ_{t+1} = (1-α)λ_t + α·λ*(R_t, θ)
+
+Claim: For any bounded resource trajectory {R_t}:
+  (a) Contraction ratio ρ = (1-α)² < 1 for 0 < α < 2
+  (b) Tracking error |λ_t - λ*(R_t)| ≤ ρ^t·|λ_0 - λ*_0| + D/(1-ρ)
+      where D = max_t |λ*(R_{t+1}) - λ*(R_t)| (target drift)
+  (c) For slowly varying R_t (D → 0): λ_t → λ*(R_t)
+
+=== Empirical Verification ===
+
+selfish:
+  sinusoidal: ε=0.00000, ρ=0.810
+  random_walk: ε=0.00000, ρ=0.810
+  shock: ε=0.00000, ρ=0.810
+
+prosocial:
+  sinusoidal: ε=0.07990, ρ=0.810
+  random_walk: ε=0.04184, ρ=0.810
+  shock: ε=0.00000, ρ=0.810
+
+altruistic:
+  sinusoidal: ε=0.00000, ρ=0.810
+  random_walk: ε=0.03471, ρ=0.810
+  shock: ε=0.00000, ρ=0.810

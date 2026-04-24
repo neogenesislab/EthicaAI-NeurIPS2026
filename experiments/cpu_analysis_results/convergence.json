@@ -1,0 +1,3 @@
+{
+  "error": "cannot import name 'main' from 'simulation.jax.analysis.convergence_proof' (/mnt/d/00.test/PAPER/EthicaAI_anon2/simulation/jax/analysis/convergence_proof.py)"
+}

@@ -1,0 +1,118 @@
+{
+  "timestamp": 1771028039,
+  "scale": "medium",
+  "config_override": {
+    "META_BETA": 0.0
+  },
+  "svo_conditions": 3,
+  "seeds": [
+    0,
+    42,
+    123
+  ],
+  "total_runs": 9,
+  "eval_summary": {
+    "selfish": {
+      "reward": {
+        "mean": -0.12862955778837204,
+        "std": 0.007651706298061321
+      },
+      "cooperation": {
+        "mean": 0.12862955778837204,
+        "std": 0.007651706298061321
+      },
+      "gini": {
+        "mean": -0.12967562675476074,
+        "std": 0.006249635987708712
+      }
+    },
+    "prosocial": {
+      "reward": {
+        "mean": -0.12768555184205374,
+        "std": 0.006424690394220251
+      },
+      "cooperation": {
+        "mean": 0.12768555184205374,
+        "std": 0.006424690394220251
+      },
+      "gini": {
+        "mean": -0.045907954374949135,
+        "std": 0.003753155708422891
+      }
+    },
+    "full_altruist": {
+      "reward": {
+        "mean": -0.1267822285493215,
+        "std": 0.006551193632612873
+      },
+      "cooperation": {
+        "mean": 0.1267822285493215,
+        "std": 0.006551193632612873
+      },
+      "gini": {
+        "mean": -0.033178130785624184,
+        "std": 0.005196874979239486
+      }
+    }
+  },
+  "causal_summary": {
+    "H1_svo_reward": {
+      "ate": 0.0011760463196523311,
+      "p_value": 0.736379807719213,
+      "significant": false,
+      "cohens_f2": 0.7550689698980466,
+      "effect_label": "large"
+    },
+    "H2_svo_cooperation": {
+      "ate": -0.0011760463196523311,
+      "p_value": 0.736379807719213,
+      "significant": false,
+      "cohens_f2": null,
+      "effect_label": null
+    },
+    "H3_svo_gini": {
+      "ate": 0.06143221391791332,
+      "p_value": 0.001498461505862636,
+      "significant": true,
+      "cohens_f2": 5.064912877923188,
+      "effect_label": "large"
+    }
+  },
+  "monotonicity": {
+    "spearman_reward": {
+      "rho": 0.21081851067789192,
+      "p": 0.586114133381297,
+      "significant": false,
+      "direction": "positive"
+    },
+    "spearman_gini": {
+      "rho": 0.9486832980505139,
+      "p": 9.584590571929132e-05,
+      "significant": true,
+      "direction": "positive"
+    },
+    "spearman_coop": {
+      "rho": -0.21081851067789192,
+      "p": 0.586114133381297,
+      "significant": false,
+      "direction": "negative"
+    },
+    "kruskal_reward": {
+      "H": 0.35555555555555785,
+      "p": 0.8371284313607628,
+      "significant": false
+    },
+    "kruskal_gini": {
+      "H": 7.200000000000003,
+      "p": 0.02732372244729252,
+      "significant": true
+    }
+  },
+  "figures": {
+    "fig1": "simulation/outputs/run_medium_1771028039/figures/fig1_learning_curves.png",
+    "fig2": "simulation/outputs/run_medium_1771028039/figures/fig2_cooperation_rate.png",
+    "fig3": "simulation/outputs/run_medium_1771028039/figures/fig3_threshold_evolution.png",
+    "fig5": "simulation/outputs/run_medium_1771028039/figures/fig5_gini_comparison.png",
+    "fig7": "simulation/outputs/run_medium_1771028039/figures/fig7_svo_vs_welfare.png"
+  }
+}

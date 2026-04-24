@@ -1,0 +1,43 @@
+{{ block title }}라운드 {{ player.round_number }} 결과{{ endblock }}
+
+{{ block content }}
+<div class="card mb-3">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0">라운드 결과</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tr>
+                <th>당신의 기여</th>
+                <td>{{ contribution }} 포인트</td>
+            </tr>
+            <tr>
+                <th>AI 파트너 기여</th>
+                <td>{{ ai_contributions.0 }}, {{ ai_contributions.1 }}, {{ ai_contributions.2 }} 포인트</td>
+            </tr>
+            <tr>
+                <th>전체 기여 합계</th>
+                <td><strong>{{ total_contribution }} 포인트</strong></td>
+            </tr>
+            <tr>
+                <th>공공재 (×1.8)</th>
+                <td>{{ total_contribution }}×1.8 = {{ share }}×4</td>
+            </tr>
+            <tr class="table-info">
+                <th>당신의 분배몫</th>
+                <td><strong>{{ share }} 포인트</strong></td>
+            </tr>
+            <tr>
+                <th>보유분 (미기여)</th>
+                <td>{{ kept }} 포인트</td>
+            </tr>
+            <tr class="table-success">
+                <th>이번 라운드 수익</th>
+                <td><strong>{{ payoff }} 포인트</strong></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+{{ next_button }}
+{{ endblock }}

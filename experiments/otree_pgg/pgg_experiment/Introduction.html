@@ -1,0 +1,48 @@
+{{ block title }}실험 안내{{ endblock }}
+
+{{ block content }}
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">🧠 공공재 게임 실험에 오신 것을 환영합니다</h4>
+    </div>
+    <div class="card-body">
+        <h5>실험 개요</h5>
+        <p>
+            이 실험에서 당신은 <strong>3명의 AI 파트너</strong>와 함께 4인 그룹을 이루어
+            <strong>공공재 게임(Public Goods Game)</strong>을 수행합니다.
+        </p>
+
+        <div class="alert alert-info">
+            <strong>📌 규칙 요약</strong>
+            <ul class="mb-0">
+                <li>매 라운드 <strong>{{ C.ENDOWMENT }} 포인트</strong>를 지급받습니다</li>
+                <li>원하는 만큼 공공재에 기여할 수 있습니다 (0~{{ C.ENDOWMENT }})</li>
+                <li>전체 기여금은 <strong>{{ C.MULTIPLIER }}배</strong>로 증가한 후 4명에게 균등 분배됩니다</li>
+                <li>총 <strong>{{ C.NUM_ROUNDS }}라운드</strong> 진행됩니다</li>
+            </ul>
+        </div>
+
+        <h5>보수 계산</h5>
+        <div class="card bg-light p-3 mb-3">
+            <code>나의 보수 = (보유액 - 기여액) + (전체 기여 × {{ C.MULTIPLIER }}) ÷ 4</code>
+        </div>
+
+        <h5>예시</h5>
+        <p>
+            4명 모두 50 포인트를 기여하면:<br>
+            보수 = (100 - 50) + (200 × {{ C.MULTIPLIER }}) ÷ 4 = 50 + 90 = <strong>140 포인트</strong>
+        </p>
+        <p>
+            혼자만 0을 기여하고 나머지가 50씩 기여하면:<br>
+            보수 = (100 - 0) + (150 × {{ C.MULTIPLIER }}) ÷ 4 = 100 + 67.5 = <strong>167.5 포인트</strong>
+        </p>
+
+        <div class="alert alert-warning">
+            <strong>⚠️ 주의</strong>: AI 파트너들은 각자의 전략에 따라 기여 금액을 결정합니다.
+            당신의 결정이 전체 결과에 영향을 미칩니다.
+        </div>
+    </div>
+</div>
+
+{{ next_button }}
+{{ endblock }}

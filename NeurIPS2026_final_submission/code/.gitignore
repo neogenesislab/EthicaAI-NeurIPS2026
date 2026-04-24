@@ -1,0 +1,25 @@
+# Logs and temp files
+*.txt
+!requirements.txt
+*.log
+*.pyc
+__pycache__/
+.env
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+
+# Large outputs (kept in separate release)
+# outputs/ are included for reproducibility

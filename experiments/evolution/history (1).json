@@ -1,0 +1,60 @@
+[
+    {
+        "timestamp": "2026-02-15T19:41:42.298354",
+        "config": {
+            "ENV_NAME": "cleanup",
+            "NUM_AGENTS": 20,
+            "ENV_HEIGHT": 36,
+            "ENV_WIDTH": 25,
+            "MAX_STEPS": 500,
+            "NUM_ENVS": 16,
+            "NUM_UPDATES": 300,
+            "ROLLOUT_LEN": 128,
+            "BATCH_SIZE": 2048,
+            "LR": 0.0003,
+            "HIDDEN_DIM": 128,
+            "GAMMA": 0.99,
+            "GAE_LAMBDA": 0.95,
+            "CLIP_EPS": 0.2,
+            "ENTROPY_COEFF": 0.05,
+            "VF_COEFF": 0.5,
+            "MAX_GRAD_NORM": 0.5,
+            "HRL_NUM_NEEDS": 2,
+            "HRL_NUM_TASKS": 2,
+            "HRL_ALPHA": 1.0,
+            "HRL_THRESH_INCREASE": 0.005,
+            "HRL_THRESH_DECREASE": 0.05,
+            "HRL_INTAKE_VAL": 0.2,
+            "REWARD_APPLE": 10.0,
+            "COST_BEAM": -1.0,
+            "META_BETA": 0.1,
+            "META_SURVIVAL_THRESHOLD": -5.0,
+            "META_WEALTH_BOOST": 5.0,
+            "META_LAMBDA_EMA": 0.9,
+            "USE_META_RANKING": true,
+            "META_USE_DYNAMIC_LAMBDA": true,
+            "GENESIS_MODE": false,
+            "GENESIS_BETA_BASE": 10.0,
+            "GENESIS_GAMMA": 2.0,
+            "GENESIS_ALPHA": 0.3,
+            "DASHBOARD_PORT": 4011,
+            "GENESIS_BETA": 0.7,
+            "GENESIS_LOGIC_MODE": "adaptive_beta",
+            "rationale": "Since we have no prior results, let's explore adaptive_beta with a moderate beta and a relatively low alpha to encourage initial cooperation.",
+            "rationale_kr": "\uc774\uc804 \uacb0\uacfc\uac00 \uc5c6\uc73c\ubbc0\ub85c, \ucd08\uae30 \ud611\ub825\uc744 \uc7a5\ub824\ud558\uae30 \uc704\ud574 \uc801\ub2f9\ud55c \ubca0\ud0c0 \uac12\uacfc \ube44\uad50\uc801 \ub0ae\uc740 \uc54c\ud30c \uac12\uc744 \uc0ac\uc6a9\ud558\uc5ec adaptive_beta\ub97c \ud0d0\uc0c9\ud574 \ubcf4\uaca0\uc2b5\ub2c8\ub2e4."
+        },
+        "result": {
+            "Prosocial": {
+                "cooperation_rate": 0.13377197086811066,
+                "reward_mean": -0.15786658227443695,
+                "gini": -0.024245286360383034
+            },
+            "Individualist": {
+                "cooperation_rate": 0.1352832019329071,
+                "reward_mean": -0.15918059647083282,
+                "gini": -0.026006674394011497
+            }
+        },
+        "success": false
+    }
+]

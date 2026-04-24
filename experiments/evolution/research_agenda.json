@@ -1,0 +1,1208 @@
+{
+  "lab_name": "EthicaAI Genesis Lab",
+  "version": "1.0",
+  "created_at": "2026-02-15T17:55:00",
+  "total_generations_run": 461,
+  "total_questions_completed": 0,
+  "questions": {
+    "RQ-001": {
+      "id": "RQ-001",
+      "question": "Cleanup 환경에서 협력률 0.5 이상을 달성할 수 있는가?",
+      "question_en": "Can cooperation rate exceed 0.5 in the Cleanup environment?",
+      "type": "optimization",
+      "status": "failed",
+      "priority": 1,
+      "created_at": "2026-02-15T17:55:00",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 50,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": [
+          "RQ-002",
+          "RQ-003"
+        ]
+      },
+      "on_failure": {
+        "action": "fallback",
+        "fallback_to": "RQ-004",
+        "max_retries": 2
+      },
+      "depends_on": null,
+      "parent": null,
+      "generation_count": 50,
+      "retry_count": 2,
+      "best_result": 0.13377197086811066,
+      "completed_at": "2026-02-15T18:53:23.259037",
+      "outcome": "failure",
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 0.3,
+        "DASHBOARD_PORT": 4011,
+        "GENESIS_BETA": 0.7,
+        "GENESIS_LOGIC_MODE": "institutional",
+        "rationale": "Since neither 'adaptive_beta' nor 'inverse_beta' improved cooperation, I will try 'institutional' mode with moderate GENESIS_BETA and GENESIS_ALPHA to see if a fixed cost/reward system promotes cooperation.",
+        "rationale_kr": "'adaptive_beta'와 'inverse_beta' 모두 협력을 개선하지 못했으므로, 고정된 비용/보상 시스템이 협력을 촉진하는지 확인하기 위해 적당한 GENESIS_BETA 및 GENESIS_ALPHA 값을 사용하여 'institutional' 모드를 시도합니다."
+      }
+    },
+    "RQ-002": {
+      "id": "RQ-002",
+      "question": "RQ-001에서 발견한 메커니즘이 Harvest 환경에서도 일반화되는가?",
+      "question_en": "Does the mechanism from RQ-001 generalize to the Harvest environment?",
+      "type": "generalization",
+      "status": "queued",
+      "priority": 2,
+      "created_at": "2026-02-15T17:55:00",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.4
+      },
+      "constraints": {
+        "max_generations": 30,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "archive",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": "RQ-001",
+      "parent": "RQ-001",
+      "generation_count": 0,
+      "retry_count": 0,
+      "best_result": null,
+      "completed_at": null,
+      "outcome": null
+    },
+    "RQ-003": {
+      "id": "RQ-003",
+      "question": "협력률 목표를 0.8 이상으로 상향할 수 있는가?",
+      "question_en": "Can we escalate the cooperation rate target above 0.8?",
+      "type": "escalation",
+      "status": "queued",
+      "priority": 2,
+      "created_at": "2026-02-15T17:55:00",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.8
+      },
+      "constraints": {
+        "max_generations": 50,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            200.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            10.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "archive",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": "RQ-001",
+      "parent": "RQ-001",
+      "generation_count": 0,
+      "retry_count": 0,
+      "best_result": null,
+      "completed_at": null,
+      "outcome": null
+    },
+    "RQ-004": {
+      "id": "RQ-004",
+      "question": "파라미터가 아닌 환경 보상 구조(REWARD_APPLE, COST_BEAM)를 변경하면 협력이 증가하는가?",
+      "question_en": "Does modifying the environment reward structure (REWARD_APPLE, COST_BEAM) increase cooperation?",
+      "type": "pivot",
+      "status": "failed",
+      "priority": 3,
+      "created_at": "2026-02-15T17:55:00",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 40,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ],
+          "REWARD_APPLE": [
+            1.0,
+            50.0
+          ],
+          "COST_BEAM": [
+            -10.0,
+            -0.1
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "generate_new",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": null,
+      "parent": null,
+      "generation_count": 40,
+      "retry_count": 1,
+      "best_result": 0.13377197086811066,
+      "completed_at": "2026-02-15T19:13:54.713395",
+      "outcome": "failure",
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 0.3,
+        "DASHBOARD_PORT": 4011,
+        "GENESIS_BETA": 0.7,
+        "GENESIS_LOGIC_MODE": "adaptive_beta",
+        "rationale": "Since no prior experiments exist, we will start with a moderate `GENESIS_BETA` and `GENESIS_ALPHA` and use `adaptive_beta` logic to allow agents to learn from their experience.",
+        "rationale_kr": "이전 실험이 없으므로, 적당한 `GENESIS_BETA`와 `GENESIS_ALPHA`로 시작하여 에이전트가 경험으로부터 학습할 수 있도록 `adaptive_beta` 로직을 사용합니다."
+      }
+    },
+    "RQ-005": {
+      "id": "RQ-005",
+      "question": "수정된 보상 구조(REWARD_APPLE, COST_BEAM)와 함께 통신 채널을 도입하면 협력 발생이 촉진되는가?",
+      "question_en": "Does introducing a communication channel, alongside modified reward structure (REWARD_APPLE, COST_BEAM), facilitate the emergence of cooperation?",
+      "type": "pivot",
+      "status": "failed",
+      "priority": 2,
+      "created_at": "2026-02-15T19:13:58.083207",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 40,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "generate_new",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": null,
+      "parent": "RQ-004",
+      "generation_count": 40,
+      "retry_count": 1,
+      "best_result": 0.13377197086811066,
+      "completed_at": "2026-02-15T19:33:25.661827",
+      "outcome": "failure",
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 0.3,
+        "DASHBOARD_PORT": 4011,
+        "GENESIS_BETA": 0.7,
+        "GENESIS_LOGIC_MODE": "adaptive_beta",
+        "rationale": "Since we have no prior experiments, let's start with a moderate intervention strength (GENESIS_BETA) and sensitivity (GENESIS_ALPHA) using the 'adaptive_beta' logic to allow agents to learn and adjust their cooperation based on the environment.",
+        "rationale_kr": "이전 실험이 없으므로, 에이전트가 환경에 따라 협력을 학습하고 조정할 수 있도록 'adaptive_beta' 로직을 사용하여 적절한 개입 강도(GENESIS_BETA)와 민감도(GENESIS_ALPHA)로 시작합니다."
+      }
+    },
+    "RQ-006": {
+      "id": "RQ-006",
+      "question": "협력과 통신을 도입하기 전에 개별적인 목표로 에이전트를 사전 훈련하면 수정된 보상 구조(REWARD_APPLE, COST_BEAM)에서 협력률이 더 높아지는가?",
+      "question_en": "Does pre-training agents with individualistic goals before introducing cooperation and communication lead to higher cooperation rates with a modified reward structure (REWARD_APPLE, COST_BEAM)?",
+      "type": "pivot",
+      "status": "failed",
+      "priority": 2,
+      "created_at": "2026-02-15T19:33:28.841270",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 40,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "generate_new",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": null,
+      "parent": "RQ-005",
+      "generation_count": 40,
+      "retry_count": 1,
+      "best_result": 0.13377197086811066,
+      "completed_at": "2026-02-15T19:53:01.449843",
+      "outcome": "failure",
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 0.3,
+        "DASHBOARD_PORT": 4011,
+        "GENESIS_BETA": 0.7,
+        "GENESIS_LOGIC_MODE": "adaptive_beta",
+        "rationale": "Starting with adaptive_beta logic mode with moderate intervention strength and sensitivity to observe initial behavior.",
+        "rationale_kr": "초기 행동을 관찰하기 위해 중간 정도의 개입 강도와 민감도를 갖는 adaptive_beta 로직 모드로 시작합니다."
+      }
+    },
+    "RQ-007": {
+      "id": "RQ-007",
+      "question": "경쟁적 보상 구조로 시작하여 수정된 협력적 보상 구조(REWARD_APPLE, COST_BEAM)로 전환하는 '경쟁 후 협력' 커리큘럼에서 에이전트를 훈련하면 협력률이 향상되는가?",
+      "question_en": "Does training agents in a 'competitive then cooperative' curriculum, starting with a competitive reward structure before transitioning to the modified cooperative reward structure (REWARD_APPLE, COST_BEAM), improve the cooperation rate?",
+      "type": "pivot",
+      "status": "failed",
+      "priority": 2,
+      "created_at": "2026-02-15T19:53:04.063843",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 40,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "generate_new",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": null,
+      "parent": "RQ-006",
+      "generation_count": 40,
+      "retry_count": 1,
+      "best_result": 0.13377197086811066,
+      "completed_at": "2026-02-15T20:11:54.313950",
+      "outcome": "failure",
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 0.8,
+        "DASHBOARD_PORT": 4011,
+        "GENESIS_BETA": 0.5,
+        "GENESIS_LOGIC_MODE": "inverse_beta",
+        "rationale": "Since both adaptive_beta and institutional logic resulted in low cooperation, exploring inverse_beta with a moderate beta and a higher alpha might encourage cooperation by dynamically adjusting intervention strength based on agent success.",
+        "rationale_kr": "adaptive_beta와 institutional 로직 모두 협력률이 낮았으므로, 적절한 베타와 높은 알파를 사용하여 inverse_beta를 탐색함으로써 에이전트의 성공에 따라 개입 강도를 동적으로 조정하여 협력을 장려할 수 있습니다."
+      }
+    },
+    "RQ-008": {
+      "id": "RQ-008",
+      "question": "빔 사용 비용을 점진적으로 낮추는 어닐링 방식을 통해 '점진적 전환' 커리큘럼을 도입하면 수정된 협력적 보상 구조(REWARD_APPLE, COST_BEAM)로 훈련된 에이전트의 협력률이 향상될 수 있는가?",
+      "question_en": "Can introducing a 'gradual transition' curriculum using annealing, where the cost of beaming starts high and gradually decreases, foster higher cooperation rates in agents trained with a modified cooperative reward structure (REWARD_APPLE, COST_BEAM)?",
+      "type": "pivot",
+      "status": "failed",
+      "priority": 2,
+      "created_at": "2026-02-15T20:11:57.369386",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 40,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "generate_new",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": null,
+      "parent": "RQ-007",
+      "generation_count": 40,
+      "retry_count": 1,
+      "best_result": 0.13377197086811066,
+      "completed_at": "2026-02-15T20:30:56.748962",
+      "outcome": "failure",
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 0.5,
+        "DASHBOARD_PORT": 4011,
+        "GENESIS_BETA": 1.0,
+        "GENESIS_LOGIC_MODE": "adaptive_beta",
+        "rationale": "Starting with a strong intervention strength and moderate sensitivity with adaptive beta logic, as no prior experiments exist to guide the search.",
+        "rationale_kr": "검색을 안내할 이전 실험이 없으므로 적응형 베타 로직을 사용하여 강력한 개입 강도와 중간 정도의 민감도로 시작합니다."
+      }
+    },
+    "RQ-009": {
+      "id": "RQ-009",
+      "question": "빔 비용 민감도와 협력적 행동의 분리에 초점을 맞춘 자동 생성 단계를 사용하는 커리큘럼 학습이 수정된 협력적 보상 구조(REWARD_APPLE, COST_BEAM)로 훈련된 에이전트의 협력률을 향상시킬 수 있는가?",
+      "question_en": "Can curriculum learning, using automatically generated stages focused on decoupling beam cost sensitivity from cooperative behavior, improve cooperation rates in agents trained with a modified cooperative reward structure (REWARD_APPLE, COST_BEAM)?",
+      "type": "pivot",
+      "status": "failed",
+      "priority": 2,
+      "created_at": "2026-02-15T20:31:01.077640",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 40,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "generate_new",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": null,
+      "parent": "RQ-008",
+      "generation_count": 40,
+      "retry_count": 1,
+      "best_result": 0.13377197086811066,
+      "completed_at": "2026-02-15T20:49:56.480381",
+      "outcome": "failure",
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 0.7,
+        "DASHBOARD_PORT": 4011,
+        "GENESIS_BETA": 0.5,
+        "GENESIS_LOGIC_MODE": "inverse_beta",
+        "rationale": "Since neither adaptive beta nor institutional logic improved cooperation, let's try inverse beta, decreasing the intervention strength with higher wealth, with moderate intervention and sensitivity to reward.",
+        "rationale_kr": "적응형 베타나 제도적 논리가 협력을 개선하지 못했으므로, 보상에 대한 적절한 개입과 민감도를 유지하며 도움이 높아질수록 개입 강도를 줄이는 inverse beta를 시도해 보겠습니다."
+      }
+    },
+    "RQ-010": {
+      "id": "RQ-010",
+      "question": "수정된 협력적 보상 구조(REWARD_APPLE, COST_BEAM)로 훈련된 에이전트에서 내재적 동기 부여, 특히 보상 함수에 참신성 보너스를 통해 구현된 호기심 기반 탐색이 협력률을 향상시킬 수 있는가?",
+      "question_en": "Can intrinsic motivation, specifically curiosity-driven exploration implemented via a novelty bonus to the reward function, improve cooperation rates in agents trained with a modified cooperative reward structure (REWARD_APPLE, COST_BEAM)?",
+      "type": "pivot",
+      "status": "failed",
+      "priority": 2,
+      "created_at": "2026-02-15T20:50:00.587234",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 40,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "generate_new",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": null,
+      "parent": "RQ-009",
+      "generation_count": 40,
+      "retry_count": 1,
+      "best_result": 0.13377197086811066,
+      "completed_at": "2026-02-15T21:07:31.232658",
+      "outcome": "failure",
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 0.5,
+        "DASHBOARD_PORT": 4011,
+        "GENESIS_BETA": 0.9,
+        "GENESIS_LOGIC_MODE": "adaptive_beta",
+        "rationale": "Since cooperation rate is low, I will increase both the intervention strength (beta) and agent sensitivity (alpha) slightly within 'adaptive_beta' mode, to encourage greater initial cooperation.",
+        "rationale_kr": "협력률이 낮으므로 초기 협력을 장려하기 위해 'adaptive_beta' 모드 내에서 개입 강도(베타)와 에이전트 민감도(알파)를 약간씩 증가시킵니다."
+      }
+    },
+    "RQ-011": {
+      "id": "RQ-011",
+      "question": "수정된 협력적 보상 구조(REWARD_APPLE, COST_BEAM)로 훈련된 에이전트에서 커리큘럼 학습, 특히 자원 부족 및 통신 제약을 통해 점진적으로 환경 복잡성을 증가시키는 것이 협력률을 향상시킬 수 있는가?",
+      "question_en": "Can curriculum learning, progressively increasing the complexity of the environment via resource scarcity and communication constraints, improve cooperation rates in agents trained with a modified cooperative reward structure (REWARD_APPLE, COST_BEAM)?",
+      "type": "pivot",
+      "status": "failed",
+      "priority": 2,
+      "created_at": "2026-02-15T21:07:34.779507",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 40,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "generate_new",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": null,
+      "parent": "RQ-010",
+      "generation_count": 40,
+      "retry_count": 1,
+      "best_result": 0.13377197086811066,
+      "completed_at": "2026-02-15T22:26:29.482327",
+      "outcome": "failure",
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 0.8,
+        "DASHBOARD_PORT": 4011,
+        "GENESIS_BETA": 0.95,
+        "GENESIS_LOGIC_MODE": "adaptive_beta",
+        "rationale": "Slightly increasing both GENESIS_BETA and GENESIS_ALPHA further within the 'adaptive_beta' framework to explore if more aggressive intervention and sensitivity yields better results.",
+        "rationale_kr": "더욱 적극적인 개입과 민감성이 더 나은 결과를 얻을 수 있는지 알아보기 위해 'adaptive_beta' 프레임워크 내에서 GENESIS_BETA와 GENESIS_ALPHA를 조금 더 증가시킵니다."
+      }
+    },
+    "RQ-012": {
+      "id": "RQ-012",
+      "question": "자원 제약적인 통신 환경에서 협력적 과제 완료와 더불어 효율적인 자원 활용에 대해 명시적으로 보상을 제공하면 에이전트 간 협력률을 향상시킬 수 있는가?",
+      "question_en": "Can explicitly rewarding agents for efficient resource utilization, alongside collaborative task completion, improve cooperation rate in resource-constrained communication environments?",
+      "type": "environment/reward",
+      "status": "failed",
+      "priority": 2,
+      "created_at": "2026-02-15T22:26:33.164049",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 40,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ],
+          "IA_ALPHA": [
+            0.1,
+            10.0
+          ],
+          "IA_BETA": [
+            0.01,
+            1.0
+          ],
+          "USE_INEQUITY_AVERSION": [
+            true,
+            false
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "generate_new",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": null,
+      "parent": "RQ-011",
+      "generation_count": 40,
+      "retry_count": 1,
+      "best_result": 0.11698263386885326,
+      "completed_at": "2026-02-16T00:04:05.564019",
+      "outcome": "failure",
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 1.0,
+        "DASHBOARD_PORT": 4011,
+        "USE_INEQUITY_AVERSION": true,
+        "IA_ALPHA": 1.0,
+        "IA_BETA": 0.1,
+        "IA_EMA_LAMBDA": 0.95,
+        "SI_WEIGHT": 0.1,
+        "MEDIATOR_K": 10,
+        "MEDIATOR_LAMBDA_IC": 1.0,
+        "MEDIATOR_LAMBDA_E": 0.5,
+        "GENESIS_BETA": 1.0,
+        "GENESIS_LOGIC_MODE": "adaptive_beta",
+        "rationale": "Starting with a balanced configuration of key parameters to establish a baseline with inequity aversion enabled and adaptive beta genesis logic.",
+        "rationale_kr": "불평등 회피를 활성화하고 적응형 베타 생성 로직을 사용하여 기준선을 설정하기 위해 주요 파라미터의 균형 잡힌 구성으로 시작합니다."
+      }
+    },
+    "RQ-013": {
+      "id": "RQ-013",
+      "question": "자원 제약적인 통신 환경에서, 더 간단한 통신 과제부터 시작하여 점진적으로 복잡성을 증가시키는 커리큘럼 학습이, 에이전트가 과제 완료와 효율적인 자원 활용 모두에 대해 보상을 받을 때 협력률을 향상시킬 수 있는가?",
+      "question_en": "Can curriculum learning, starting with simpler communication tasks and gradually increasing complexity, improve cooperation rates in resource-constrained communication environments when agents are rewarded for both task completion and efficient resource utilization?",
+      "type": "pivot",
+      "status": "active",
+      "priority": 2,
+      "created_at": "2026-02-16T00:04:09.094553",
+      "success_criteria": {
+        "metric": "cooperation_rate",
+        "condition": ">",
+        "target": 0.5
+      },
+      "constraints": {
+        "max_generations": 40,
+        "parameter_space": {
+          "GENESIS_BETA": [
+            0.01,
+            100.0
+          ],
+          "GENESIS_ALPHA": [
+            0.01,
+            5.0
+          ],
+          "GENESIS_LOGIC_MODE": [
+            "adaptive_beta",
+            "inverse_beta",
+            "institutional"
+          ],
+          "IA_ALPHA": [
+            0.1,
+            10.0
+          ],
+          "IA_BETA": [
+            0.01,
+            1.0
+          ],
+          "USE_INEQUITY_AVERSION": [
+            true,
+            false
+          ]
+        }
+      },
+      "on_success": {
+        "action": "spawn",
+        "questions": []
+      },
+      "on_failure": {
+        "action": "generate_new",
+        "fallback_to": null,
+        "max_retries": 1
+      },
+      "depends_on": null,
+      "parent": "RQ-012",
+      "generation_count": 1,
+      "retry_count": 0,
+      "best_result": 0.11698263386885326,
+      "completed_at": null,
+      "outcome": null,
+      "best_config": {
+        "ENV_NAME": "cleanup",
+        "NUM_AGENTS": 20,
+        "ENV_HEIGHT": 36,
+        "ENV_WIDTH": 25,
+        "MAX_STEPS": 500,
+        "NUM_ENVS": 16,
+        "NUM_UPDATES": 300,
+        "ROLLOUT_LEN": 128,
+        "BATCH_SIZE": 2048,
+        "LR": 0.0003,
+        "HIDDEN_DIM": 128,
+        "GAMMA": 0.99,
+        "GAE_LAMBDA": 0.95,
+        "CLIP_EPS": 0.2,
+        "ENTROPY_COEFF": 0.05,
+        "VF_COEFF": 0.5,
+        "MAX_GRAD_NORM": 0.5,
+        "HRL_NUM_NEEDS": 2,
+        "HRL_NUM_TASKS": 2,
+        "HRL_ALPHA": 1.0,
+        "HRL_THRESH_INCREASE": 0.005,
+        "HRL_THRESH_DECREASE": 0.05,
+        "HRL_INTAKE_VAL": 0.2,
+        "REWARD_APPLE": 10.0,
+        "COST_BEAM": -1.0,
+        "META_BETA": 0.1,
+        "META_SURVIVAL_THRESHOLD": -5.0,
+        "META_WEALTH_BOOST": 5.0,
+        "META_LAMBDA_EMA": 0.9,
+        "USE_META_RANKING": true,
+        "META_USE_DYNAMIC_LAMBDA": true,
+        "GENESIS_MODE": false,
+        "GENESIS_BETA_BASE": 10.0,
+        "GENESIS_GAMMA": 2.0,
+        "GENESIS_ALPHA": 0.5,
+        "DASHBOARD_PORT": 4011,
+        "USE_INEQUITY_AVERSION": true,
+        "IA_ALPHA": 1.5,
+        "IA_BETA": 0.15,
+        "IA_EMA_LAMBDA": 0.95,
+        "SI_WEIGHT": 0.1,
+        "MEDIATOR_K": 10,
+        "MEDIATOR_LAMBDA_IC": 1.0,
+        "MEDIATOR_LAMBDA_E": 0.5,
+        "GENESIS_BETA": 0.9,
+        "GENESIS_LOGIC_MODE": "adaptive_beta",
+        "rationale": "Building upon the previous experiment, I will further increase both GENESIS_BETA and GENESIS_ALPHA, and slightly adjust IA_ALPHA and IA_BETA to fine-tune the balance between incentivizing cooperation and addressing inequity aversion, hoping to promote higher cooperation rates.",
+        "rationale_kr": "이전 실험을 기반으로 GENESIS_BETA와 GENESIS_ALPHA를 더욱 증가시키고 IA_ALPHA와 IA_BETA를 약간 조정하여 협력 장려와 불평등 회피 간의 균형을 미세 조정함으로써 더 높은 협력률을 촉진하고자 합니다."
+      }
+    }
+  },
+  "history": [
+    {
+      "timestamp": "2026-02-15T18:53:23.259045",
+      "event": "question_failed",
+      "question_id": "RQ-001",
+      "outcome": "failure"
+    },
+    {
+      "timestamp": "2026-02-15T19:13:54.713402",
+      "event": "question_failed",
+      "question_id": "RQ-004",
+      "outcome": "failure"
+    },
+    {
+      "timestamp": "2026-02-15T19:33:25.661832",
+      "event": "question_failed",
+      "question_id": "RQ-005",
+      "outcome": "failure"
+    },
+    {
+      "timestamp": "2026-02-15T19:53:01.449848",
+      "event": "question_failed",
+      "question_id": "RQ-006",
+      "outcome": "failure"
+    },
+    {
+      "timestamp": "2026-02-15T20:11:54.313954",
+      "event": "question_failed",
+      "question_id": "RQ-007",
+      "outcome": "failure"
+    },
+    {
+      "timestamp": "2026-02-15T20:30:56.748967",
+      "event": "question_failed",
+      "question_id": "RQ-008",
+      "outcome": "failure"
+    },
+    {
+      "timestamp": "2026-02-15T20:49:56.480384",
+      "event": "question_failed",
+      "question_id": "RQ-009",
+      "outcome": "failure"
+    },
+    {
+      "timestamp": "2026-02-15T21:07:31.232664",
+      "event": "question_failed",
+      "question_id": "RQ-010",
+      "outcome": "failure"
+    },
+    {
+      "timestamp": "2026-02-15T22:26:29.482345",
+      "event": "question_failed",
+      "question_id": "RQ-011",
+      "outcome": "failure"
+    },
+    {
+      "timestamp": "2026-02-16T00:04:05.564031",
+      "event": "question_failed",
+      "question_id": "RQ-012",
+      "outcome": "failure"
+    }
+  ]
+}

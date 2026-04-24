@@ -1,0 +1,116 @@
+import os
+import json
+import logging
+import jax
+import jax.numpy as jnp
+import numpy as np
+import pandas as pd
+from simulation.jax.config import get_config
+from simulation.jax.training.train_pipeline import make_train
+
+# v2.0: GPU 자동 감지 (CPU 강제 제거)
+# GPU가 있으면 자동 사용, 없으면 CPU 폴백
+_platform = jax.default_backend()
+logging.basicConfig(level=logging.INFO)
+logging.info(f"JAX backend: {_platform}, Devices: {jax.devices()}")
+print(f"🖥️ JAX Platform: {_platform} | Devices: {jax.devices()}")
+
+class Engineer:
+    def __init__(self, config_path="experiments/evolution/current/config.json"):
+        self.config_path = config_path
+        self.result_path = "experiments/evolution/current/result.json"
+        self.is_gpu = jax.default_backend() == "gpu"
+
+    def load_config(self):
+        with open(self.config_path, "r") as f:
+            return json.load(f)
+
+    def run_simulation(self):
+        config = self.load_config()
+        print(f"🛠️ Engineer: Running simulation with config: {json.dumps(config, indent=2)}")
+        
+        # v2.0: GPU/CPU 자동 분기 파라미터 설정
+        if self.is_gpu:
+            config["NUM_ENVS"] = 64       # GPU 병렬 환경 (12GB VRAM 최적)
+            config["BATCH_SIZE"] = 256    # 시스템 램 부담 완화를 위해 축소 (512 -> 256)
+            config["NUM_UPDATES"] = 300   # 충분한 학습 (헌법 제12조)
+            config["LOG_INTERVAL"] = 50
+            print("  > 🚀 GPU Mode: NUM_ENVS=64, BATCH=512, UPDATES=300")
+        else:
+            config["NUM_ENVS"] = 16       # CPU 최소 병렬
+            config["BATCH_SIZE"] = 256    # CPU 소형 배치
+            config["NUM_UPDATES"] = 100   # CPU에서도 학습 가능
+            config["LOG_INTERVAL"] = 10
+            print("  > 🐢 CPU Mode: NUM_ENVS=16, BATCH=256, UPDATES=100")
+
+        config["SEEDS"] = [42, 123, 7]   # 다중 시드 (헌법 제4조)
+        config["GENESIS_MODE"] = True     # Genesis Mode 강제
+
+        # Prepare Result Container
+        results = {}
+        
+        # Compile Train Function
+        print("  > Compiling JAX graph...")
+        train_fn = make_train(config)
+        train_fn = jax.jit(train_fn)
+        
+        # Test 2 Conditions: Prosocial & Individualist
+        svo_conditions = {
+            "Prosocial": jnp.pi/4,      # 45 degrees
+            "Individualist": 0.0        # 0 degrees
+        }
+        
+        print(f"  > Starting loops (JIT ENABLED, {_platform.upper()})...", flush=True)
+        
+        for svo_name, svo_val in svo_conditions.items():
+            print(f"  > Testing {svo_name}...", end="", flush=True)
+            try:
+                # v2.0: 다중 시드 실행 (헌법 제4조 — 최소 3회 반복)
+                seed_coop_rates = []
+                seed_rewards = []
+                seed_ginis = []
+
+                for seed in config["SEEDS"]:
+                    print(f" [Seed={seed}]", end="", flush=True)
+                    key = jax.random.PRNGKey(seed)
+                    runner_state, metrics_history = train_fn(key, float(svo_val))
+                    
+                    coop = float(metrics_history["cooperation_rate"][-10:].mean())
+                    rew = float(metrics_history["reward_mean"][-10:].mean())
+                    gini = float(metrics_history["gini"][-10:].mean())
+                    
+                    seed_coop_rates.append(coop)
+                    seed_rewards.append(rew)
+                    seed_ginis.append(gini)
+
+                # v2.0: 다중 시드 평균 + 표준편차 (헌법 제5조 — 전체 분포 보고)
+                coop_mean = float(np.mean(seed_coop_rates))
+                coop_std = float(np.std(seed_coop_rates))
+                reward_mean = float(np.mean(seed_rewards))
+                gini_mean = float(np.mean(seed_ginis))
+                
+                results[svo_name] = {
+                    "cooperation_rate": coop_mean,
+                    "cooperation_std": coop_std,
+                    "cooperation_per_seed": seed_coop_rates,
+                    "reward_mean": reward_mean,
+                    "gini": gini_mean,
+                    "num_seeds": len(config["SEEDS"]),
+                    "platform": _platform,
+                }
+                print(f" Done. Coop={coop_mean:.4f}±{coop_std:.4f}")
+                
+            except Exception as e:
+                print(f" Failed: {e}")
+                results[svo_name] = {"error": str(e)}
+
+        # Save Result
+        with open(self.result_path, "w") as f:
+            json.dump(results, f, indent=4)
+            
+        print(f"💾 Results saved to {self.result_path}")
+        return results
+
+if __name__ == "__main__":
+    engineer = Engineer()
+    engineer.run_simulation()

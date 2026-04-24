@@ -1,0 +1,27 @@
+{{ block title }}EthicaAI 공공재 게임 — 기여 결정{{ endblock }}
+
+{{ block content }}
+<div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">라운드 {{ round_number }} / 20</h5>
+    </div>
+    <div class="card-body">
+        <p>당신은 <strong>{{ endowment }} 포인트</strong>를 보유하고 있습니다.</p>
+        <p>공공재에 기여한 포인트는 <strong>{{ multiplier }}배</strong>로 증가하여 4명에게 균등 분배됩니다.</p>
+
+        {{ if prev_share }}
+        <div class="alert alert-info">
+            ℹ️ 이전 라운드에서 <strong>{{ prev_share }} 포인트</strong>를 받았습니다.
+        </div>
+        {{ endif }}
+    </div>
+</div>
+
+{{ formfields }}
+
+<div class="alert alert-warning">
+    ⚠️ 기여하지 않은 포인트는 그대로 보유합니다.
+</div>
+
+{{ next_button }}
+{{ endblock }}

@@ -1,0 +1,4 @@
+# EthicaAI Human-in-the-Loop PGG Experiment
+# oTree 5.x 기반 실험 플랫폼
+
+otree>=5.10.0

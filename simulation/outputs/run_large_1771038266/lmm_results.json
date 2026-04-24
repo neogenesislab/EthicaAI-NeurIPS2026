@@ -1,0 +1,44 @@
+{
+  "reward": {
+    "method": "LMM (REML)",
+    "fixed_effect_svo": -0.010882947065100205,
+    "fixed_effect_intercept": -0.12387667599001011,
+    "se_svo": 0.0006519553960711112,
+    "p_value": 1.4792317799196592e-62,
+    "significant": true,
+    "t_stat": -16.69277857148553,
+    "aic": NaN,
+    "bic": NaN,
+    "random_effect_var": 0.0001869711703089003,
+    "n_observations": 70,
+    "n_groups": 10
+  },
+  "cooperation_rate": {
+    "method": "LMM (REML)",
+    "fixed_effect_svo": -0.002654167399828566,
+    "fixed_effect_intercept": 0.1216746984315758,
+    "se_svo": 0.0005350437669083143,
+    "p_value": 7.025596794595633e-07,
+    "significant": true,
+    "t_stat": -4.960654742630404,
+    "aic": NaN,
+    "bic": NaN,
+    "random_effect_var": 0.00015621810457935284,
+    "n_observations": 70,
+    "n_groups": 10
+  },
+  "gini": {
+    "method": "LMM (REML)",
+    "fixed_effect_svo": 0.07798016160937384,
+    "fixed_effect_intercept": -0.11804717119250992,
+    "se_svo": 0.002974703671355989,
+    "p_value": 1.8196127208756556e-151,
+    "significant": true,
+    "t_stat": 26.214430149886947,
+    "aic": NaN,
+    "bic": NaN,
+    "random_effect_var": 1.383128911395827e-13,
+    "n_observations": 70,
+    "n_groups": 10
+  }
+}

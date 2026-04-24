@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ME6PDCNP8B"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-ME6PDCNP8B');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EthicaAI ??Figure Dashboard</title>
+    <style>
+        :root {
+            --bg: #0f0f23;
+            --surface: #1a1a3e;
+            --accent: #4fc3f7;
+            --text: #e0e0ff;
+            --dim: #8888aa;
+            --success: #66bb6a;
+            --warning: #ffa726;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a237e, #4a148c);
+            padding: 2rem 3rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, var(--accent), #ce93d8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--dim);
+            font-size: 1.1rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding: 1.5rem;
+            background: var(--surface);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat .val {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat .label {
+            font-size: 0.85rem;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .phase-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: rgba(26, 26, 62, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .phase-btn {
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--dim);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .phase-btn:hover,
+        .phase-btn.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem 3rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(79, 195, 247, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: contain;
+            background: #151530;
+            padding: 1rem;
+            cursor: pointer;
+        }
+
+        .card-info {
+            padding: 1rem 1.2rem;
+        }
+
+        .card-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-info .phase-tag {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .tag-core {
+            background: #1b5e20;
+            color: #a5d6a7;
+        }
+
+        .tag-scale {
+            background: #e65100;
+            color: #ffcc80;
+        }
+
+        .tag-robust {
+            background: #4a148c;
+            color: #ce93d8;
+        }
+
+        .tag-extended {
+            background: #01579b;
+            color: #81d4fa;
+        }
+
+        .card-info p {
+            color: var(--dim);
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+        }
+
+        /* ?ºÏù¥?∏Î∞ï??*/
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 0 60px rgba(79, 195, 247, 0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--dim);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .stats-bar {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>?ß† EthicaAI ??Figure Dashboard</h1>
+        <p>Beyond Homo Economicus: Computational Verification of Sen's Meta-Ranking Theory via MARL</p>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat">
+            <div class="val">19</div>
+            <div class="label">Figures</div>
+        </div>
+        <div class="stat">
+            <div class="val">3</div>
+            <div class="label">Environments</div>
+        </div>
+        <div class="stat">
+            <div class="val">100</div>
+            <div class="label">Max Agents</div>
+        </div>
+        <div class="stat">
+            <div class="val">33</div>
+            <div class="label">References</div>
+        </div>
+        <div class="stat">
+            <div class="val">7</div>
+            <div class="label">SVO Conditions</div>
+        </div>
+    </div>
+
+    <div class="phase-nav">
+        <button class="phase-btn active" onclick="filter('all')">All (19)</button>
+        <button class="phase-btn" onclick="filter('core')">Core Results (9)</button>
+        <button class="phase-btn" onclick="filter('scale')">Scale (3)</button>
+        <button class="phase-btn" onclick="filter('robust')">Robustness (3)</button>
+        <button class="phase-btn" onclick="filter('extended')">Extended (4)</button>
+    </div>
+
+    <div class="gallery" id="gallery"></div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <div class="footer">
+        <p>EthicaAI ¬© 2026 Anonymous Authors | Anonymous code repository withheld for review | NeurIPS 2026</p>
+    </div>
+
+    <script>
+        const figures = [
+            { id: 1, file: "fig1_learning_curves.png", title: "Learning Curves", desc: "Reward & cooperation convergence over training epochs", phase: "core" },
+            { id: 2, file: "fig2_cooperation_rate.png", title: "Cooperation Rate Distribution", desc: "Per-SVO cooperation rate with ceiling effect (~12%)", phase: "core" },
+            { id: 3, file: "fig3_threshold_evolution.png", title: "Threshold Evolution", desc: "Cleaner/harvester action threshold evolution during training", phase: "core" },
+            { id: 4, file: "fig4_svo_heatmap.png", title: "SVO Heatmap", desc: "SVO angle vs key metrics heatmap", phase: "core" },
+            { id: 5, file: "fig5_gini_comparison.png", title: "Gini Coefficient", desc: "Inequality evolution across SVO conditions", phase: "core" },
+            { id: 6, file: "fig6_causal_forest.png", title: "Causal Forest Plot", desc: "ATE forest plot with 95% CI", phase: "core" },
+            { id: 7, file: "fig7_svo_vs_welfare.png", title: "SVO vs Welfare", desc: "Baseline vs Full Model welfare comparison", phase: "core" },
+            { id: 8, file: "fig8_summary_heatmap.png", title: "Summary Heatmap", desc: "Normalized metrics across all conditions", phase: "core" },
+            { id: 9, file: "fig9_role_specialization.png", title: "Role Specialization", desc: "Emergent cleaner/eater role differentiation dynamics", phase: "core" },
+            { id: 10, file: "fig10_scale_comparison.png", title: "Scale Comparison", desc: "20 vs 100 agent environment comparison", phase: "scale" },
+            { id: 11, file: "fig_baseline_comparison.png", title: "Baseline Comparison", desc: "100-agent Full vs Baseline with 95% CI", phase: "scale" },
+            { id: 12, file: "human_ai_cooperation_rate.png", title: "Human-AI Alignment", desc: "Agent vs Human PGG distributional overlap", phase: "scale" },
+            { id: 13, file: "fig13_convergence.png", title: "Convergence Proof", desc: "ADF stationarity + slope analysis (87% converged)", phase: "robust" },
+            { id: 14, file: "fig14_risk_analysis.png", title: "Risk Analysis", desc: "Dynamic vs Static Œª: risk-adjusted comparison", phase: "robust" },
+            { id: 15, file: "fig15_sensitivity.png", title: "Sensitivity Analysis", desc: "Cohen's d + P-value across all parameters", phase: "robust" },
+            { id: 16, file: "fig16_cross_env.png", title: "Cross-Environment (IPD)", desc: "Meta-ranking effect in Prisoner's Dilemma (+17.8%)", phase: "extended" },
+            { id: 17, file: "fig17_pgg.png", title: "PGG Human Alignment", desc: "Individualist SVO best matches humans (WD=0.053)", phase: "extended" },
+            { id: 18, file: "fig18_evolutionary.png", title: "Evolutionary Competition", desc: "Replicator dynamics ??~12% ESS convergence", phase: "extended" },
+            { id: 19, file: "fig19_mechanism.png", title: "Mechanism Decomposition", desc: "SVO=86%, Dynamic Œª=13%, ?=1%", phase: "extended" },
+        ];
+
+        const phaseConfig = {
+            core: { class: "tag-core", label: "Core" },
+            scale: { class: "tag-scale", label: "Scale" },
+            robust: { class: "tag-robust", label: "Robustness" },
+            extended: { class: "tag-extended", label: "Extended" },
+        };
+
+        function renderGallery(items) {
+            const gallery = document.getElementById("gallery");
+            gallery.innerHTML = items.map(fig => `
+                <div class="card" data-phase="${fig.phase}">
+                    <img src="submission_neurips/figures/${fig.file}" alt="Fig ${fig.id}" 
+                         onerror="this.style.display='none'" onclick="openLightbox(this.src)">
+                    <div class="card-info">
+                        <span class="phase-tag ${phaseConfig[fig.phase].class}">${phaseConfig[fig.phase].label}</span>
+                        <h3>Fig ${fig.id}. ${fig.title}</h3>
+                        <p>${fig.desc}</p>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function filter(phase) {
+            document.querySelectorAll(".phase-btn").forEach(btn => btn.classList.remove("active"));
+            event.target.classList.add("active");
+            const items = phase === "all" ? figures : figures.filter(f => f.phase === phase);
+            renderGallery(items);
+        }
+
+        function openLightbox(src) {
+            document.getElementById("lightbox-img").src = src;
+            document.getElementById("lightbox").classList.add("active");
+        }
+
+        function closeLightbox() {
+            document.getElementById("lightbox").classList.remove("active");
+        }
+
+        document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
+
+        renderGallery(figures);
+    </script>
+</body>
+
+</html>

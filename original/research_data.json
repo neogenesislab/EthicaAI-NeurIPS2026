@@ -1,0 +1,383 @@
+{
+    "meta": {
+        "제목": "계산 사회과학과 멀티 에이전트 강화학습을 통한 최선합리성(Optimal Rationality) 이론의 검증",
+        "영문_제목": "Verification of Optimal Rationality Theory through Computational Social Science and Multi-Agent Reinforcement Learning",
+        "저자": {
+            "이름": "허예솔",
+            "영문명": "Anonymous Author",
+            "소속": "Independent Scholar",
+            "이메일": "anonymous@example.com"
+        },
+        "핵심_가설": "윤리적 고려를 통합한 에이전트(최선합리성)가 순수 이기적 에이전트보다 장기적으로 더 높은 누적 보상을 얻는다",
+        "원문_경로": "original/deep_research_report.md"
+    },
+    "참고_논문": [
+        {
+            "id": "sen1977",
+            "저자": "Amartya Sen",
+            "연도": 1977,
+            "제목": "Rational Fools: A Critique of the Behavioral Foundations of Economic Theory",
+            "출처": "Philosophy & Public Affairs, 6(4), 317-344",
+            "핵심_인사이트": "동정(Sympathy)과 헌신(Commitment)은 근본적으로 다른 기제. 단일 선호 체계로 환원 불가. 메타 랭킹(Meta-Rankings) 개념 제안"
+        },
+        {
+            "id": "leibo2017",
+            "저자": "Joel Z. Leibo et al.",
+            "연도": 2017,
+            "제목": "Multi-Agent Reinforcement Learning in Sequential Social Dilemmas",
+            "출처": "AAMAS 2017",
+            "핵심_인사이트": "순차적 사회적 딜레마(SSD)에서 MARL 에이전트의 협력/배신 패턴 분석. 환경 구조가 사회적 결과를 결정"
+        },
+        {
+            "id": "hughes2018",
+            "저자": "Edward Hughes et al.",
+            "연도": 2018,
+            "제목": "Inequity Aversion Improves Cooperation in Intertemporal Social Dilemmas",
+            "출처": "NeurIPS 2018",
+            "핵심_인사이트": "불평등 회피를 보상에 통합하면 시간 간 사회적 딜레마에서 협력 향상"
+        },
+        {
+            "id": "amodei2016",
+            "저자": "Dario Amodei et al.",
+            "연도": 2016,
+            "제목": "Concrete Problems in AI Safety",
+            "출처": "arXiv:1606.06565",
+            "핵심_인사이트": "AI 안전의 5가지 구체적 문제 정의: 보상 해킹, 부작용, 스케일 감시, 안전 탐색, 분포 이동"
+        },
+        {
+            "id": "schulman2017",
+            "저자": "John Schulman et al.",
+            "연도": 2017,
+            "제목": "Proximal Policy Optimization Algorithms",
+            "출처": "arXiv:1707.06347",
+            "핵심_인사이트": "PPO 알고리즘 — TRPO의 안정성과 일반 정책 경사의 단순함을 결합. MARL 학습의 표준 알고리즘"
+        },
+        {
+            "id": "chernozhukov2018",
+            "저자": "Victor Chernozhukov et al.",
+            "연도": 2018,
+            "제목": "Double/Debiased Machine Learning for Treatment and Structural Parameters",
+            "출처": "The Econometrics Journal, 21(1), C1-C68",
+            "핵심_인사이트": "이중 기계학습(DML) — 고차원 교란 변수 하에서도 편향 없는 인과 효과 추정. Cross-fitting으로 과적합 방지"
+        },
+        {
+            "id": "pearl2009",
+            "저자": "Judea Pearl",
+            "연도": 2009,
+            "제목": "Causality: Models, Reasoning, and Inference (2nd ed.)",
+            "출처": "Cambridge University Press",
+            "핵심_인사이트": "Do-Calculus, SCM, DAG 기반 인과 추론 프레임워크. P(Y|do(X)) ≠ P(Y|X)"
+        },
+        {
+            "id": "sutton2018",
+            "저자": "Richard S. Sutton & Andrew G. Barto",
+            "연도": 2018,
+            "제목": "Reinforcement Learning: An Introduction (2nd ed.)",
+            "출처": "MIT Press",
+            "핵심_인사이트": "강화학습 기본 이론 — MDP, 벨만 방정식, 정책 경사, 시간차 학습"
+        },
+        {
+            "id": "lanctot2019",
+            "저자": "Marc Lanctot et al.",
+            "연도": 2019,
+            "제목": "OpenSpiel: A Framework for Reinforcement Learning in Games",
+            "출처": "arXiv:1908.09453",
+            "핵심_인사이트": "게임 이론 + RL 통합 프레임워크. 수십 종의 게임 환경 제공"
+        },
+        {
+            "id": "christiano2017",
+            "저자": "Paul Christiano et al.",
+            "연도": 2017,
+            "제목": "Deep Reinforcement Learning from Human Preferences",
+            "출처": "NeurIPS 2017",
+            "핵심_인사이트": "인간 선호 피드백 기반 RL (RLHF) — 명시적 보상 함수 없이 인간 가치 정렬"
+        },
+        {
+            "id": "hadfield2017",
+            "저자": "Dylan Hadfield-Menell et al.",
+            "연도": 2017,
+            "제목": "The Off-Switch Game",
+            "출처": "IJCAI 2017",
+            "핵심_인사이트": "AI 에이전트가 자발적으로 정지를 허용하는 게임 이론적 조건 분석"
+        },
+        {
+            "id": "russell2019",
+            "저자": "Stuart Russell",
+            "연도": 2019,
+            "제목": "Human Compatible: AI and the Problem of Control",
+            "출처": "Viking",
+            "핵심_인사이트": "AI 정렬 문제의 근본적 재정의 — 목적 불확실성(Objective Uncertainty) 원칙"
+        },
+        {
+            "id": "gabriel2020",
+            "저자": "Iason Gabriel",
+            "연도": 2020,
+            "제목": "Artificial Intelligence, Values, and Alignment",
+            "출처": "Minds and Machines, 30(3), 411-437",
+            "핵심_인사이트": "AI 가치 정렬의 철학적 기반 — 선호, 욕구, 이상적 관찰자 등 다양한 정렬 대상 분석"
+        },
+        {
+            "id": "brodersen2015",
+            "저자": "Kay H. Brodersen et al.",
+            "연도": 2015,
+            "제목": "Inferring Causal Impact Using Bayesian Structural Time Series",
+            "출처": "Annals of Applied Statistics, 9(1), 247-274",
+            "핵심_인사이트": "베이지안 구조적 시계열 모델로 정책 개입의 인과적 효과 추정 (Google CausalImpact)"
+        },
+        {
+            "id": "athey2019",
+            "저자": "Susan Athey & Guido W. Imbens",
+            "연도": 2019,
+            "제목": "Machine Learning Methods That Economists Should Know About",
+            "출처": "Annual Review of Economics, 11, 685-725",
+            "핵심_인사이트": "인과추론에서의 ML 활용 — 이질적 처치 효과, CATE 추정"
+        },
+        {
+            "id": "piatti2024",
+            "저자": "Riccardo Piatti et al.",
+            "연도": 2024,
+            "제목": "Cooperate or Collapse: Emergence of Sustainable Cooperation in a Society of LLM Agents",
+            "출처": "arXiv:2404.16698 (GovSim)",
+            "핵심_인사이트": "LLM 에이전트 사회에서의 공유 자원 관리 — 협력 실패 시 자원 고갈(비극) 발생"
+        },
+        {
+            "id": "rutherford2024",
+            "저자": "Alexander Rutherford et al.",
+            "연도": 2024,
+            "제목": "JaxMARL: Multi-Agent RL Environments and Algorithms in JAX",
+            "출처": "ICLR 2024",
+            "핵심_인사이트": "JAX 기반 MARL — GPU 단일 그래프 실행으로 최대 12,500배 속도 향상"
+        },
+        {
+            "id": "bach2022",
+            "저자": "Philipp Bach et al.",
+            "연도": 2022,
+            "제목": "DoubleML: An Object-Oriented Implementation of Double Machine Learning in Python",
+            "출처": "Journal of Machine Learning Research, 23(1)",
+            "핵심_인사이트": "DML의 파이썬 구현 — EconML, DoubleML 라이브러리를 통한 인과 효과 추정"
+        },
+        {
+            "id": "ng2000",
+            "저자": "Andrew Y. Ng & Stuart Russell",
+            "연도": 2000,
+            "제목": "Algorithms for Inverse Reinforcement Learning",
+            "출처": "ICML 2000",
+            "핵심_인사이트": "역강화학습 — 관찰된 행동에서 보상 함수 역추출. 인간 가치 학습의 기초"
+        },
+        {
+            "id": "lerer2017",
+            "저자": "Adam Lerer & Alexander Peysakhovich",
+            "연도": 2017,
+            "제목": "Maintaining Cooperation in Complex Social Dilemmas Using Deep Reinforcement Learning",
+            "출처": "arXiv:1707.01068",
+            "핵심_인사이트": "복잡한 사회적 딜레마에서 DRL 에이전트의 협력 유지 전략"
+        }
+    ],
+    "수학적_포뮬레이션": {
+        "효용_함수": {
+            "1차_선호_물질적_효용": {
+                "수식": "U_self(s, a) = r_env(s, a)",
+                "설명": "환경으로부터 직접 주어지는 물질적 보상 (RCT의 자기 이익)"
+            },
+            "메타_선호_윤리적_평가": {
+                "수식": "U_meta(s, a, π_{-i}) = Σ_{j≠i} r_j(s,a) + I(a ∈ A_norm) · ω",
+                "설명": "동정(Sympathy: 타인 보상 합) + 의무론적 헌신(Deontological Commitment: 규범 준수 가중치)",
+                "변수": {
+                    "A_norm": "규범적으로 허용된 행동 집합",
+                    "ω": "규범 준수의 가중치"
+                }
+            }
+        },
+        "최선합리성_보상_함수": {
+            "수식": "R_total(s, a) = (1 - λ_t) · U_self(s, a) + λ_t · [U_meta(s, a) - ψ(s)]",
+            "설명": "메타 랭킹 기반 계층적 보상. λ는 헌신 수준, ψ는 자제 비용",
+            "변수": {
+                "λ_t": "에이전트의 헌신 수준 (0.0 ~ 1.0)",
+                "ψ(s)": "자제 비용 = β · D_KL(π(·|s) || π_selfish(·|s))"
+            }
+        },
+        "프로젝트_효용_함수": {
+            "수식": "U*(a) = α·U_self + β·U_social + γ·U_ethical - δ·Risk_longterm",
+            "설명": "ethica-ai.md 규칙 기반 구현용 효용 함수",
+            "가중치": {
+                "α": {
+                    "값": 0.4,
+                    "설명": "개인 보상 가중치"
+                },
+                "β": {
+                    "값": 0.3,
+                    "설명": "사회적 보상 가중치"
+                },
+                "γ": {
+                    "값": 0.2,
+                    "설명": "윤리적 보상 가중치"
+                },
+                "δ": {
+                    "값": 0.1,
+                    "설명": "장기 위험 패널티 가중치"
+                }
+            }
+        },
+        "자원_동역학_모델": {
+            "수식": "h_{t+1} = clip(h_t - E_t + g·(h_t - E_t), 0, h_max)",
+            "설명": "공통 자원(CPR) 차분 방정식 — 어업, 목초지, 오염 시나리오 통합",
+            "변수": {
+                "h_t": "현재 자원량",
+                "E_t": "Σ a_{i,t} — 전체 에이전트 채취/오염량",
+                "g": "자연 재생률",
+                "h_max": "자원 최대 용량"
+            }
+        }
+    },
+    "시뮬레이션_설계_파라미터": {
+        "에이전트_유형": [
+            {
+                "이름": "SelfishAgent",
+                "코드명": "selfish",
+                "설명": "전통적 합리성 — R = 개인보상만",
+                "보상": "R = U_self(s, a)"
+            },
+            {
+                "이름": "OptimalAgent",
+                "코드명": "optimal",
+                "설명": "최선합리성 — 센의 메타 랭킹 통합",
+                "보상": "R = α·U_self + β·U_social + γ·U_ethical - δ·Risk_longterm"
+            },
+            {
+                "이름": "BoundedAgent",
+                "코드명": "bounded",
+                "설명": "제한적 합리성 (Simon) — 인지적 한계, 노이즈",
+                "보상": "R = U_self(s, a) + ε (ε ~ N(0, σ²))"
+            }
+        ],
+        "환경": [
+            {
+                "이름": "반복 죄수의 딜레마",
+                "코드명": "prisoners_dilemma",
+                "라운드": 100000,
+                "보상_행렬": {
+                    "CC": [
+                        3,
+                        3
+                    ],
+                    "CD": [
+                        0,
+                        5
+                    ],
+                    "DC": [
+                        5,
+                        0
+                    ],
+                    "DD": [
+                        1,
+                        1
+                    ]
+                },
+                "설명": "SSD 조건 충족: 배신이 즉각적으로 유리하나, 상호 협력이 장기적으로 최선"
+            },
+            {
+                "이름": "공공재 게임",
+                "코드명": "public_goods",
+                "라운드": 100000,
+                "파라미터": {
+                    "기여_배수(multiplier)": 1.5,
+                    "에이전트_수": 10,
+                    "초기_자산": 100
+                }
+            },
+            {
+                "이름": "신뢰 게임",
+                "코드명": "trust_game",
+                "라운드": 100000,
+                "파라미터": {
+                    "투자_배수": 3,
+                    "초기_자산": 100
+                }
+            }
+        ],
+        "하드웨어": {
+            "GPU": "NVIDIA RTX 4070 SUPER",
+            "VRAM": "12GB",
+            "CUDA": "12.1",
+            "정밀도": "FP16 (Mixed Precision)"
+        },
+        "학습": {
+            "알고리즘": "PPO (Proximal Policy Optimization)",
+            "병렬_환경_수": 1000,
+            "에이전트_수_per_env": 10,
+            "총_에이전트": 10000,
+            "최소_라운드": 100000,
+            "시드_고정": true,
+            "기본_시드": 42
+        },
+        "통계_검정": {
+            "유의_수준": 0.05,
+            "검정_방법": [
+                "t-test",
+                "Mann-Whitney U",
+                "Welch's t-test"
+            ],
+            "신뢰_구간": "95%"
+        }
+    },
+    "투고_가능_학술지": [
+        {
+            "이름": "NeurIPS",
+            "정식명": "Conference on Neural Information Processing Systems",
+            "트랙": "Datasets & Benchmarks / Cooperative AI Workshop",
+            "시기": "2025년 상반기",
+            "적합도": "기술적 타당성 검증 — JAX 기반 환경 오픈소스",
+            "유형": "학회"
+        },
+        {
+            "이름": "AIES",
+            "정식명": "AAAI/ACM Conference on AI, Ethics, and Society",
+            "트랙": "메인",
+            "시기": "2026년 상반기",
+            "적합도": "윤리적 AI 설계 + 사회적 영향 — 본 연구의 핵심 타겟",
+            "유형": "학회"
+        },
+        {
+            "이름": "JASSS",
+            "정식명": "Journal of Artificial Societies and Social Simulation",
+            "트랙": "메인",
+            "시기": "2026년 상반기",
+            "적합도": "시뮬레이션 방법론 정당성 — 에이전트 기반 사회 시뮬레이션 전문 저널",
+            "유형": "저널"
+        },
+        {
+            "이름": "AAMAS",
+            "정식명": "International Conference on Autonomous Agents and Multiagent Systems",
+            "트랙": "메인",
+            "시기": "연중",
+            "적합도": "멀티에이전트 시스템 + 게임이론 + 사회적 딜레마",
+            "유형": "학회"
+        },
+        {
+            "이름": "JAIR",
+            "정식명": "Journal of Artificial Intelligence Research",
+            "트랙": "메인",
+            "시기": "상시 투고",
+            "적합도": "AI 일반 — 오픈 액세스, APC 면제 가능",
+            "유형": "저널"
+        }
+    ],
+    "인과추론_파이프라인": {
+        "방법": "이중 기계학습 (Double Machine Learning, DML)",
+        "변수": {
+            "교란_변수_X": "환경 상태, 자원 재생률, 에이전트 밀도",
+            "처치_T": "평균 헌신 수준 (λ)",
+            "결과_Y": "자원 고갈 시점, 지니 계수, 협력률"
+        },
+        "단계": [
+            "1. 시뮬레이션 궤적 데이터 수집 (X_i, T_i, Y_i)",
+            "2. Stage 1: g(X)로 Y 예측, m(X)로 T 예측 (Nuisance 추정)",
+            "3. 잔차 계산: Ỹ = Y - g(X), T̃ = T - m(X)",
+            "4. Stage 2: Ỹ ~ T̃ 회귀 → θ (헌신의 인과 효과)"
+        ],
+        "라이브러리": [
+            "DoubleML",
+            "EconML"
+        ]
+    }
+}

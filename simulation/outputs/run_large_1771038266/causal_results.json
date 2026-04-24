@@ -1,0 +1,74 @@
+{
+  "H1_svo_reward": {
+    "ate": -0.010882947065100035,
+    "se": 0.00288339071421407,
+    "t_stat": -3.7743572641804426,
+    "p_value": 0.0003425324565140553,
+    "r_squared": 0.28799491125403376,
+    "method": "ols",
+    "significant": true,
+    "hypothesis": "SVO 각도 증가 → 보상 변화",
+    "cohens_f2": 0.4044843439543703,
+    "effect_label": "large"
+  },
+  "H2_svo_cooperation": {
+    "ate": -0.0026541673998287164,
+    "se": 0.002645660526304006,
+    "t_stat": -1.0032153683810137,
+    "p_value": 0.3193664754579535,
+    "r_squared": 0.16869332730052378,
+    "method": "ols",
+    "significant": false,
+    "hypothesis": "SVO 각도 증가 → 협력률 변화"
+  },
+  "H3_svo_gini": {
+    "ate": 0.07798016160937385,
+    "se": 0.003498639788644037,
+    "t_stat": 22.28870763821209,
+    "p_value": 0.0,
+    "r_squared": 0.9108393273220778,
+    "method": "ols",
+    "significant": true,
+    "hypothesis": "SVO 각도 증가 → 불평등도 변화",
+    "cohens_f2": 10.21570720524687,
+    "effect_label": "large"
+  },
+  "H1b_quadratic": {
+    "beta_linear": -0.0186822382353391,
+    "beta_quadratic": 0.004965182969425719,
+    "inverted_u": false,
+    "optimal_theta": null,
+    "method": "ols_quadratic",
+    "hypothesis": "SVO와 보상의 역U자 관계"
+  },
+  "monotonicity": {
+    "spearman_reward": {
+      "rho": -0.4422483052457723,
+      "p": 0.00012651852673996813,
+      "significant": true,
+      "direction": "negative"
+    },
+    "spearman_gini": {
+      "rho": 0.981359948331146,
+      "p": 1.9230021432784234e-50,
+      "significant": true,
+      "direction": "positive"
+    },
+    "spearman_coop": {
+      "rho": -0.18312280272437087,
+      "p": 0.12916785274405498,
+      "significant": false,
+      "direction": "negative"
+    },
+    "kruskal_reward": {
+      "H": 14.244989939637833,
+      "p": 0.027016057657131914,
+      "significant": true
+    },
+    "kruskal_gini": {
+      "H": 66.7248289738431,
+      "p": 1.9159866672924836e-12,
+      "significant": true
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "selfish": {
+    "converged_ratio": 0.9,
+    "avg_slope": -1.4063920406381302e-07,
+    "avg_slope_p": 0.35760785265016015,
+    "avg_adf_pvalue": 1.4686427232220479e-07,
+    "total_runs": 10,
+    "converged_runs": 9
+  },
+  "individualist": {
+    "converged_ratio": 0.9,
+    "avg_slope": -1.4284804960766514e-07,
+    "avg_slope_p": 0.3665301581814998,
+    "avg_adf_pvalue": 9.852971056204932e-08,
+    "total_runs": 10,
+    "converged_runs": 9
+  },
+  "competitive": {
+    "converged_ratio": 0.9,
+    "avg_slope": -6.439790375591742e-07,
+    "avg_slope_p": 0.3812480731384351,
+    "avg_adf_pvalue": 0.022583513851345556,
+    "total_runs": 10,
+    "converged_runs": 9
+  },
+  "prosocial": {
+    "converged_ratio": 0.9,
+    "avg_slope": -1.0896590801846927e-06,
+    "avg_slope_p": 0.38767098437479425,
+    "avg_adf_pvalue": 7.994108557992302e-11,
+    "total_runs": 10,
+    "converged_runs": 9
+  },
+  "cooperative": {
+    "converged_ratio": 0.9,
+    "avg_slope": -1.037962446145257e-06,
+    "avg_slope_p": 0.37534751045658676,
+    "avg_adf_pvalue": 7.000864272643304e-11,
+    "total_runs": 10,
+    "converged_runs": 9
+  },
+  "altruistic": {
+    "converged_ratio": 0.8,
+    "avg_slope": -8.040113267954688e-07,
+    "avg_slope_p": 0.40260416564410245,
+    "avg_adf_pvalue": 1.0401281718011385e-11,
+    "total_runs": 10,
+    "converged_runs": 8
+  },
+  "full_altruist": {
+    "converged_ratio": 0.8,
+    "avg_slope": -5.672429024194371e-07,
+    "avg_slope_p": 0.39076306889884077,
+    "avg_adf_pvalue": 1.6296851476652313e-11,
+    "total_runs": 10,
+    "converged_runs": 8
+  }
+}

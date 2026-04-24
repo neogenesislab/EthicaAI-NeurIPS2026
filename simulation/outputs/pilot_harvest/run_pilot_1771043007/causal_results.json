@@ -1,0 +1,66 @@
+{
+  "H1_svo_reward": {
+    "ate": 0.0,
+    "se": Infinity,
+    "t_stat": 0.0,
+    "p_value": 1.0,
+    "r_squared": 0.0,
+    "method": "ols",
+    "hypothesis": "SVO 각도 증가 → 보상 변화",
+    "cohens_f2": 0.0,
+    "effect_label": "small"
+  },
+  "H2_svo_cooperation": {
+    "ate": 0.0,
+    "se": Infinity,
+    "t_stat": 0.0,
+    "p_value": 1.0,
+    "r_squared": 0.0,
+    "method": "ols",
+    "hypothesis": "SVO 각도 증가 → 협력률 변화"
+  },
+  "H3_svo_gini": {
+    "ate": 0.0,
+    "se": Infinity,
+    "t_stat": 0.0,
+    "p_value": 1.0,
+    "r_squared": 0.0,
+    "method": "ols",
+    "hypothesis": "SVO 각도 증가 → 불평등도 변화",
+    "cohens_f2": 0.0,
+    "effect_label": "small"
+  },
+  "H1b_quadratic": {
+    "error": "singular_matrix"
+  },
+  "monotonicity": {
+    "spearman_reward": {
+      "rho": -0.9999999999999999,
+      "p": NaN,
+      "significant": false,
+      "direction": "negative"
+    },
+    "spearman_gini": {
+      "rho": 0.9999999999999999,
+      "p": NaN,
+      "significant": false,
+      "direction": "positive"
+    },
+    "spearman_coop": {
+      "rho": -0.9999999999999999,
+      "p": NaN,
+      "significant": false,
+      "direction": "negative"
+    },
+    "kruskal_reward": {
+      "H": 1.0,
+      "p": 0.31731050786291115,
+      "significant": false
+    },
+    "kruskal_gini": {
+      "H": 1.0,
+      "p": 0.31731050786291115,
+      "significant": false
+    }
+  }
+}

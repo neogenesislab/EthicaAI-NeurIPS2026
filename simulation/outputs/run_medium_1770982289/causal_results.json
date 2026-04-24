@@ -1,0 +1,30 @@
+{
+  "H1_svo_reward": {
+    "ate": -0.012910950062906565,
+    "se": 0.0038397072562292834,
+    "t_stat": -3.3624828313961754,
+    "p_value": 0.015182918406067447,
+    "r_squared": 0.7169070138258892,
+    "method": "ols",
+    "significant": true,
+    "hypothesis": "SVO 각도 증가 → 보상 변화"
+  },
+  "H2_svo_cooperation": {
+    "ate": -0.0011760463196523237,
+    "se": 0.0033286116768510383,
+    "t_stat": -0.353314353999221,
+    "p_value": 0.7359351027993646,
+    "r_squared": 0.4307357668172953,
+    "method": "ols",
+    "significant": false,
+    "hypothesis": "SVO 각도 증가 → 협력률 변화"
+  },
+  "H1b_quadratic": {
+    "beta_linear": -0.024838677003103715,
+    "beta_quadratic": 0.007593426809531234,
+    "inverted_u": "False",
+    "optimal_theta": null,
+    "method": "ols_quadratic",
+    "hypothesis": "SVO와 보상의 역U자 관계"
+  }
+}

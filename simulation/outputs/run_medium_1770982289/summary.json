@@ -1,0 +1,74 @@
+{
+  "timestamp": 1770982289,
+  "scale": "medium",
+  "svo_conditions": 3,
+  "seeds": [
+    0,
+    42,
+    123
+  ],
+  "total_runs": 9,
+  "eval_summary": {
+    "selfish": {
+      "reward": {
+        "mean": -0.12862955778837204,
+        "std": 0.007651706298061321
+      },
+      "cooperation": {
+        "mean": 0.12862955778837204,
+        "std": 0.007651706298061321
+      },
+      "gini": {
+        "mean": -0.12970751523971558,
+        "std": 0.006237742629976992
+      }
+    },
+    "prosocial": {
+      "reward": {
+        "mean": -0.1434538016716639,
+        "std": 0.007068869685742365
+      },
+      "cooperation": {
+        "mean": 0.12770182391007742,
+        "std": 0.006395063389548286
+      },
+      "gini": {
+        "mean": -0.04707608620325724,
+        "std": 0.003566581030208906
+      }
+    },
+    "full_altruist": {
+      "reward": {
+        "mean": -0.1489100307226181,
+        "std": 0.007530627834185483
+      },
+      "cooperation": {
+        "mean": 0.1267822285493215,
+        "std": 0.006551193632612873
+      },
+      "gini": {
+        "mean": -0.03181525071461996,
+        "std": 0.005226816980696085
+      }
+    }
+  },
+  "causal_summary": {
+    "H1_svo_reward": {
+      "ate": -0.012910950062906565,
+      "p_value": 0.015182918406067447,
+      "significant": true
+    },
+    "H2_svo_cooperation": {
+      "ate": -0.0011760463196523237,
+      "p_value": 0.7359351027993646,
+      "significant": false
+    }
+  },
+  "figures": {
+    "fig1": "simulation/outputs\\run_medium_1770982289\\figures\\fig1_learning_curves.png",
+    "fig2": "simulation/outputs\\run_medium_1770982289\\figures\\fig2_cooperation_rate.png",
+    "fig3": "simulation/outputs\\run_medium_1770982289\\figures\\fig3_threshold_evolution.png",
+    "fig5": "simulation/outputs\\run_medium_1770982289\\figures\\fig5_gini_comparison.png",
+    "fig7": "simulation/outputs\\run_medium_1770982289\\figures\\fig7_svo_vs_welfare.png"
+  }
+}
